@@ -140,7 +140,11 @@ const importProps = (mysqlDb, callback) => {
                         let cleanProps = _.map(props, x => _.pickBy(x, (value, key) => { return value === 0 || value === false || !!value }))
                         let correctedProps = _.map(cleanProps, x => {
                             if (x.type) {
-                                _.set(x, 'type', decamelize(camelize(x.type), '-'))
+                                if (x.type.substr(0, 1) === '_') {
+                                    _.set(x, 'type', '_' + decamelize(camelize(x.type.substr(1)), '-'))
+                                } else {
+                                    _.set(x, 'type', decamelize(camelize(x.type), '-'))
+                                }
                             }
                             if (x.public === 1) {
                                 _.set(x, 'public', true)
