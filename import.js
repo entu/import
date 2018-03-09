@@ -3,7 +3,9 @@
 const _ = require('lodash')
 const async = require('async')
 const aws = require('aws-sdk')
+const camelize = require('camelcase')
 const crypto = require('crypto')
+const decamelize = require('decamelize')
 const fs = require('fs')
 const mongo = require('mongodb')
 const mysql = require('mysql')
@@ -137,6 +139,9 @@ const importProps = (mysqlDb, callback) => {
 
                         let cleanProps = _.map(props, x => _.pickBy(x, (value, key) => { return value === 0 || value === false || !!value }))
                         let correctedProps = _.map(cleanProps, x => {
+                            if (x.type) {
+                                _.set(x, 'type', decamelize(camelize(x.type), '-'))
+                            }
                             if (x.public === 1) {
                                 _.set(x, 'public', true)
                             } else {
