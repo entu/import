@@ -276,7 +276,7 @@ const importProps = (mysqlDb, callback) => {
                         let p = _.groupBy(properties, v => { return v.public === true ? 'public' : 'private' })
 
                         if (!_.isEmpty(changed)) {
-                            _.set(p 'public._changed', changed)
+                            _.set(p, 'public._changed', changed)
                         }
 
                         if (p.public) {
