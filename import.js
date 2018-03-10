@@ -252,23 +252,23 @@ const importProps = (mysqlDb, callback) => {
                             let deleted_by = _.get(property, 'deleted.by')
 
                             if (created_at && (!changed.at || changed.at < created_at)) {
-                                changed.at = created_at
-
                                 if (created_by) {
-                                    changed.by = created_by
+                                    changed.reference = created_by
                                 } else {
                                     _.unset(changed, 'by')
                                 }
+
+                                changed.at = created_at
                             }
 
                             if (deleted_at && (!changed.at || changed.at < deleted_at)) {
-                                changed.at = deleted_at
-
                                 if (deleted_by) {
-                                    changed.by = deleted_by
+                                    changed.reference = deleted_by
                                 } else {
                                     _.unset(changed, 'by')
                                 }
+
+                                changed.at = deleted_at
                             }
                         })
                         properties = properties.filter(p => _.isEmpty(p.deleted))
