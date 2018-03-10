@@ -183,21 +183,17 @@ const importProps = (mysqlDb, callback) => {
                                 if (fileArray[4].substr(0, 2) === 'E:' && fileArray[4].substr(2)) { _.set(x, 'size', parseInt(fileArray[4].substr(2), 10)) }
                                 _.unset(x, 'string')
                             }
-                            if (x.type === '_created' && _.get(x, 'created.at')) {
+                            if (x.datatype === 'atby' && x.type === '_created' && _.get(x, 'created.at')) {
                                 _.set(x, 'at', _.get(x, 'created.at'))
-                                _.unset(x, 'boolean')
                             }
-                            if (x.type === '_created' && _.get(x, 'created.by')) {
+                            if (x.datatype === 'atby' && x.type === '_created' && _.get(x, 'created.by')) {
                                 _.set(x, 'by', _.get(x, 'created.by'))
-                                _.unset(x, 'boolean')
                             }
-                            if (x.type === '_deleted' && _.get(x, 'deleted.at')) {
+                            if (x.datatype === 'atby' && x.type === '_deleted' && _.get(x, 'deleted.at')) {
                                 _.set(x, 'at', _.get(x, 'deleted.at'))
-                                _.unset(x, 'boolean')
                             }
-                            if (x.type === '_deleted' && _.get(x, 'deleted.by')) {
+                            if (x.datatype === 'atby' && x.type === '_deleted' && _.get(x, 'deleted.by')) {
                                 _.set(x, 'by', _.get(x, 'deleted.by'))
-                                _.unset(x, 'boolean')
                             }
 
                             _.unset(x, 'datatype')
@@ -231,7 +227,7 @@ const importProps = (mysqlDb, callback) => {
                             mongoCon.collection('property').updateMany({ reference: entity.oid }, { $set: { reference: entity._id } }, callback)
                         },
                         (callback) => {
-                            mongoCon.collection('property').updateMany({ 'by': entity.oid }, { $set: { 'by': entity._id } }, callback)
+                            mongoCon.collection('property').updateMany({ by: entity.oid }, { $set: { by: entity._id } }, callback)
                         },
                         (callback) => {
                             mongoCon.collection('property').updateMany({ 'created.by': entity.oid }, { $set: { 'created.by': entity._id } }, callback)

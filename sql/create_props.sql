@@ -66,12 +66,11 @@ WHERE entity_definition_keyname NOT LIKE 'conf-%';
 
 
 /* entity created at/by */
-INSERT INTO props (entity, type, datatype, value_integer, created_at, created_by)
+INSERT INTO props (entity, type, datatype, created_at, created_by)
 SELECT
     id,
     '_created',
-    'boolean',
-    1,
+    'atby',
     created,
     IF(TRIM(created_by) REGEXP '^-?[0-9]+$', TRIM(created_by), NULL)
 FROM entity
@@ -80,12 +79,11 @@ AND (created IS NOT NULL OR IF(TRIM(created_by) REGEXP '^-?[0-9]+$', TRIM(create
 
 
 /* entity deleted at/by */
-INSERT INTO props (entity, type, datatype, value_integer, created_at, created_by)
+INSERT INTO props (entity, type, datatype, created_at, created_by)
 SELECT
     id,
     '_deleted',
-    'boolean',
-    1,
+    'atby',
     deleted,
     IF(TRIM(deleted_by) REGEXP '^-?[0-9]+$', TRIM(deleted_by), NULL)
 FROM entity
