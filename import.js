@@ -282,7 +282,7 @@ const importProps = (mysqlDb, callback) => {
                             })
 
                             if (!_.isEmpty(changed)) {
-                                p.public.changed = changed
+                                p.public._changed = changed
                             }
                         }
                         if (p.private) {
@@ -293,7 +293,7 @@ const importProps = (mysqlDb, callback) => {
                             })
 
                             if (!_.isEmpty(changed)) {
-                                p.private.changed = changed
+                                p.private._changed = changed
                             }
                         }
                         p.private = Object.assign({}, _.get(p, 'public', {}), _.get(p, 'private', {}))
