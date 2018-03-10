@@ -140,16 +140,8 @@ const importProps = (mysqlDb, callback) => {
                         let correctedProps = _.map(cleanProps, x => {
                             if (x.type) {
                                 if (x.type.substr(0, 1) === '_') {
-                                    if (x.type !== decamelize(camelize(x.type.substr(1)), '_')) {
-                                        console.log(x.type, '_' + decamelize(camelize(x.type.substr(1)), '_'))
-                                    }
-
                                     _.set(x, 'type', '_' + decamelize(camelize(x.type.substr(1)), '_'))
                                 } else {
-                                    if (x.type !== decamelize(camelize(x.type), '_')) {
-                                        console.log(x.type, '_' + decamelize(camelize(x.type), '_'))
-                                    }
-
                                     _.set(x, 'type', decamelize(camelize(x.type), '_'))
                                 }
                             }
