@@ -12,7 +12,6 @@ const mysql = require('mysql')
 const path = require('path')
 
 
-
 require.extensions['.sql'] = (module, filename) => {
     module.exports = fs.readFileSync(filename, 'utf8')
 }
@@ -142,8 +141,16 @@ const importProps = (mysqlDb, callback) => {
                             if (x.type) {
                                 if (x.type.substr(0, 1) === '_') {
                                     _.set(x, 'type', '_' + decamelize(camelize(x.type.substr(1)), '_'))
+
+                                    if (x.type !== decamelize(camelize(x.type.substr(1)), '_')) {
+                                        console.log(x.type, '_' + decamelize(camelize(x.type.substr(1)), '_'))
+                                    }
                                 } else {
                                     _.set(x, 'type', decamelize(camelize(x.type), '_'))
+
+                                    if (x.type !== decamelize(camelize(x.type), '_')) {
+                                        console.log(x.type, '_' + decamelize(camelize(x.type), '_'))
+                                    }
                                 }
                             }
                             if (x.public === 1) {
