@@ -275,16 +275,16 @@ const importProps = (mysqlDb, callback) => {
 
                         let p = _.groupBy(properties, v => { return v.public === true ? 'public' : 'private' })
 
+                        if (!_.isEmpty(changed)) {
+                            _.set(p 'public._changed', changed)
+                        }
+
                         if (p.public) {
                             p.public = _.mapValues(_.groupBy(p.public, 'type'), (o) => {
                                 return _.map(o, (p) => {
                                     return _.omit(p, ['entity', 'type', 'created', 's3', 'url', 'public'])
                                 })
                             })
-
-                            if (!_.isEmpty(changed)) {
-                                p.public._changed = changed
-                            }
                         }
                         if (p.private) {
                             p.private = _.mapValues(_.groupBy(p.private, 'type'), (o) => {
