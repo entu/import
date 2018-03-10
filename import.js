@@ -241,7 +241,7 @@ const importProps = (mysqlDb, callback) => {
                 var l = entities.length
                 async.eachSeries(entities, (entity, callback) => {
 
-                    mongoCon.collection('property').find({ entity: entity._id).toArray((err, properties) => {
+                    mongoCon.collection('property').find({ entity: entity._id }).toArray((err, properties) => {
                         if(err) { return callback(err) }
 
                         let changed = {}
