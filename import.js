@@ -231,6 +231,9 @@ const importProps = (mysqlDb, callback) => {
                             mongoCon.collection('property').updateMany({ reference: entity.oid }, { $set: { reference: entity._id } }, callback)
                         },
                         (callback) => {
+                            mongoCon.collection('property').updateMany({ 'by': entity.oid }, { $set: { 'by': entity._id } }, callback)
+                        },
+                        (callback) => {
                             mongoCon.collection('property').updateMany({ 'created.by': entity.oid }, { $set: { 'created.by': entity._id } }, callback)
                         },
                         (callback) => {
@@ -307,7 +310,7 @@ const importProps = (mysqlDb, callback) => {
                             })
                         }
                         if (!_.isEmpty(changed)) {
-                            _.set(p, 'private._changed', changed)
+                            _.set(p, 'private._changed.0', changed)
                         }
                         p.private = Object.assign({}, _.get(p, 'public', {}), _.get(p, 'private', {}))
 
