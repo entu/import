@@ -251,7 +251,7 @@ const importProps = (mysqlDb, callback) => {
                             let deleted_at = _.get(property, 'deleted.at')
                             let deleted_by = _.get(property, 'deleted.by')
 
-                            if (!changed.at || changed.at < created_at) {
+                            if (created_at && (!changed.at || changed.at < created_at)) {
                                 changed.at = created_at
 
                                 if (created_by) {
@@ -261,7 +261,7 @@ const importProps = (mysqlDb, callback) => {
                                 }
                             }
 
-                            if (!changed.at || changed.at < deleted_at) {
+                            if (deleted_at && (!changed.at || changed.at < deleted_at)) {
                                 changed.at = deleted_at
 
                                 if (deleted_by) {
