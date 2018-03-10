@@ -241,7 +241,7 @@ const importProps = (mysqlDb, callback) => {
                 var l = entities.length
                 async.eachSeries(entities, (entity, callback) => {
 
-                    mongoCon.collection('property').find({ entity: entity._id, deleted: { $exists: false } }).toArray((err, properties) => {
+                    mongoCon.collection('property').find({ entity: entity._id).toArray((err, properties) => {
                         if(err) { return callback(err) }
 
                         let changed = {}
@@ -271,6 +271,7 @@ const importProps = (mysqlDb, callback) => {
                                 }
                             }
                         })
+                        properties = properties.filter(p => _.isEmpty(p.deleted))
 
                         let p = _.groupBy(properties, v => { return v.public === true ? 'public' : 'private' })
 
@@ -291,10 +292,6 @@ const importProps = (mysqlDb, callback) => {
                                     return _.omit(p, ['entity', 'type', 'created', 's3', 'url', 'public'])
                                 })
                             })
-
-                            if (!_.isEmpty(changed)) {
-                                p.private._changed = changed
-                            }
                         }
                         p.private = Object.assign({}, _.get(p, 'public', {}), _.get(p, 'private', {}))
 
