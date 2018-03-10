@@ -244,6 +244,34 @@ const importProps = (mysqlDb, callback) => {
                     mongoCon.collection('property').find({ entity: entity._id, deleted: { $exists: false } }).toArray((err, properties) => {
                         if(err) { return callback(err) }
 
+                        let changed = {}
+                        properties.forEach(property => {
+                            let created_at = _.get(property, 'created.at')
+                            let created_by = _.get(property, 'created.by')
+                            let deleted_at = _.get(property, 'deleted.at')
+                            let deleted_by = _.get(property, 'deleted.by')
+
+                            if (!changed.at || changed.at < created_at) {
+                                changed.at = created_at
+
+                                if (created_by) {
+                                    changed.by = created_by
+                                } else {
+                                    _.unset(changed, 'by')
+                                }
+                            }
+
+                            if (!changed.at || changed.at < deleted_at) {
+                                changed.at = deleted_at
+
+                                if (deleted_by) {
+                                    changed.by = deleted_by
+                                } else {
+                                    _.unset(changed, 'by')
+                                }
+                            }
+                        })
+
                         let p = _.groupBy(properties, v => { return v.public === true ? 'public' : 'private' })
 
                         if (p.public) {
@@ -252,6 +280,10 @@ const importProps = (mysqlDb, callback) => {
                                     return _.omit(p, ['entity', 'type', 'created', 's3', 'url', 'public'])
                                 })
                             })
+
+                            if (!_.isEmpty(changed)) {
+                                p.public.changed = changed
+                            }
                         }
                         if (p.private) {
                             p.private = _.mapValues(_.groupBy(p.private, 'type'), (o) => {
@@ -259,6 +291,10 @@ const importProps = (mysqlDb, callback) => {
                                     return _.omit(p, ['entity', 'type', 'created', 's3', 'url', 'public'])
                                 })
                             })
+
+                            if (!_.isEmpty(changed)) {
+                                p.private.changed = changed
+                            }
                         }
                         p.private = Object.assign({}, _.get(p, 'public', {}), _.get(p, 'private', {}))
 
