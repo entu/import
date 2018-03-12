@@ -1,0 +1,972 @@
+-
+    a: ;{self.varustus.triipkood};{self.varustus.invnr};
+    b: ;{varustus.triipkood};{varustus.invnr};
+-
+    a: (@inkmd@) @description@
+    b: ({inkmd}) {description}
+-
+    a: (@kuup2ev@) @maksja@
+    b: ({kuup2ev}) {maksja}
+-
+    a: (@outkmd@) @description@
+    b: ({outkmd}) {description}
+-
+    a: [{self.registry-number}]
+    b: [{registry_number}]
+-
+    a: {COUNT(self.child.copy.id)}
+    b: {COUNT(child.copy.id)}
+-
+    a: {COUNT(self.files)}
+    b: {COUNT(files)}
+-
+    a: {COUNT(self.public-file)}
+    b: {COUNT(public_file)}
+-
+    a: {COUNT(self.public-files)}
+    b: {COUNT(public_files)}
+-
+    a: {COUNT(self.referrer.asset.id)}
+    b: {COUNT(referrer.asset.id)}
+-
+    a: {COUNT(self.referrer.eksemplar.asukoht)}
+    b: {COUNT(referrer.eksemplar.asukoht)}
+-
+    a: {COUNT(self.referrer.eksponaat.asukoht)}
+    b: {COUNT(referrer.eksponaat.asukoht)}
+-
+    a: {self._created}
+    b: {_created}
+-
+    a: {self.-contract.date}
+    b: {_contract.date}
+-
+    a: {self.-contract.enddate}
+    b: {_contract.enddate}
+-
+    a: {self.-contract.number}
+    b: {_contract.number}
+-
+    a: {self.author} {self.title} {self.journal} {self.pages} {self.year}
+    b: {author} {title} {journal} {pages} {year}
+-
+    a: {self.author}, "{self.title}", {self.journal}, {self.volume}, {self.issue}, {self.page}, {self.date}
+    b: {author}, "{title}", {journal}, {volume}, {issue}, {page}, {date}
+-
+    a: {self.child.copy.barcode}
+    b: {child.copy.barcode}
+-
+    a: {self.child.laenutuse-rida.barcode}
+    b: {child.laenutuse - rida.barcode}
+-
+    a: {self.childperson.group}
+    b: {childperson.group}
+-
+    a: {self.funding - self.expenses}
+    b: {funding - expenses}
+-
+    a: {self.funding-hp - self.expenses-hp}
+    b: {funding_hp - expenses_hp}
+-
+    a: {self.inventeerimisakt.date}
+    b: {inventeerimisakt.date}
+-
+    a: {self.parent..author}
+    b: {parent.*.author}
+-
+    a: {self.parent..name} / {self.name}
+    b: {parent.*.name} / {name}
+-
+    a: {self.parent..name}
+    b: {parent.*.name}
+-
+    a: {self.parent..path} / {self.name}
+    b: {parent.*.path} / {name}
+-
+    a: {self.parent..path}/{self.name}
+    b: {parent.*.path}/{name}
+-
+    a: {self.parent..publisher}
+    b: {parent.*.publisher}
+-
+    a: {self.parent..publishing-date}
+    b: {parent.*.publishing_date}
+-
+    a: {self.parent..title}
+    b: {parent.*.title}
+-
+    a: {self.parent.*.color}
+    b: {parent.*.color}
+-
+    a: {self.parent.*.parent} / {self.parent.*.title}
+    b: {parent.*.parent} / {parent.*.title}
+-
+    a: {self.parent.*.tag}
+    b: {parent.*.tag}
+-
+    a: {self.parent.category.path}/{self.et-name}({self.en-name})
+    b: {parent.category.path}/{et_name}({en_name})
+-
+    a: {self.parent.chemical.name}
+    b: {parent.chemical.name}
+-
+    a: {self.parent.cl-asukoht.path}/{self.name}
+    b: {parent.cl_asukoht.path}/{name}
+-
+    a: {self.parent.cl-tag.fullname}/{self.name}
+    b: {parent.cl_tag.fullname}/{name}
+-
+    a: {self.parent.class.number}{self.parent.class.letter}
+    b: {parent.class.number}{parent.class.letter}
+-
+    a: {self.parent.customer.name}
+    b: {parent.customer.name}
+-
+    a: {self.parent.department.name}
+    b: {parent.department.name}
+-
+    a: {self.parent.floor.address}
+    b: {parent.floor.address}
+-
+    a: {self.parent.floor.code}
+    b: {parent.floor.code}
+-
+    a: {self.parent.folder.description}
+    b: {parent.folder.description}
+-
+    a: {self.parent.folder.path}{self.parent.partner.name} / {self.name}
+    b: {parent.folder.path}{parent.partner.name} / {name}
+-
+    a: {self.parent.group.name}
+    b: {parent.group.name}
+-
+    a: {self.parent.homepage-menu.path}{self.parent.homepage-item.path}/{self.name}
+    b: {parent.homepage_menu.path}{parent.homepage_item.path}/{name}
+-
+    a: {self.parent.homepage-menu.path}/{self.name}
+    b: {parent.homepage_menu.path}/{name}
+-
+    a: {self.parent.institution.name}{self.parent..path} / {self.name}
+    b: {parent.institution.name}{parent.*.path} / {name}
+-
+    a: {self.parent.inventory.name}, inventeerimisakt seisuga {self.date}.
+    b: {parent.inventory.name}, inventeerimisakt seisuga {date}.
+-
+    a: {self.parent.inventory.name}, mahakandmisakt seisuga {self.date}.
+    b: {parent.inventory.name}, mahakandmisakt seisuga {date}.
+-
+    a: {self.parent.inventory.name}, üleandmisakt seisuga {self.date}.
+    b: {parent.inventory.name}, üleandmisakt seisuga {date}.
+-
+    a: {self.parent.location.address}
+    b: {parent.location.address}
+-
+    a: {self.parent.location.code}
+    b: {parent.location.code}
+-
+    a: {self.parent.location.path} / {self.name}
+    b: {parent.location.path} / {name}
+-
+    a: {self.parent.person.forename} {self.parent.person.surname}
+    b: {parent.person.forename} {parent.person.surname}
+-
+    a: {self.parent.project.name}
+    b: {parent.project.name}
+-
+    a: {self.parent.project.path}/{self.name}
+    b: {parent.project.path}/{name}
+-
+    a: {self.parent.region.fullName}/{self.name}
+    b: {parent.region.full_name}/{name}
+-
+    a: {self.parent.story.title}
+    b: {parent.story.title}
+-
+    a: {self.parent.tag.fullName-en}/{self.name-en}
+    b: {parent.tag.full_name_en}/{name_en}
+-
+    a: {self.parent.tag.fullName-et}/{self.name-et}
+    b: {parent.tag.full_name_et}/{name_et}
+-
+    a: {self.parent.tag.fullName-ru}/{self.name-ru}
+    b: {parent.tag.full_name_ru}/{name_ru}
+-
+    a: {self.parent.tag.path}/{self.name}
+    b: {parent.tag.path}/{name}
+-
+    a: {self.parent.vastuv6tuakt.donator}
+    b: {parent.vastuv6tuakt.donator}
+-
+    a: {self.parent.vastuv6tuakt.registry-number}
+    b: {parent.vastuv6tuakt.registry_number}
+-
+    a: {self.parent.vastuv6tuakt.yleandmistingimus}
+    b: {parent.vastuv6tuakt.yleandmistingimus}
+-
+    a: {self.parentperson.email}
+    b: {parentperson.email}
+-
+    a: {self.parentperson.idcode}
+    b: {parentperson.idcode}
+-
+    a: {self.parentperson.phone}
+    b: {parentperson.phone}
+-
+    a: {self.person.name}
+    b: {person.name}
+-
+    a: {self.premiere.start-time}
+    b: {premiere.start_time}
+-
+    a: {self.referrer.contract.childperson}
+    b: {referrer.contract.childperson}
+-
+    a: {self.referrer.flavor.molecul-name}
+    b: {referrer.flavor.molecul_name}
+-
+    a: {self.region.fullName}
+    b: {region.full_name}
+-
+    a: {self.represseeritu-t.lisainfo}
+    b: {represseeritu_t.lisainfo}
+-
+    a: {self.represseeritu-t.memento}
+    b: {represseeritu_t.memento}
+-
+    a: {self.represseeritu-t.mitteavalikLisainfo}
+    b: {represseeritu_t.mitteavalikLisainfo}
+-
+    a: {self.represseeritu-t.syydistus}
+    b: {represseeritu_t.syydistus}
+-
+    a: {self.screen-group.published}
+    b: {screen_group.published}
+-
+    a: {self.storyteller.birthYear}
+    b: {storyteller.birthYear}
+-
+    a: {self.subject.fullName-en}
+    b: {subject.full_name_en}
+-
+    a: {self.subject.fullName-et}
+    b: {subject.full_name_et}
+-
+    a: {self.subject.fullName-ru}
+    b: {subject.full_name_ru}
+-
+    a: {self.sum - self.expenses}
+    b: {sum - expenses}
+-
+    a: {self.sum-hp - self.expenses-hp}
+    b: {sum_hp - expenses_hp}
+-
+    a: {self.tag.fullName-en}
+    b: {tag.full_name_en}
+-
+    a: {self.tag.fullName-et}
+    b: {tag.full_name_et}
+-
+    a: {self.tag.fullName-ru}
+    b: {tag.full_name_ru}
+-
+    a: {SUM(self.child.*.budget-hp)}
+    b: {SUM(child.*.budget_hp)}
+-
+    a: {SUM(self.child.*.budget)}
+    b: {SUM(child.*.budget)}
+-
+    a: {SUM(self.child.*.expenses-hp)}
+    b: {SUM(child.*.expenses_hp)}
+-
+    a: {SUM(self.child.*.expenses)}
+    b: {SUM(child.*.expenses)}
+-
+    a: {SUM(self.child.*.funding-hp)}
+    b: {SUM(child.*.funding_hp)}
+-
+    a: {SUM(self.child.*.funding)}
+    b: {SUM(child.*.funding)}
+-
+    a: {SUM(self.child.budget.expenses-hp)}
+    b: {SUM(child.budget.expenses_hp)}
+-
+    a: {SUM(self.child.budget.expenses)}
+    b: {SUM(child.budget.expenses)}
+-
+    a: {SUM(self.child.budget.sum-hp)}
+    b: {SUM(child.budget.sum_hp)}
+-
+    a: {SUM(self.child.budget.sum)}
+    b: {SUM(child.budget.sum)}
+-
+    a: {SUM(self.child.copy.price)}
+    b: {SUM(child.copy.price)}
+-
+    a: {SUM(self.child.expense.sum-hp)}
+    b: {SUM(child.expense.sum_hp)}
+-
+    a: {SUM(self.child.expense.sum)}
+    b: {SUM(child.expense.sum)}
+-
+    a: {SUM(self.child.funding-hp.actual-sum)}
+    b: {SUM(child.funding_hp.actual_sum)}
+-
+    a: {SUM(self.child.funding.actual-sum)+SUM(self.child.funding-hp.actual-sum)}
+    b: {SUM(child.funding.actual_sum) + SUM(child.funding_hp.actual_sum)}
+-
+    a: {SUM(self.referrer.asset.value)}
+    b: {SUM(referrer.asset.value)}
+-
+    a: {SUM(self.referrer.invoice-in.total)}
+    b: {SUM(referrer.invoice_in.total)}
+-
+    a: {SUM(self.referrer.invoice-in.vat)}
+    b: {SUM(referrer.invoice_in.vat)}
+-
+    a: {SUM(self.referrer.invoice-out.total)}
+    b: {SUM(referrer.invoice_out.total)}
+-
+    a: {SUM(self.referrer.invoice-out.vat)}
+    b: {SUM(referrer.invoice_out.vat)}
+-
+    a: @@
+    b: {}
+-
+    a: @aasta@ @kuu@
+    b: {aasta} {kuu}
+-
+    a: @address@
+    b: {address}
+-
+    a: @algus@ - @kestvus@
+    b: {algus} - {kestvus}
+-
+    a: @algus@+@tunde@. @coach@
+    b: {algus}+{tunde}. {coach}
+-
+    a: @applicant-name@
+    b: {applicant_name}
+-
+    a: @assignee@
+    b: {assignee}
+-
+    a: @asukoht@ @description@
+    b: {asukoht} {description}
+-
+    a: @asukoht@
+    b: {asukoht}
+-
+    a: @author@ - @title@
+    b: {author} - {title}
+-
+    a: @author@ @date@
+    b: {author} {date}
+-
+    a: @author@ @publishing-date@
+    b: {author} {publishing_date}
+-
+    a: @author@. @year@. @journal@
+    b: {author}. {year}. {journal}
+-
+    a: @author@
+    b: {author}
+-
+    a: @barcode@ (@publishing-date@) @author@
+    b: {barcode} ({publishing_date}) {author}
+-
+    a: @barcode@ @location@ (@publishing-date@) @author@
+    b: {barcode} {location} ({publishing_date}) {author}
+-
+    a: @barcode@ @number@ (@publishing-date@) @author@
+    b: {barcode} {number} ({publishing_date}) {author}
+-
+    a: @barcode@ @title@
+    b: {barcode} {title}
+-
+    a: @beer-name@
+    b: {beer_name}
+-
+    a: @begin@/@end@
+    b: {begin}/{end}
+-
+    a: @birthYear@
+    b: {birthYear}
+-
+    a: @bronnialgus@-@bronnil6pp@|@algus@-@l6pp@
+    b: {bronnialgus}-{bronnil6pp}|{algus}-{l6pp}
+-
+    a: @caption@
+    b: {caption}
+-
+    a: @cas-number@
+    b: {cas_number}
+-
+    a: @checkin@ (@start@)
+    b: {checkin} ({start})
+-
+    a: @chemical@
+    b: {chemical}
+-
+    a: @citation@
+    b: {citation}
+-
+    a: @city@ / @name@
+    b: {city} / {name}
+-
+    a: @class@
+    b: {class}
+-
+    a: @code@ @tag@
+    b: {code} {tag}
+-
+    a: @code@-@name@
+    b: {code}-{name}
+-
+    a: @color@
+    b: {color}
+-
+    a: @comment@
+    b: {comment}
+-
+    a: @company@ @department@ @forename@ @surname@
+    b: {company} {department} {forename} {surname}
+-
+    a: @company@ @forename@ @surname@
+    b: {company} {forename} {surname}
+-
+    a: @company@
+    b: {company}
+-
+    a: @company@<br/>Reg.Nr. @regnr@<br/>Aadress @address@
+    b: {company}<br/>Reg.Nr. {regnr}<br/>Aadress {address}
+-
+    a: @conference@, @year@
+    b: {conference}, {year}
+-
+    a: @conv-direction@ : @related-person@ : @conv-other-party@ : @conv-opdepartment@
+    b: {conv_direction} : {related_person} : {conv_other_party} : {conv_opdepartment}
+-
+    a: @customer@
+    b: {customer}
+-
+    a: @cv-organisation@
+    b: {cv_organisation}
+-
+    a: @cv-start@ - @cv-to@
+    b: {cv_start} - {cv_to}
+-
+    a: @data-type@
+    b: {data_type}
+-
+    a: @date@ (@object@) @value@
+    b: {date} ({object}) {value}
+-
+    a: @date@ @author@
+    b: {date} {author}
+-
+    a: @date@ @esimees@; @liige@
+    b: {date} {esimees}; {liige}
+-
+    a: @date@ @liige@
+    b: {date} {liige}
+-
+    a: @date@ @number@
+    b: {date} {number}
+-
+    a: @date@ @title@
+    b: {date} {title}
+-
+    a: @date@ @total@; @liige@
+    b: {date} {total}; {liige}
+-
+    a: @date@ @vendor@
+    b: {date} {vendor}
+-
+    a: @date@
+    b: {date}
+-
+    a: @description@ (@equivalent@)
+    b: {description} ({equivalent})
+-
+    a: @description@
+    b: {description}
+-
+    a: @developed@
+    b: {developed}
+-
+    a: @domain@
+    b: {domain}
+-
+    a: @donator@ @date@
+    b: {donator} {date}
+-
+    a: @done@ @due-date@ @assignee@
+    b: {done} {due_date} {assignee}
+-
+    a: @eesmark@
+    b: {eesmark}
+-
+    a: @email@ - @x-type@ - @confirmed@ @has-been-subsidised@
+    b: {email} - {x_type} - {confirmed} {has_been_subsidised}
+-
+    a: @email@ - @x-type@
+    b: {email} - {x_type}
+-
+    a: @email@ @phone@
+    b: {email} {phone}
+-
+    a: @email@
+    b: {email}
+-
+    a: @en-title@
+    b: {en_title}
+-
+    a: @entu-user@ @notes@
+    b: {entu_user} {notes}
+-
+    a: @entu-user@
+    b: {entu_user}
+-
+    a: @equipment@
+    b: {equipment}
+-
+    a: @esitaja@ arve nr. @number@
+    b: {esitaja} arve nr. {number}
+-
+    a: @et-name@ @performance@ @et-subtitle@ @resident@
+    b: {et_name} {performance} {et_subtitle} {resident}
+-
+    a: @et-name@(@en-name@)
+    b: {et_name}({en_name})
+-
+    a: @et-name@/@en-name@
+    b: {et_name}/{en_name}
+-
+    a: @et-supertitle@ / @artist@ / @et-name@ / @et-subtitle@
+    b: {et_supertitle} / {artist} / {et_name} / {et_subtitle}
+-
+    a: @et-title@
+    b: {et_title}
+-
+    a: @featured@
+    b: {featured}
+-
+    a: @file@
+    b: {file}
+-
+    a: @filename@
+    b: {filename}
+-
+    a: @filter@
+    b: {filter}
+-
+    a: @flavor@ / @product@
+    b: {flavor} / {product}
+-
+    a: @forename@ @surname@
+    b: {forename} {surname}
+-
+    a: @from@-@to@
+    b: {from}-{to}
+-
+    a: @fullName-et@
+    b: {full_name_et}
+-
+    a: @fullName@
+    b: {full_name}
+-
+    a: @fw-name@ @rv-name@
+    b: {fw_name} {rv_name}
+-
+    a: @geo@
+    b: {geo}
+-
+    a: @grade@ @ordinal@
+    b: {grade} {ordinal}
+-
+    a: @grade@
+    b: {grade}
+-
+    a: @group@ - @name@
+    b: {group} - {name}
+-
+    a: @group@ @name@
+    b: {group} {name}
+-
+    a: @group@
+    b: {group}
+-
+    a: @health@
+    b: {health}
+-
+    a: @hours@:@minutes@
+    b: {hours}:{minutes}
+-
+    a: @id@
+    b: {id}
+-
+    a: @info@
+    b: {info}
+-
+    a: @inventory-number@ - @title@
+    b: {inventory_number} - {title}
+-
+    a: @inventory-number@ @barcode@ @title@
+    b: {inventory_number} {barcode} {title}
+-
+    a: @inventory-number@ @title@ @number@
+    b: {inventory_number} {title} {number}
+-
+    a: @inventory-number@ @title@
+    b: {inventory_number} {title}
+-
+    a: @issued-date@ … @due-date@
+    b: {issued_date} … {due_date}
+-
+    a: @kuup2ev@<br/>@kirjeldus@
+    b: {kuup2ev}<br/>{kirjeldus}
+-
+    a: @label-et@
+    b: {label_et}
+-
+    a: @label@(@dataproperty@)
+    b: {label}({dataproperty})
+-
+    a: @label@(@keyname@)
+    b: {label}({keyname})
+-
+    a: @laenutaja@ @erply@
+    b: {laenutaja} {erply}
+-
+    a: @lending-date@ - @returning-date@ - @returned-date@
+    b: {lending_date} - {returning_date} - {returned_date}
+-
+    a: @lending-date@, @laenutaja@
+    b: {lending_date}, {laenutaja}
+-
+    a: @lending-date@..@returning-date@<br/>@returned-date@
+    b: {lending_date} - {returning_date} - {returned_date}
+-
+    a: @library-name@ @publishing-date@
+    b: {library_name} {publishing_date}
+-
+    a: @link@
+    b: {link}
+-
+    a: @location@, @year@
+    b: {location}, {year}
+-
+    a: @media@
+    b: {media}
+-
+    a: @molecul-name@
+    b: {molecul_name}
+-
+    a: @name-et@
+    b: {name_et}
+-
+    a: @name@ - @description@
+    b: {name} - {description}
+-
+    a: @name@ (@author-lyrics@/@author-music@)
+    b: {name} ({author_lyrics}/{author_music})
+-
+    a: @name@ (@code@)
+    b: {name} ({code})
+-
+    a: @name@ @customer@
+    b: {name} {customer}
+-
+    a: @name@ @equipment@ @eluent@ @column@ @detector@ @sample@ @created@
+    b: {name} {equipment} {eluent} {column} {detector} {sample} {created}
+-
+    a: @name@: @ingredient@
+    b: {name}: {ingredient}
+-
+    a: @name@
+    b: {name}
+-
+    a: @name@<br/>@contact-name@<br/>Aadress @address@
+    b: {name}<br/>{contact_name}<br/>Aadress {address}
+-
+    a: @name@|@manufacturer@|@purity@
+    b: {name}|{manufacturer}|{purity}
+-
+    a: @nimetus@ @date@
+    b: {nimetus} {date}
+-
+    a: @nimetus@
+    b: {nimetus}
+-
+    a: @nimi@
+    b: {nimi}
+-
+    a: @notes@
+    b: {notes}
+-
+    a: @number@ - @customerr@ @customer@
+    b: {number} - {customerr} {customer}
+-
+    a: @number@ - @date@
+    b: {number} - {date}
+-
+    a: @number@ - @issued-date@ … @due-date@ - @customer@
+    b: {number} - {issued_date} … {due_date} - {customer}
+-
+    a: @number@ - @issued-date@ … @due-date@
+    b: {number} - {issued_date} … {due_date}
+-
+    a: @number@ @company@
+    b: {number} {company}
+-
+    a: @number@ @date@
+    b: {number} {date}
+-
+    a: @number@ @issuer@
+    b: {number} {issuer}
+-
+    a: @number@ @letter@
+    b: {number} {letter}
+-
+    a: @number@ @name@
+    b: {number} {name}
+-
+    a: @number@ @pealkiri@
+    b: {number} {pealkiri}
+-
+    a: @number@-@letter@
+    b: {number}-{letter}
+-
+    a: @number@
+    b: {number}
+-
+    a: @number@@letter@
+    b: {number}{letter}
+-
+    a: @ordinal@ @entu-user@
+    b: {ordinal} {entu_user}
+-
+    a: @ordinal@. @name@ (@data-property@)
+    b: {ordinal}. {name} ({data_property})
+-
+    a: @ordinal@
+    b: {ordinal}
+-
+    a: @osakond@
+    b: {osakond}
+-
+    a: @paragraph@
+    b: {paragraph}
+-
+    a: @parent@
+    b: {parent}
+-
+    a: @path@
+    b: {path}
+-
+    a: @path@<br/>Eksponaate: @eksponaate@
+    b: {path}<br/>Eksponaate: {eksponaate}
+-
+    a: @performance@ @en-subtitle@ @resident@
+    b: {performance} {en_subtitle} {resident}
+-
+    a: @performer@: @title@
+    b: {performer}: {title}
+-
+    a: @period@ @parentperson@/@childperson@
+    b: {period} {parentperson}/{childperson}
+-
+    a: @person@ - @bubble@
+    b: {person} - {bubble}
+-
+    a: @person@ - @copy@
+    b: {person} - {copy}
+-
+    a: @person@ - @eksponaat@
+    b: {person} - {eksponaat}
+-
+    a: @person@
+    b: {person}
+-
+    a: @phone@ @address@
+    b: {phone} {address}
+-
+    a: @playlist@
+    b: {playlist}
+-
+    a: @prefix@
+    b: {prefix}
+-
+    a: @prefix@#n@suffix@
+    b: {prefix}#n{suffix}
+-
+    a: @pretitle@ @title@
+    b: {pretitle} {title}
+-
+    a: @project@
+    b: {project}
+-
+    a: @public@
+    b: {public}
+-
+    a: @published@ @responsible@
+    b: {published} {responsible}
+-
+    a: @publishing-date@
+    b: {publishing_date}
+-
+    a: @question@
+    b: {question}
+-
+    a: @reason@
+    b: {reason}
+-
+    a: @reg-time@<br/>@conv-direction@ : @related-person@ : @conv-other-party@ : @conv-opdepartment@
+    b: {reg_time}<br/>{conv_direction} : {related_person} : {conv_other_party} : {conv_opdepartment}
+-
+    a: @reg-time@<br/>@related-person@, @start-datetime@ - @end-datetime@
+    b: {reg_time}<br/>{related_person}, {start_datetime} - {end_datetime}
+-
+    a: @reg-time@<br/>@related-person@; @document-kind@; @document-issuer@
+    b: {reg_time}<br/>{related_person}; {document_kind}; {document_issuer}
+-
+    a: @region@
+    b: {region}
+-
+    a: @registry-number@ : @title@
+    b: {registry_number} : {title}
+-
+    a: @registry-number@ (@date@)
+    b: {registry_number} ({date})
+-
+    a: @relation-type@
+    b: {relation_type}
+-
+    a: @repressioonid@
+    b: {repressioonid}
+-
+    a: @returning-date@ - @returned-date@
+    b: {returning_date} - {returned_date}
+-
+    a: @room@ - @person@
+    b: {room} - {person}
+-
+    a: @saaja@: @eesmark@
+    b: {saaja}: {eesmark}
+-
+    a: @school@
+    b: {school}
+-
+    a: @seisukord@
+    b: {seisukord}
+-
+    a: @series@@prefix@
+    b: {series}{prefix}
+-
+    a: @source@ @url@
+    b: {source} {url}
+-
+    a: @start-datetime@ - @end-datetime@
+    b: {start_datetime} - {end_datetime}
+-
+    a: @start-time@ @et-name@
+    b: {start_time} {et_name}
+-
+    a: @start@-@end@
+    b: {start}-{end}
+-
+    a: @start@..@end@ @type@:@ordinal@
+    b: {start}..{end} {type}:{ordinal}
+-
+    a: @storyteller@
+    b: {storyteller}
+-
+    a: @strain@
+    b: {strain}
+-
+    a: @subtitle@
+    b: {subtitle}
+-
+    a: @surname@, @forename@
+    b: {surname}, {forename}
+-
+    a: @syydistus@
+    b: {syydistus}
+-
+    a: @tag@ @caption@
+    b: {tag} {caption}
+-
+    a: @tag@
+    b: {tag}
+-
+    a: @target-region-name@
+    b: {target_region_name}
+-
+    a: @teenus@
+    b: {teenus}
+-
+    a: @time@
+    b: {time}
+-
+    a: @title-et@
+    b: {title_et}
+-
+    a: @title@ @subtitle@ @notes@ @description@
+    b: {title} {subtitle} {notes} {description}
+-
+    a: @title@
+    b: {title}
+-
+    a: @tootegrupp@ @suurus@ @nimetus@
+    b: {tootegrupp} {suurus} {nimetus}
+-
+    a: @type@ @value@
+    b: {type} {value}
+-
+    a: @type@ for @definition@
+    b: {type} for {definition}
+-
+    a: @url@
+    b: {url}
+-
+    a: @valid-from@...@valid-to@
+    b: {valid_from}…{valid_to}
+-
+    a: @varustus@
+    b: {varustus}
+-
+    a: @width@x@height@
+    b: {width}x{height}
+-
+    a: @year@ @author@
+    b: {year} {author}
+-
+    a: @year@
+    b: {year}
+-
+    a: http://inventuur.entu.eu/#/eka/{self.id}/asset/asset-inventeerimisakt/{self.id}/vara-inventeerimisakt
+    b: http://inventuur.entu.eu/#/eka/{id}/asset/asset-inventeerimisakt/{id}/vara-inventeerimisakt
+-
+    a: http://inventuur.entu.eu/#/eka/{self.id}/asset/asset-mahakandmisakt/{self.id}/vara-mahakandmisakt
+    b: http://inventuur.entu.eu/#/eka/{id}/asset/asset-mahakandmisakt/{id}/vara-mahakandmisakt
+-
+    a: http://www.piletilevi.ee/mobile/est/#view=concert&concert={self.pl-id}
+    b: http://www.piletilevi.ee/mobile/est/#view=concert&concert={pl_id}
+-
+    a: https://{self.domain}
+    b: https://{domain}
+-
+    a: https://inventuur.entu.eu/#/okupatsioon/{self.id}/eksponaat/eksponaat-cl-asukoht/*/cl-asukoht
+    b: https://inventuur.entu.eu/#/okupatsioon/{id}/eksponaat/eksponaat-cl-asukoht/*/cl-asukoht
+-
+    a: https://inventuur.entu.eu/#/okupatsioon/{self.id}/eksponaat/eksponaat-represseeritu-t/*/represseeritu
+    b: https://inventuur.entu.eu/#/okupatsioon/{id}/eksponaat/eksponaat-represseeritu_t/*/represseeritu
+-
+    a: https://inventuur.entu.eu/#/okupatsioon/{self.id}/eksponaat/eksponaat-sari/*/sari
+    b: https://inventuur.entu.eu/#/okupatsioon/{id}/eksponaat/eksponaat-sari/*/sari
+-
+    a: Museaale: @eksponaate@<br/>Teavikuid: @eksemplare@
+    b: Museaale: {eksponaate}<br/>Teavikuid: {eksemplare}
+-
+    a: Schedule: @layout@
+    b: Schedule: {layout}

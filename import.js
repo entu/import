@@ -10,6 +10,7 @@ const fs = require('fs')
 const mongo = require('mongodb')
 const mysql = require('mysql')
 const path = require('path')
+const yaml = require('js-yaml')
 
 
 require.extensions['.sql'] = (module, filename) => {
@@ -25,6 +26,7 @@ const MYSQL_PASSWORD = process.env.MYSQL_PASSWORD
 // const MYSQL_SSL_PATH = process.env.MYSQL_SSL_PATH
 const MONGODB = process.env.MONGODB || 'mongodb://localhost:27017/'
 
+const formulas = yaml.safeLoad(fs.readFileSync('./formulas.yaml', 'utf8'))
 
 
 const log = (s) => {
@@ -182,6 +184,14 @@ const importProps = (mysqlDb, callback) => {
                                 if (fileArray[3].substr(0, 2) === 'D:' && fileArray[3].substr(2)) { _.set(x, 'url', fileArray[3].substr(2)) }
                                 if (fileArray[4].substr(0, 2) === 'E:' && fileArray[4].substr(2)) { _.set(x, 'size', parseInt(fileArray[4].substr(2), 10)) }
                                 _.unset(x, 'string')
+                            }
+                            if (x.datatype === 'formula') {
+                                let formula = formulas.filter(f => f.a === x.string)
+                                if (formula.length > 0) {
+                                    _.set(x, 'formula', formula[0].b)
+                                } else {
+                                    console.log('MISSING FORMULA: ' + x.string)
+                                }
                             }
                             _.unset(x, 'datatype')
 

@@ -4,7 +4,6 @@ SELECT
     language,
     datatype,
     public,
-    formula,
     value_text AS `string`,
     value_integer AS `integer`,
     value_decimal AS `decimal`,
