@@ -57,7 +57,7 @@
     new: '{child.copy.barcode}'
 -
     old: '{self.child.laenutuse-rida.barcode}'
-    new: '{child.laenutuse - rida.barcode}'
+    new: '{child.laenutuse_rida.barcode}'
 -
     old: '{self.childperson.group}'
     new: '{childperson.group}'
