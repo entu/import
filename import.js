@@ -64,28 +64,28 @@ const importProps = (mysqlDb, callback) => {
             mongo.MongoClient.connect(MONGODB, { ssl: true, sslValidate: true }, (err, con) => {
                 if(err) { return callback(err) }
 
-                mongoCon = con.db(mysqlDb)
+                mongoCon = con
                 return callback(null)
             })
         },
 
         (callback) => {
-            mongoCon.listCollections({ name: 'entity' }).toArray((err, collections) => {
+            mongoCon.db(mysqlDb).listCollections({ name: 'entity' }).toArray((err, collections) => {
                 if(err) { return callback(err) }
 
                 if (collections.length > 0) {
-                    mongoCon.dropCollection('entity', callback)
+                    mongoCon.db(mysqlDb).dropCollection('entity', callback)
                 } else {
                     return callback(null)
                 }
             })
         },
         (callback) => {
-            mongoCon.listCollections({ name: 'property' }).toArray((err, collections) => {
+            mongoCon.db(mysqlDb).listCollections({ name: 'property' }).toArray((err, collections) => {
                 if(err) { return callback(err) }
 
                 if (collections.length > 0) {
-                    mongoCon.dropCollection('property', callback)
+                    mongoCon.db(mysqlDb).dropCollection('property', callback)
                 } else {
                     return callback(null)
                 }
@@ -94,7 +94,7 @@ const importProps = (mysqlDb, callback) => {
 
         (callback) => {
             log('create entity indexes')
-            mongoCon.collection('entity').createIndexes([
+            mongoCon.db(mysqlDb).collection('entity').createIndexes([
                 { key: { oid: 1 } },
                 { key: { access: 1 } },
                 { key: { 'private._type.string': 1 } },
@@ -104,7 +104,7 @@ const importProps = (mysqlDb, callback) => {
         },
         (callback) => {
             log('create property indexes')
-            mongoCon.collection('property').createIndexes([
+            mongoCon.db(mysqlDb).collection('property').createIndexes([
                 { key: { entity: 1 } },
                 { key: { type: 1 } },
                 { key: { deleted: 1 } },
@@ -119,7 +119,7 @@ const importProps = (mysqlDb, callback) => {
             sqlCon.query(require('./sql/get_entities.sql'), (err, entities) => {
                 if(err) { return callback(err) }
 
-                mongoCon.collection('entity').insertMany(entities, callback)
+                mongoCon.db(mysqlDb).collection('entity').insertMany(entities, callback)
             })
         },
 
@@ -202,7 +202,7 @@ const importProps = (mysqlDb, callback) => {
                             return x
                         })
 
-                        mongoCon.collection('property').insertMany(cleanProps, callback)
+                        mongoCon.db(mysqlDb).collection('property').insertMany(cleanProps, callback)
                     })
                 }, callback)
         },
@@ -215,23 +215,23 @@ const importProps = (mysqlDb, callback) => {
         (callback) => {
             log('replace mysql ids with mongodb _ids')
 
-            mongoCon.collection('entity').find({}).sort({ oid: 1 }).toArray((err, entities) => {
+            mongoCon.db(mysqlDb).collection('entity').find({}).sort({ oid: 1 }).toArray((err, entities) => {
                 if(err) { return callback(err) }
 
                 var l = entities.length
                 async.eachSeries(entities, (entity, callback) => {
                     async.parallel([
                         (callback) => {
-                            mongoCon.collection('property').updateMany({ entity: entity.oid }, { $set: { entity: entity._id } }, callback)
+                            mongoCon.db(mysqlDb).collection('property').updateMany({ entity: entity.oid }, { $set: { entity: entity._id } }, callback)
                         },
                         (callback) => {
-                            mongoCon.collection('property').updateMany({ reference: entity.oid }, { $set: { reference: entity._id } }, callback)
+                            mongoCon.db(mysqlDb).collection('property').updateMany({ reference: entity.oid }, { $set: { reference: entity._id } }, callback)
                         },
                         (callback) => {
-                            mongoCon.collection('property').updateMany({ 'created.by': entity.oid }, { $set: { 'created.by': entity._id } }, callback)
+                            mongoCon.db(mysqlDb).collection('property').updateMany({ 'created.by': entity.oid }, { $set: { 'created.by': entity._id } }, callback)
                         },
                         (callback) => {
-                            mongoCon.collection('property').updateMany({ 'deleted.by': entity.oid }, { $set: { 'deleted.by': entity._id } }, callback)
+                            mongoCon.db(mysqlDb).collection('property').updateMany({ 'deleted.by': entity.oid }, { $set: { 'deleted.by': entity._id } }, callback)
                         },
                     ], (err) => {
                         if(err) { return callback(err) }
@@ -249,13 +249,13 @@ const importProps = (mysqlDb, callback) => {
         (callback) => {
             log('create entities')
 
-            mongoCon.collection('entity').find({}, { _id: true }).sort({ _id: 1 }).toArray((err, entities) => {
+            mongoCon.db(mysqlDb).collection('entity').find({}, { _id: true }).sort({ _id: 1 }).toArray((err, entities) => {
                 if(err) { return callback(err) }
 
                 var l = entities.length
                 async.eachSeries(entities, (entity, callback) => {
 
-                    mongoCon.collection('property').find({ entity: entity._id }).toArray((err, properties) => {
+                    mongoCon.db(mysqlDb).collection('property').find({ entity: entity._id }).toArray((err, properties) => {
                         if(err) { return callback(err) }
 
                         let changed = {}
@@ -317,7 +317,7 @@ const importProps = (mysqlDb, callback) => {
                         }
 
                         if (!_.isEmpty(p)) {
-                            mongoCon.collection('entity').update({ _id: entity._id }, { $set: p, }, (err) => {
+                            mongoCon.db(mysqlDb).collection('entity').update({ _id: entity._id }, { $set: p, }, (err) => {
                                 if(err) { return callback(err) }
 
                                 l--
@@ -336,12 +336,12 @@ const importProps = (mysqlDb, callback) => {
 
         (callback) => {
             log('delete deleted entities')
-            mongoCon.collection('entity').deleteMany({ _deleted: { $exists: true } }, callback)
+            mongoCon.db(mysqlDb).collection('entity').deleteMany({ _deleted: { $exists: true } }, callback)
         },
 
         (callback) => {
             log('repair mongodb')
-            mongoCon.command({ repairDatabase: 1 }, callback)
+            mongoCon.db(mysqlDb).command({ repairDatabase: 1 }, callback)
         },
         (callback) => {
             log('close mongodb connection')
