@@ -187,9 +187,9 @@ const importProps = (mysqlDb, callback) => {
                                 _.unset(x, 'string')
                             }
                             if (x.datatype === 'formula') {
-                                let formula = formulas.filter(f => f.a === x.string)
+                                let formula = formulas.filter(f => f.old === x.string)
                                 if (formula.length > 0) {
-                                    _.set(x, 'formula', formula[0].b)
+                                    _.set(x, 'formula', formula[0].new)
                                 } else {
                                     console.log('MISSING FORMULA: ' + x.string)
                                 }
