@@ -13,8 +13,9 @@ const path = require('path')
 const yaml = require('js-yaml')
 
 
+
 require.extensions['.sql'] = (module, filename) => {
-    module.exports = fs.readFileSync(filename, 'utf8')
+    module.exports = fs.readFileSync(path.resolve(__dirname, 'sql', filename), 'utf8')
 }
 
 
@@ -26,7 +27,7 @@ const MYSQL_PASSWORD = process.env.MYSQL_PASSWORD
 // const MYSQL_SSL_PATH = process.env.MYSQL_SSL_PATH
 const MONGODB = process.env.MONGODB || 'mongodb://localhost:27017/'
 
-const formulas = yaml.safeLoad(fs.readFileSync('./formulas.yaml', 'utf8'))
+const formulas = yaml.safeLoad(fs.readFileSync(path.resolve(__dirname, 'formulas.yaml'), 'utf8'))
 
 
 const log = (s) => {
@@ -56,7 +57,7 @@ const importProps = (mysqlDb, callback) => {
     async.series([
         (callback) => {
             log('create props table')
-            sqlCon.query(require('./sql/create_props.sql'), callback)
+            sqlCon.query(require('create_props.sql'), callback)
         },
 
         (callback) => {
@@ -115,7 +116,7 @@ const importProps = (mysqlDb, callback) => {
 
         (callback) => {
             log('insert entities to mongodb')
-            sqlCon.query(require('./sql/get_entities.sql'), (err, entities) => {
+            sqlCon.query(require('get_entities.sql'), (err, entities) => {
                 if(err) { return callback(err) }
 
                 mongoCon.collection('entity').insertMany(entities, callback)
@@ -132,7 +133,7 @@ const importProps = (mysqlDb, callback) => {
             async.whilst(
                 () => { return count === limit },
                 (callback) => {
-                    sqlCon.query(require('./sql/get_properties.sql'), [limit, offset], (err, props) => {
+                    sqlCon.query(require('get_properties.sql'), [limit, offset], (err, props) => {
                         if(err) { return callback(err) }
 
                         count = props.length
@@ -375,7 +376,7 @@ const importFiles = (mysqlDb, callback) => {
     aws.config.secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY
     aws.config.region = process.env.AWS_REGION
 
-    sqlCon.query(require('./sql/get_files.sql'), (err, files) => {
+    sqlCon.query(require('get_files.sql'), (err, files) => {
         if(err) { return callback(err) }
 
         const s3 = new aws.S3()
@@ -397,18 +398,18 @@ const importFiles = (mysqlDb, callback) => {
                         }
                         fs.writeFileSync(path.join(process.env.FILES_PATH, mysqlDb, file.md5.substr(0, 1), file.md5), f)
 
-                        sqlCon.query(require('./sql/update_files.sql'), [file.md5, f.length, 'Copied local file', file.id], (err) => {
+                        sqlCon.query(require('update_files.sql'), [file.md5, f.length, 'Copied local file', file.id], (err) => {
                             if(err) { return callback(err) }
                             return callback(null)
                         })
                     } else {
-                        sqlCon.query(require('./sql/update_files_error.sql'), ['No local file', file.id], (err) => {
+                        sqlCon.query(require('update_files_error.sql'), ['No local file', file.id], (err) => {
                             if(err) { return callback(err) }
                             return callback(null)
                         })
                     }
                 } else {
-                    sqlCon.query(require('./sql/update_files_error.sql'), ['No file', file.id], (err) => {
+                    sqlCon.query(require('update_files_error.sql'), ['No file', file.id], (err) => {
                         if(err) { return callback(err) }
                         return callback(null)
                     })
@@ -416,7 +417,7 @@ const importFiles = (mysqlDb, callback) => {
             } else {
                 s3.getObject({ Bucket: process.env.AWS_S3_BUCKET, Key: file.s3_key }, (err, data) => {
                     if(err) {
-                        sqlCon.query(require('./sql/update_files_error.sql'), [err.toString(), file.id], callback)
+                        sqlCon.query(require('update_files_error.sql'), [err.toString(), file.id], callback)
                         return
                     }
 
@@ -437,7 +438,7 @@ const importFiles = (mysqlDb, callback) => {
                     }
                     fs.writeFileSync(path.join(process.env.FILES_PATH, mysqlDb, md5.substr(0, 1), md5), data.Body)
 
-                    sqlCon.query(require('./sql/update_files.sql'), [md5, size, 'S3', file.id], callback)
+                    sqlCon.query(require('update_files.sql'), [md5, size, 'S3', file.id], callback)
                 })
             }
         }, (err) => {
@@ -462,7 +463,7 @@ const connection = mysql.createConnection({
     //     ca: fs.readFileSync(`${MYSQL_SSL_PATH}/mysql-server-ca.pem`)
     // }
 })
-connection.query(require('./sql/get_databases.sql'), (err, rows) => {
+connection.query(require('get_databases.sql'), (err, rows) => {
     if(err) {
         console.error(err.toString())
         process.exit(1)
