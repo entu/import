@@ -46,7 +46,7 @@ const importProps = (mysqlDb, callback) => {
         user: MYSQL_USER,
         password: MYSQL_PASSWORD,
         database: mysqlDb,
-        multipleStatements: true
+        multipleStatements: true,
         ssl: {
             ca: fs.readFileSync(MYSQL_SSL_CA)
         }
