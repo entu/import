@@ -14,7 +14,7 @@ const yaml = require('js-yaml')
 
 
 
-require.extensions./sql/['.sql'] = (module, filename) => {
+require.extensions['.sql'] = (module, filename) => {
     module.exports = fs.readFileSync(path.resolve(__dirname, filename), 'utf8')
 }
 
