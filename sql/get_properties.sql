@@ -5,7 +5,7 @@ SELECT
     datatype,
     public,
     IF(datatype = 'formula', value_text, NULL) AS formula,
-    value_text AS `string`,
+    IF(datatype != 'formula', value_text, NULL) AS `string`,
     value_integer AS `integer`,
     value_decimal AS `decimal`,
     value_date AS `date`,
