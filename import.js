@@ -179,19 +179,22 @@ const importProps = (mysqlDb, callback) => {
                             }
                             if (x.datatype === 'file' && x.string) {
                                 let fileArray = x.string.split('\n')
+
                                 if (fileArray[0].substr(0, 2) === 'A:' && fileArray[0].substr(2)) { _.set(x, 'filename', fileArray[0].substr(2)) }
                                 if (fileArray[1].substr(0, 2) === 'B:' && fileArray[1].substr(2)) { _.set(x, 'md5', fileArray[1].substr(2)) }
                                 if (fileArray[2].substr(0, 2) === 'C:' && fileArray[2].substr(2)) { _.set(x, 's3', fileArray[2].substr(2)) }
                                 if (fileArray[3].substr(0, 2) === 'D:' && fileArray[3].substr(2)) { _.set(x, 'url', fileArray[3].substr(2)) }
                                 if (fileArray[4].substr(0, 2) === 'E:' && fileArray[4].substr(2)) { _.set(x, 'size', parseInt(fileArray[4].substr(2), 10)) }
+
                                 _.unset(x, 'string')
                             }
-                            if (x.datatype === 'formula') {
-                                let formula = formulas.filter(f => f.old === x.string)
+                            if (x.datatype === 'formula' && x.formula) {
+                                let formula = formulas.filter(f => f.old === x.formula)
+
                                 if (formula.length > 0) {
                                     _.set(x, 'formula', formula[0].new)
                                 } else {
-                                    console.log('MISSING FORMULA: ' + x.string)
+                                    console.log('MISSING FORMULA: ' + x.formula)
                                 }
                             }
                             _.unset(x, 'datatype')

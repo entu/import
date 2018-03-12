@@ -4,6 +4,7 @@ SELECT
     language,
     datatype,
     public,
+    IF(datatype = 'formula', value_text, NULL) AS formula,
     value_text AS `string`,
     value_integer AS `integer`,
     value_decimal AS `decimal`,
