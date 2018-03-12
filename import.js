@@ -24,7 +24,7 @@ const MYSQL_HOST = process.env.MYSQL_HOST || '127.0.0.1'
 const MYSQL_PORT = process.env.MYSQL_PORT || 3306
 const MYSQL_USER = process.env.MYSQL_USER
 const MYSQL_PASSWORD = process.env.MYSQL_PASSWORD
-// const MYSQL_SSL_PATH = process.env.MYSQL_SSL_PATH
+const MYSQL_SSL_CA = process.env.MYSQL_SSL_CA
 const MONGODB = process.env.MONGODB || 'mongodb://localhost:27017/'
 
 const formulas = yaml.safeLoad(fs.readFileSync(path.resolve(__dirname, 'formulas.yaml'), 'utf8'))
