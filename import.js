@@ -67,7 +67,7 @@ const importProps = (mysqlDb, callback) => {
 
         (callback) => {
             log('insert properties to dynamodb')
-            sqlCon.query(require('./sql/get_entities.sql'), (err, entities) => {
+            sqlCon.query(require('./sql/get_properties.sql'), (err, entities) => {
                 if(err) { return callback(err) }
 
                 async.eachSeries(entities, (entity, callback) => {
