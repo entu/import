@@ -29,4 +29,5 @@ ORDER BY
     entity,
     type,
     language,
-    type;
+    type
+LIMIT ? OFFSET ?;
