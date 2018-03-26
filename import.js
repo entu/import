@@ -39,6 +39,13 @@ const log = (s) => {
 const importProps = (mysqlDb, callback) => {
     log(`start database ${mysqlDb} import`)
 
+    aws.config = new aws.Config()
+    aws.config.accessKeyId = process.env.AWS_ACCESS_KEY_ID
+    aws.config.secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY
+    aws.config.region = process.env.AWS_REGION
+
+    var dynamoDb = new aws.DynamoDB.DocumentClient()
+
     var mongoCon
     var sqlCon = mysql.createConnection({
         host: MYSQL_HOST,
@@ -56,6 +63,17 @@ const importProps = (mysqlDb, callback) => {
         (callback) => {
             log('create props table')
             sqlCon.query(require('./sql/create_props.sql'), callback)
+        },
+
+        (callback) => {
+            log('insert properties to dynamodb')
+            sqlCon.query(require('./sql/get_entities.sql'), (err, entities) => {
+                if(err) { return callback(err) }
+
+                async.eachSeries(entities, (entity, callback) => {
+                    dynamoDb.put({ TableName: mysqlDb + '-property', Item: entity }, callback)
+                }, callback)
+            })
         },
 
         (callback) => {
