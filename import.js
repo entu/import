@@ -67,13 +67,12 @@ const importProps = (mysqlDb, callback) => {
 
         (callback) => {
             log('insert properties to dynamodb')
-            sqlCon.query(require('./sql/get_properties_for_dynamodb.sql'), (err, entities) => {
+            sqlCon.query(require('./sql/get_properties_for_dynamodb.sql'), (err, props) => {
                 if(err) { return callback(err) }
 
-                async.eachSeries(entities, (props, callback) => {
-                    let cleanProps = _.map(props, x => _.pickBy(x, (value, key) => { return value === 0 || value === false || !!value }))
-
-                    dynamoDb.put({ TableName: mysqlDb + '-property', Item: cleanProps }, callback)
+                let cleanProps = _.map(props, x => _.pickBy(x, (value, key) => { return value === 0 || value === false || !!value }))
+                async.eachSeries(cleanProps, (item, callback) => {
+                    dynamoDb.put({ TableName: mysqlDb + '-property', Item: item }, callback)
                 }, callback)
             })
         },
