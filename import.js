@@ -80,16 +80,75 @@ const importProps = (mysqlDb, callback) => {
             async.whilst(
                 () => { return count === limit },
                 (callback) => {
-                    sqlCon.query(require('./sql/get_properties_for_dynamodb.sql'), [limit, offset], (err, props) => {
+                    sqlCon.query(require('./sql/get_properties_for_dynamodb.sql'), [mysqlDb, limit, offset], (err, props) => {
                         if(err) { return callback(err) }
 
                         count = props.length
                         offset = offset + count
 
                         let cleanProps = _.map(props, x => _.pickBy(x, (value, key) => { return value === 0 || value === false || !!value }))
-                        async.eachSeries(cleanProps, (item, callback) => {
-                            item.id = uuid()
-                            dynamoDb.put({ TableName: mysqlDb + '-property', Item: item }, callback)
+                        async.eachSeries(correctedProps, (item, callback) => {
+                            item._id = uuid()
+
+                            if (item.type) {
+                                if (item.type.substr(0, 1) === '_') {
+                                    _.set(item, 'type', '_' + decamelize(camelize(item.type.substr(1)), '_'))
+                                } else {
+                                    _.set(item, 'type', decamelize(camelize(item.type), '_'))
+                                }
+                            }
+                            if (item.public === 1) {
+                                _.set(item, 'public', true)
+                            } else {
+                                _.unset(item, 'public')
+                            }
+                            if (item.created_by) {
+                                _.set(item, 'created.by', item.created_by)
+                                _.unset(item, 'created_by')
+                            }
+                            if (item.created_at) {
+                                _.set(item, 'created.at', item.created_at)
+                                _.unset(item, 'created_at')
+                            }
+                            if (item.deleted_by) {
+                                _.set(item, 'deleted.by', item.deleted_by)
+                                _.unset(item, 'deleted_by')
+                            }
+                            if (item.deleted_at) {
+                                _.set(item, 'deleted.at', item.deleted_at)
+                                _.unset(item, 'deleted_at')
+                            }
+                            if (item.datatype === 'datetime') {
+                                _.set(item, 'datetime', item.date)
+                                _.unset(item, 'date')
+                            }
+                            if (item.datatype === 'boolean') {
+                                _.set(item, 'boolean', item.integer === 1)
+                                _.unset(item, 'integer')
+                            }
+                            if (item.datatype === 'file' && item.string) {
+                                let fileArray = item.string.split('\n')
+
+                                if (fileArray[0].substr(0, 2) === 'A:' && fileArray[0].substr(2)) { _.set(item, 'filename', fileArray[0].substr(2)) }
+                                if (fileArray[1].substr(0, 2) === 'B:' && fileArray[1].substr(2)) { _.set(item, 'md5', fileArray[1].substr(2)) }
+                                if (fileArray[2].substr(0, 2) === 'C:' && fileArray[2].substr(2)) { _.set(item, 's3', fileArray[2].substr(2)) }
+                                if (fileArray[3].substr(0, 2) === 'D:' && fileArray[3].substr(2)) { _.set(item, 'url', fileArray[3].substr(2)) }
+                                if (fileArray[4].substr(0, 2) === 'E:' && fileArray[4].substr(2)) { _.set(item, 'size', parseInt(fileArray[4].substr(2), 10)) }
+
+                                _.unset(item, 'string')
+                            }
+                            if (item.datatype === 'formula' && item.formula) {
+                                let formula = formulas.filter(f => f.old === item.formula)
+
+                                if (formula.length > 0) {
+                                    _.set(item, 'formula', formula[0].new)
+                                } else {
+                                    console.log('MISSING FORMULA: ' + item.formula)
+                                }
+                            }
+                            _.unset(item, 'datatype')
+
+                            dynamoDb.put({ TableName: 'property', Item: item }, callback)
                         }, callback)
                     })
                 }, callback)

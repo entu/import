@@ -1,4 +1,6 @@
 SELECT
+    NULL AS _id,
+    ? AS db,
     entity,
     type,
     language,
@@ -8,20 +10,20 @@ SELECT
     IF(datatype != 'formula', value_text, NULL) AS `string`,
     value_integer AS `integer`,
     value_decimal AS `decimal`,
-    UNIX_TIMESTAMP(value_date) AS `date`,
+    DATE_FORMAT(value_date, '%Y-%m-%dT%TZ') AS `date`,
     CASE type
         WHEN '_created' THEN created_by
         WHEN '_deleted' THEN deleted_by
         ELSE value_reference
     END AS `reference`,
     CASE type
-        WHEN '_created' THEN UNIX_TIMESTAMP(created_at)
-        WHEN '_deleted' THEN UNIX_TIMESTAMP(deleted_at)
+        WHEN '_created' THEN DATE_FORMAT(created_at, '%Y-%m-%dT%TZ')
+        WHEN '_deleted' THEN DATE_FORMAT(deleted_at, '%Y-%m-%dT%TZ')
         ELSE NULL
     END AS `at`,
-    created_at,
+    DATE_FORMAT(created_at, '%Y-%m-%dT%TZ') AS created_at,
     created_by,
-    deleted_at,
+    DATE_FORMAT(deleted_at, '%Y-%m-%dT%TZ') AS deleted_at,
     deleted_by
 FROM props
 ORDER BY
