@@ -87,7 +87,7 @@ const importProps = (mysqlDb, callback) => {
                         offset = offset + count
 
                         let cleanProps = _.map(props, x => _.pickBy(x, (value, key) => { return value === 0 || value === false || !!value }))
-                        async.eachSeries(correctedProps, (item, callback) => {
+                        async.eachSeries(cleanProps, (item, callback) => {
                             item._id = uuid()
 
                             if (item.type) {
