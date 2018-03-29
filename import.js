@@ -30,9 +30,14 @@ const MONGODB = process.env.MONGODB || 'mongodb://localhost:27017/'
 const formulas = yaml.safeLoad(fs.readFileSync(path.resolve(__dirname, 'formulas.yaml'), 'utf8'))
 
 
+
 const log = (s) => {
     console.log((new Date()).toISOString().substr(11).replace('Z', ''), s)
 }
+
+
+
+const uuid = () => ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,a=>(a^Math.random()*16>>a/4).toString(16))
 
 
 
@@ -83,6 +88,7 @@ const importProps = (mysqlDb, callback) => {
 
                         let cleanProps = _.map(props, x => _.pickBy(x, (value, key) => { return value === 0 || value === false || !!value }))
                         async.eachSeries(cleanProps, (item, callback) => {
+                            item.id = uuid()
                             dynamoDb.put({ TableName: mysqlDb + '-property', Item: item }, callback)
                         }, callback)
                     })
@@ -491,6 +497,7 @@ const connection = mysql.createConnection({
         ca: fs.readFileSync(MYSQL_SSL_CA)
     }
 })
+
 connection.query(require('./sql/get_databases.sql'), (err, rows) => {
     if(err) {
         console.error(err.toString())

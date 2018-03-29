@@ -1,5 +1,4 @@
 SELECT
-    id,
     entity,
     type,
     language,
