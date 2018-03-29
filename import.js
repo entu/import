@@ -148,7 +148,7 @@ const importProps = (mysqlDb, callback) => {
                             }
                             _.unset(item, 'datatype')
 
-                            dynamoDb.put({ TableName: 'property', Item: item }, callback)
+                            dynamoDb.put({ TableName: 'entu-property', Item: item }, callback)
                         }, callback)
                     })
                 }, callback)
