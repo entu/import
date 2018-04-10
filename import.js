@@ -37,19 +37,8 @@ const log = (s) => {
 
 
 
-const uuid = () => ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,a=>(a^Math.random()*16>>a/4).toString(16))
-
-
-
 const importProps = (mysqlDb, callback) => {
     log(`start database ${mysqlDb} import`)
-
-    aws.config = new aws.Config()
-    aws.config.accessKeyId = process.env.AWS_ACCESS_KEY_ID
-    aws.config.secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY
-    aws.config.region = process.env.AWS_REGION
-
-    var dynamoDb = new aws.DynamoDB.DocumentClient()
 
     var mongoCon
     var sqlCon = mysql.createConnection({
@@ -68,90 +57,6 @@ const importProps = (mysqlDb, callback) => {
         (callback) => {
             log('create props table')
             sqlCon.query(require('./sql/create_props.sql'), callback)
-        },
-
-        (callback) => {
-            log('insert properties to dynamodb')
-
-            var limit = 1000
-            var count = limit
-            var offset = 0
-
-            async.whilst(
-                () => { return count === limit },
-                (callback) => {
-                    sqlCon.query(require('./sql/get_properties_for_dynamodb.sql'), [mysqlDb, limit, offset], (err, props) => {
-                        if(err) { return callback(err) }
-
-                        count = props.length
-                        offset = offset + count
-
-                        let cleanProps = _.map(props, x => _.pickBy(x, (value, key) => { return value === 0 || value === false || !!value }))
-                        async.eachSeries(cleanProps, (item, callback) => {
-                            item._id = uuid()
-
-                            if (item.type) {
-                                if (item.type.substr(0, 1) === '_') {
-                                    _.set(item, 'type', '_' + decamelize(camelize(item.type.substr(1)), '_'))
-                                } else {
-                                    _.set(item, 'type', decamelize(camelize(item.type), '_'))
-                                }
-                            }
-                            if (item.public === 1) {
-                                _.set(item, 'public', true)
-                            } else {
-                                _.unset(item, 'public')
-                            }
-                            if (item.created_by) {
-                                _.set(item, 'created.by', item.created_by)
-                                _.unset(item, 'created_by')
-                            }
-                            if (item.created_at) {
-                                _.set(item, 'created.at', item.created_at)
-                                _.unset(item, 'created_at')
-                            }
-                            if (item.deleted_by) {
-                                _.set(item, 'deleted.by', item.deleted_by)
-                                _.unset(item, 'deleted_by')
-                            }
-                            if (item.deleted_at) {
-                                _.set(item, 'deleted.at', item.deleted_at)
-                                _.unset(item, 'deleted_at')
-                            }
-                            if (item.datatype === 'datetime') {
-                                _.set(item, 'datetime', item.date)
-                                _.unset(item, 'date')
-                            }
-                            if (item.datatype === 'boolean') {
-                                _.set(item, 'boolean', item.integer === 1)
-                                _.unset(item, 'integer')
-                            }
-                            if (item.datatype === 'file' && item.string) {
-                                let fileArray = item.string.split('\n')
-
-                                if (fileArray[0].substr(0, 2) === 'A:' && fileArray[0].substr(2)) { _.set(item, 'filename', fileArray[0].substr(2)) }
-                                if (fileArray[1].substr(0, 2) === 'B:' && fileArray[1].substr(2)) { _.set(item, 'md5', fileArray[1].substr(2)) }
-                                if (fileArray[2].substr(0, 2) === 'C:' && fileArray[2].substr(2)) { _.set(item, 's3', fileArray[2].substr(2)) }
-                                if (fileArray[3].substr(0, 2) === 'D:' && fileArray[3].substr(2)) { _.set(item, 'url', fileArray[3].substr(2)) }
-                                if (fileArray[4].substr(0, 2) === 'E:' && fileArray[4].substr(2)) { _.set(item, 'size', parseInt(fileArray[4].substr(2), 10)) }
-
-                                _.unset(item, 'string')
-                            }
-                            if (item.datatype === 'formula' && item.formula) {
-                                let formula = formulas.filter(f => f.old === item.formula)
-
-                                if (formula.length > 0) {
-                                    _.set(item, 'formula', formula[0].new)
-                                } else {
-                                    console.log('MISSING FORMULA: ' + item.formula)
-                                }
-                            }
-                            _.unset(item, 'datatype')
-
-                            dynamoDb.put({ TableName: 'entu-property', Item: item }, callback)
-                        }, callback)
-                    })
-                }, callback)
         },
 
         (callback) => {
