@@ -8,17 +8,16 @@ SELECT
     IF(datatype != 'formula', value_text, NULL) AS `string`,
     value_integer AS `integer`,
     value_decimal AS `decimal`,
-    value_date AS `date`,
+    CASE type
+        WHEN '_created' THEN created_at
+        WHEN '_deleted' THEN deleted_at
+        ELSE value_date
+    END AS `date`,
     CASE type
         WHEN '_created' THEN created_by
         WHEN '_deleted' THEN deleted_by
         ELSE value_reference
     END AS `reference`,
-    CASE type
-        WHEN '_created' THEN created_at
-        WHEN '_deleted' THEN deleted_at
-        ELSE NULL
-    END AS `at`,
     created_at,
     created_by,
     deleted_at,

@@ -108,6 +108,7 @@ const importProps = (mysqlDb, callback) => {
                 { key: { type: 1 } },
                 { key: { deleted: 1 } },
                 { key: { reference: 1 } },
+                { key: { size: 1 } },
                 { key: { 'created.by': 1 } },
                 { key: { 'deleted.by': 1 } }
             ], callback)
