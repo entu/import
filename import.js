@@ -198,7 +198,7 @@ const importProps = (mysqlDb, callback) => {
                 }
               }
               if (x.type === 'entu_api_key') {
-                x.string = crypto.createHmac('sha256').update(x.string).digest('hex')
+                x.string = crypto.createHash('sha256').update(x.string).digest('hex')
               }
 
               _.unset(x, 'datatype')
