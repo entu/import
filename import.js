@@ -61,7 +61,7 @@ const importProps = (mysqlDb, callback) => {
 
     (callback) => {
       mongo.MongoClient.connect(MONGODB, { ssl: true, sslValidate: true }, (err, con) => {
-        if(err) { return callback(err) }
+        if (err) { return callback(err) }
 
         mongoCon = con
         return callback(null)
@@ -70,7 +70,7 @@ const importProps = (mysqlDb, callback) => {
 
     (callback) => {
       mongoCon.db(mysqlDb).listCollections({ name: 'entity' }).toArray((err, collections) => {
-        if(err) { return callback(err) }
+        if (err) { return callback(err) }
 
         if (collections.length > 0) {
           mongoCon.db(mysqlDb).dropCollection('entity', callback)
@@ -81,7 +81,7 @@ const importProps = (mysqlDb, callback) => {
     },
     (callback) => {
       mongoCon.db(mysqlDb).listCollections({ name: 'property' }).toArray((err, collections) => {
-        if(err) { return callback(err) }
+        if (err) { return callback(err) }
 
         if (collections.length > 0) {
           mongoCon.db(mysqlDb).dropCollection('property', callback)
@@ -117,7 +117,7 @@ const importProps = (mysqlDb, callback) => {
     (callback) => {
       log('insert entities to mongodb')
       sqlCon.query(require('./sql/get_entities.sql'), (err, entities) => {
-        if(err) { return callback(err) }
+        if (err) { return callback(err) }
 
         mongoCon.db(mysqlDb).collection('entity').insertMany(entities, callback)
       })
@@ -134,7 +134,7 @@ const importProps = (mysqlDb, callback) => {
         () => { return count === limit },
         (callback) => {
           sqlCon.query(require('./sql/get_properties.sql'), [limit, offset], (err, props) => {
-            if(err) { return callback(err) }
+            if (err) { return callback(err) }
 
             count = props.length
             offset = offset + count
@@ -202,7 +202,7 @@ const importProps = (mysqlDb, callback) => {
               return x
             })
 
-            mongoCon.db(mysqlDb).collection('property').insertMany(cleanProps, callback)
+            mongoCon.db(mysqlDb).collection('property').insertMany(correctedProps, callback)
           })
         }, callback)
     },
@@ -216,7 +216,7 @@ const importProps = (mysqlDb, callback) => {
       log('replace mysql ids with mongodb _ids')
 
       mongoCon.db(mysqlDb).collection('entity').find({}).sort({ oid: 1 }).toArray((err, entities) => {
-        if(err) { return callback(err) }
+        if (err) { return callback(err) }
 
         var l = entities.length
         async.eachSeries(entities, (entity, callback) => {
@@ -232,9 +232,9 @@ const importProps = (mysqlDb, callback) => {
             },
             (callback) => {
               mongoCon.db(mysqlDb).collection('property').updateMany({ 'deleted.by': entity.oid }, { $set: { 'deleted.by': entity._id } }, callback)
-            },
+            }
           ], (err) => {
-            if(err) { return callback(err) }
+            if (err) { return callback(err) }
 
             l--
             if (l % 10000 === 0 && l > 0) {
@@ -250,39 +250,38 @@ const importProps = (mysqlDb, callback) => {
       log('create entities')
 
       mongoCon.db(mysqlDb).collection('entity').find({}, { _id: true }).sort({ _id: 1 }).toArray((err, entities) => {
-        if(err) { return callback(err) }
+        if (err) { return callback(err) }
 
         var l = entities.length
         async.eachSeries(entities, (entity, callback) => {
-
           mongoCon.db(mysqlDb).collection('property').find({ entity: entity._id }).toArray((err, properties) => {
-            if(err) { return callback(err) }
+            if (err) { return callback(err) }
 
             let changed = {}
             properties.forEach(property => {
-              let created_at = _.get(property, 'created.at')
-              let created_by = _.get(property, 'created.by')
-              let deleted_at = _.get(property, 'deleted.at')
-              let deleted_by = _.get(property, 'deleted.by')
+              let createdAt = _.get(property, 'created.at')
+              let createdBy = _.get(property, 'created.by')
+              let deletedAt = _.get(property, 'deleted.at')
+              let deletedBy = _.get(property, 'deleted.by')
 
-              if (created_at && (!changed.at || changed.at < created_at)) {
-                if (created_by) {
-                  changed.reference = created_by
+              if (createdAt && (!changed.at || changed.at < createdAt)) {
+                if (createdBy) {
+                  changed.reference = createdBy
                 } else {
                   _.unset(changed, 'by')
                 }
 
-                changed.at = created_at
+                changed.at = createdAt
               }
 
-              if (deleted_at && (!changed.at || changed.at < deleted_at)) {
-                if (deleted_by) {
-                  changed.reference = deleted_by
+              if (deletedAt && (!changed.at || changed.at < deletedAt)) {
+                if (deletedBy) {
+                  changed.reference = deletedBy
                 } else {
                   _.unset(changed, 'by')
                 }
 
-                changed.at = deleted_at
+                changed.at = deletedAt
               }
             })
             properties = properties.filter(p => _.isEmpty(p.deleted))
@@ -317,8 +316,8 @@ const importProps = (mysqlDb, callback) => {
             }
 
             if (!_.isEmpty(p)) {
-              mongoCon.db(mysqlDb).collection('entity').update({ _id: entity._id }, { $set: p, }, (err) => {
-                if(err) { return callback(err) }
+              mongoCon.db(mysqlDb).collection('entity').update({ _id: entity._id }, { $set: p }, (err) => {
+                if (err) { return callback(err) }
 
                 l--
                 if (l % 10000 === 0 && l > 0) {
@@ -346,9 +345,9 @@ const importProps = (mysqlDb, callback) => {
     (callback) => {
       log('close mongodb connection')
       mongoCon.close(callback)
-    },
+    }
   ], (err) => {
-    if(err) { return callback(err) }
+    if (err) { return callback(err) }
 
     log(`end database ${mysqlDb} import\n`)
     return callback(null)
@@ -378,7 +377,7 @@ const importFiles = (mysqlDb, callback) => {
   aws.config.region = process.env.AWS_REGION
 
   sqlCon.query(require('./sql/get_files.sql'), (err, files) => {
-    if(err) { return callback(err) }
+    if (err) { return callback(err) }
 
     const s3 = new aws.S3()
 
@@ -400,24 +399,24 @@ const importFiles = (mysqlDb, callback) => {
             fs.writeFileSync(path.join(process.env.FILES_PATH, mysqlDb, file.md5.substr(0, 1), file.md5), f)
 
             sqlCon.query(require('./sql/update_files.sql'), [file.md5, f.length, 'Copied local file', file.id], (err) => {
-              if(err) { return callback(err) }
+              if (err) { return callback(err) }
               return callback(null)
             })
           } else {
             sqlCon.query(require('./sql/update_files_error.sql'), ['No local file', file.id], (err) => {
-              if(err) { return callback(err) }
+              if (err) { return callback(err) }
               return callback(null)
             })
           }
         } else {
           sqlCon.query(require('./sql/update_files_error.sql'), ['No file', file.id], (err) => {
-            if(err) { return callback(err) }
+            if (err) { return callback(err) }
             return callback(null)
           })
         }
       } else {
         s3.getObject({ Bucket: process.env.AWS_S3_BUCKET, Key: file.s3_key }, (err, data) => {
-          if(err) {
+          if (err) {
             sqlCon.query(require('./sql/update_files_error.sql'), [err.toString(), file.id], callback)
             return
           }
@@ -425,8 +424,8 @@ const importFiles = (mysqlDb, callback) => {
           let md5 = crypto.createHash('md5').update(data.Body).digest('hex')
           let size = data.Body.length
 
-          if(file.md5 && file.md5 !== md5) { log(`${file.id} - md5 not same ${md5}`) }
-          if(file.filesize !== size) { log(`${file.id} - size not same ${size}`) }
+          if (file.md5 && file.md5 !== md5) { log(`${file.id} - md5 not same ${md5}`) }
+          if (file.filesize !== size) { log(`${file.id} - size not same ${size}`) }
 
           if (!fs.existsSync(process.env.FILES_PATH)) {
             fs.mkdirSync(process.env.FILES_PATH)
@@ -443,7 +442,7 @@ const importFiles = (mysqlDb, callback) => {
         })
       }
     }, (err) => {
-      if(err) { return callback(err) }
+      if (err) { return callback(err) }
 
       log(`end ${mysqlDb} files import`)
       return callback(null)
@@ -464,7 +463,7 @@ const connection = mysql.createConnection({
 })
 
 connection.query(require('./sql/get_databases.sql'), (err, rows) => {
-  if(err) {
+  if (err) {
     console.error(err.toString())
     process.exit(1)
   }
@@ -475,7 +474,7 @@ connection.query(require('./sql/get_databases.sql'), (err, rows) => {
     // importFiles(row.db, callback)
     importProps(row.db, callback)
   }, (err) => {
-    if(err) {
+    if (err) {
       console.error(err.toString())
       process.exit(1)
     }
