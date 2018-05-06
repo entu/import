@@ -197,6 +197,10 @@ const importProps = (mysqlDb, callback) => {
                   console.log('MISSING FORMULA: ' + x.formula)
                 }
               }
+              if (x.type === 'entu_api_key') {
+                x.string = crypto.createHmac('sha256').update(x.string).digest('hex')
+              }
+
               _.unset(x, 'datatype')
 
               return x
@@ -421,8 +425,8 @@ const importFiles = (mysqlDb, callback) => {
             return
           }
 
-          let md5 = crypto.createHash('md5').update(data.Body).digest('hex')
-          let size = data.Body.length
+          const md5 = crypto.createHash('md5').update(data.Body).digest('hex')
+          const size = data.Body.length
 
           if (file.md5 && file.md5 !== md5) { log(`${file.id} - md5 not same ${md5}`) }
           if (file.filesize !== size) { log(`${file.id} - size not same ${size}`) }
