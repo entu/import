@@ -12,13 +12,9 @@ const mysql = require('mysql')
 const path = require('path')
 const yaml = require('js-yaml')
 
-
-
 require.extensions['.sql'] = (module, filename) => {
   module.exports = fs.readFileSync(path.resolve(__dirname, filename), 'utf8')
 }
-
-
 
 const MYSQL_HOST = process.env.MYSQL_HOST || '127.0.0.1'
 const MYSQL_PORT = process.env.MYSQL_PORT || 3306
@@ -29,13 +25,9 @@ const MONGODB = process.env.MONGODB || 'mongodb://localhost:27017/'
 
 const formulas = yaml.safeLoad(fs.readFileSync(path.resolve(__dirname, 'formulas.yaml'), 'utf8'))
 
-
-
 const log = (s) => {
   console.log((new Date()).toISOString().substr(11).replace('Z', ''), s)
 }
-
-
 
 const importProps = (mysqlDb, callback) => {
   log(`start database ${mysqlDb} import`)
@@ -275,7 +267,7 @@ const importProps = (mysqlDb, callback) => {
                   _.unset(changed, 'by')
                 }
 
-                changed.at = createdAt
+                changed.date = createdAt
               }
 
               if (deletedAt && (!changed.at || changed.at < deletedAt)) {
@@ -285,7 +277,7 @@ const importProps = (mysqlDb, callback) => {
                   _.unset(changed, 'by')
                 }
 
-                changed.at = deletedAt
+                changed.date = deletedAt
               }
             })
             properties = properties.filter(p => _.isEmpty(p.deleted))
@@ -357,8 +349,6 @@ const importProps = (mysqlDb, callback) => {
     return callback(null)
   })
 }
-
-
 
 const importFiles = (mysqlDb, callback) => {
   log(`start ${mysqlDb} files import`)
@@ -453,8 +443,6 @@ const importFiles = (mysqlDb, callback) => {
     })
   })
 }
-
-
 
 const connection = mysql.createConnection({
   host: MYSQL_HOST,
