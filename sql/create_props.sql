@@ -21,6 +21,7 @@ CREATE TABLE `props` (
   `language` varchar(2) DEFAULT NULL,
   `datatype` varchar(16) DEFAULT NULL,
   `public` int(1) DEFAULT NULL,
+  `search` int(1) DEFAULT NULL,
   `value_text` text DEFAULT NULL,
   `value_integer` int(11) DEFAULT NULL,
   `value_decimal` decimal(15,4) DEFAULT NULL,
@@ -142,7 +143,7 @@ AND sharing IS NOT NULL;
 
 
 /* properties */
-INSERT INTO props (entity, type, datatype, language, public, value_text, value_integer, value_decimal, value_reference, value_date, created_at, created_by, deleted_at, deleted_by)
+INSERT INTO props (entity, type, datatype, language, public, search, value_text, value_integer, value_decimal, value_reference, value_date, created_at, created_by, deleted_at, deleted_by)
 SELECT
     p.entity_id,
     REPLACE(pd.dataproperty, '-', '_'),
@@ -157,6 +158,7 @@ SELECT
         ELSE NULL
     END,
     pd.public,
+    pd.search,
     IF(
         pd.formula = 1,
         pd.defaultvalue,
