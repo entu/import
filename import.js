@@ -30,7 +30,7 @@ const log = (s) => {
 }
 
 const cleanupArrayToStr = (a) => {
-  return a.join(' ').split(/;|,| /).filter((v) => v !== '').join(' ').subst(0, 1024)
+  return a.join(' ').split(/;|,| /).filter((v) => v !== '').join(' ').substr(0, 1024)
 }
 
 const importProps = (mysqlDb, callback) => {
