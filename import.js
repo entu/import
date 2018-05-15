@@ -89,6 +89,8 @@ const importProps = (mysqlDb, callback) => {
         { key: { oid: 1 } },
         { key: { access: 1 } },
         { key: { 'private._type.string': 1 } },
+        { key: { 'private._search': 1 } },
+        { key: { 'public._search': 1 } },
         { key: { 'private.entu_user.string': 1 } },
         { key: { 'private.entu_api_key.string': 1 } }
       ], callback)
