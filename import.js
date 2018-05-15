@@ -270,10 +270,10 @@ const importProps = (mysqlDb, callback) => {
               let deletedBy = _.get(property, 'deleted.by')
 
               if (property.search && property.string) {
-                search[property.public === true ? 'public' : 'private'].push(property.string)
+                search[property.public === true ? 'public' : 'private'].push(property.string.toLowerCase())
               }
               if (property.search && property.filename) {
-                search[property.public === true ? 'public' : 'private'].push(property.filename)
+                search[property.public === true ? 'public' : 'private'].push(property.filename.toLowerCase())
               }
               if (property.search && property.integer) {
                 search[property.public === true ? 'public' : 'private'].push(property.integer)
