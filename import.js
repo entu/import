@@ -306,7 +306,8 @@ const importProps = (mysqlDb, callback) => {
             })
             properties = properties.filter(p => _.isEmpty(p.deleted))
 
-            search.public = _.uniq(search.public)
+            search.public = _.uniq(search.public.join(' ').split(/;|,| /))
+            search.private = _.uniq(search.private.join(' ').split(/;|,| /))
             search.private = _.uniq(search.private.concat(search.public))
 
             let p = _.groupBy(properties, v => { return v.public === true ? 'public' : 'private' })
@@ -318,7 +319,7 @@ const importProps = (mysqlDb, callback) => {
                 })
               })
 
-              p.public._search = search.public.join(' ')
+              p.public._search = search.public.join(' ').substr(0, 1024)
             }
             if (p.private) {
               p.private = _.mapValues(_.groupBy(p.private, 'type'), (o) => {
@@ -327,7 +328,7 @@ const importProps = (mysqlDb, callback) => {
                 })
               })
 
-              p.private._search = search.private.join(' ')
+              p.private._search = search.private.join(' ').substr(0, 1024)
             }
             if (!_.isEmpty(changed)) {
               _.set(p, 'private._changed.0', changed)
