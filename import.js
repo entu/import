@@ -29,6 +29,10 @@ const log = (s) => {
   console.log((new Date()).toISOString().substr(11).replace('Z', ''), s)
 }
 
+const cleanupArrayToStr = (a) => {
+  return a.join(' ').split(/;|,| /).filter((v) => v !== '').join(' ').subst(0, 1024)
+}
+
 const importProps = (mysqlDb, callback) => {
   log(`start database ${mysqlDb} import`)
 
@@ -306,10 +310,6 @@ const importProps = (mysqlDb, callback) => {
             })
             properties = properties.filter(p => _.isEmpty(p.deleted))
 
-            search.public = _.uniq(search.public.join(' ').split(/;|,| /))
-            search.private = _.uniq(search.private.join(' ').split(/;|,| /))
-            search.private = _.uniq(search.private.concat(search.public))
-
             let p = _.groupBy(properties, v => { return v.public === true ? 'public' : 'private' })
 
             if (p.public) {
@@ -319,7 +319,7 @@ const importProps = (mysqlDb, callback) => {
                 })
               })
 
-              p.public._search = search.public.join(' ').substr(0, 1024)
+              p.public._search = cleanupArrayToStr(search.public)
             }
             if (p.private) {
               p.private = _.mapValues(_.groupBy(p.private, 'type'), (o) => {
@@ -328,7 +328,7 @@ const importProps = (mysqlDb, callback) => {
                 })
               })
 
-              p.private._search = search.private.join(' ').substr(0, 1024)
+              p.private._search = cleanupArrayToStr(search.private.concat(search.public))
             }
             if (!_.isEmpty(changed)) {
               _.set(p, 'private._changed.0', changed)
