@@ -93,8 +93,8 @@ const importProps = (mysqlDb, callback) => {
         { key: { oid: 1 } },
         { key: { access: 1 } },
         { key: { 'private._type.string': 1 } },
-        { key: { 'private._search': 1 } },
-        { key: { 'public._search': 1 } },
+        { key: { 'search.private': 1 } },
+        { key: { 'search.public': 1 } },
         { key: { 'private.entu_user.string': 1 } },
         { key: { 'private.entu_api_key.string': 1 } }
       ], callback)
@@ -318,8 +318,6 @@ const importProps = (mysqlDb, callback) => {
                   return _.omit(p, ['entity', 'type', 'created', 's3', 'url', 'public'])
                 })
               })
-
-              p.public._search = cleanupArrayToStr(search.public)
             }
             if (p.private) {
               p.private = _.mapValues(_.groupBy(p.private, 'type'), (o) => {
@@ -327,9 +325,20 @@ const importProps = (mysqlDb, callback) => {
                   return _.omit(p, ['entity', 'type', 'created', 's3', 'url', 'public'])
                 })
               })
-
-              p.private._search = cleanupArrayToStr(search.private.concat(search.public))
             }
+
+            _.set(p, 'search.public', cleanupArrayToStr(search.public))
+            if (p.search.public.length === 0) {
+              _.unset(p, 'search.public')
+            }
+            _.set(p, 'search.private', cleanupArrayToStr(search.private.concat(search.public)))
+            if (p.search.private.length === 0) {
+              _.unset(p, 'search.private')
+            }
+            if (!_.isEmpty(p.search)) {
+              _.unset(p, 'search')
+            }
+
             if (!_.isEmpty(changed)) {
               _.set(p, 'private._changed.0', changed)
             }
