@@ -335,7 +335,7 @@ const importProps = (mysqlDb, callback) => {
             if (p.search.private.length === 0) {
               _.unset(p, 'search.private')
             }
-            if (!_.isEmpty(p.search)) {
+            if (_.isEmpty(p.search)) {
               _.unset(p, 'search')
             }
 
