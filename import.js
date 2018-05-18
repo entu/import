@@ -315,14 +315,14 @@ const importProps = (mysqlDb, callback) => {
             if (p.public) {
               p.public = _.mapValues(_.groupBy(p.public, 'type'), (o) => {
                 return _.map(o, (p) => {
-                  return _.omit(p, ['entity', 'type', 'created', 's3', 'url', 'public'])
+                  return _.omit(p, ['entity', 'type', 'created', 'public'])
                 })
               })
             }
             if (p.private) {
               p.private = _.mapValues(_.groupBy(p.private, 'type'), (o) => {
                 return _.map(o, (p) => {
-                  return _.omit(p, ['entity', 'type', 'created', 's3', 'url', 'public'])
+                  return _.omit(p, ['entity', 'type', 'created', 'public'])
                 })
               })
             }
