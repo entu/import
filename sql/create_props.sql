@@ -65,6 +65,28 @@ FROM entity
 WHERE entity_definition_keyname NOT LIKE 'conf-%';
 
 
+/* entity name formula */
+INSERT INTO props (entity, type, datatype, search, language, value_text)
+SELECT
+    entity.id AS entity_id,
+    'name' AS property_definition,
+    'formula' AS property_type,
+    1 AS search,
+    CASE language
+        WHEN 'estonian' THEN 'et'
+        WHEN 'english' THEN 'en'
+        ELSE NULL
+    END AS property_language,
+    REPLACE(TRIM(value), '@title@', '@name@') AS value_text
+FROM translation
+LEFT JOIN entity ON entity.entity_definition_keyname = translation.entity_definition_keyname
+WHERE translation.entity_definition_keyname NOT LIKE 'conf-%'
+AND translation.entity_definition_keyname NOT IN (SELECT entity_definition_keyname FROM property_definition WHERE dataproperty IN ('name', 'title'))
+AND field = 'displayname'
+AND translation.entity_definition_keyname IS NOT NULL
+AND entity.id IS NOT NULL;
+
+
 /* entity created at/by */
 INSERT INTO props (entity, type, datatype, created_at, created_by)
 SELECT
@@ -146,7 +168,11 @@ AND sharing IS NOT NULL;
 INSERT INTO props (entity, type, datatype, language, public, search, value_text, value_integer, value_decimal, value_reference, value_date, created_at, created_by, deleted_at, deleted_by)
 SELECT
     p.entity_id,
-    REPLACE(pd.dataproperty, '-', '_'),
+    IF(
+        pd.dataproperty = 'title',
+        'name',
+        REPLACE(pd.dataproperty, '-', '_')
+    ),
     IF(
         pd.formula = 1,
         'formula',
@@ -257,7 +283,7 @@ FROM (
         NULL AS value_integer,
         NULL AS value_reference
     FROM entity_definition
-    WHERE keyname NOT IN ('conf-actions-add', 'conf-datatype', 'conf-entity', 'conf-menu-item', 'conf-property')
+    WHERE keyname NOT LIKE 'conf-%'
 
     /* entity type */
     UNION SELECT
@@ -269,7 +295,7 @@ FROM (
         NULL AS value_integer,
         NULL AS value_reference
     FROM entity_definition
-    WHERE keyname NOT IN ('conf-actions-add', 'conf-datatype', 'conf-entity', 'conf-menu-item', 'conf-property')
+    WHERE keyname NOT LIKE 'conf-%'
 
     /* entity _public */
     UNION SELECT
@@ -281,7 +307,7 @@ FROM (
         1 AS value_integer,
         NULL AS value_reference
     FROM entity_definition
-    WHERE keyname NOT IN ('conf-actions-add', 'conf-datatype', 'conf-entity', 'conf-menu-item', 'conf-property')
+    WHERE keyname NOT LIKE 'conf-%'
 
     /* entity open-after-add properties */
     UNION SELECT
@@ -293,7 +319,7 @@ FROM (
         1 AS value_integer,
         NULL AS value_reference
     FROM entity_definition
-    WHERE keyname NOT IN ('conf-actions-add', 'conf-datatype', 'conf-entity', 'conf-menu-item', 'conf-property')
+    WHERE keyname NOT LIKE 'conf-%'
     AND open_after_add = 1
 
     /* entity add-action properties */
@@ -306,10 +332,10 @@ FROM (
         NULL AS value_integer,
         NULL AS value_reference
     FROM entity_definition
-    WHERE keyname NOT IN ('conf-actions-add', 'conf-datatype', 'conf-entity', 'conf-menu-item', 'conf-property')
+    WHERE keyname NOT LIKE 'conf-%'
     AND actions_add IS NOT NULL
 
-    /* entity translation (label, displayname, ...) fields */
+    /* entity translation (label, label_plural, ...) fields */
     UNION SELECT
         entity_definition_keyname AS entity_id,
         TRIM(field) AS property_definition,
@@ -319,12 +345,12 @@ FROM (
             WHEN 'english' THEN 'en'
             ELSE NULL
         END AS property_language,
-        TRIM(value) AS value_text,
+        REPLACE(TRIM(value), '@title@', '@name@') AS value_text,
         NULL AS value_integer,
         NULL AS value_reference
     FROM translation
-    WHERE entity_definition_keyname NOT IN ('conf-actions-add', 'conf-datatype', 'conf-entity', 'conf-menu-item', 'conf-property')
-    AND field NOT IN ('public', 'menu')
+    WHERE entity_definition_keyname NOT LIKE 'conf-%'
+    AND field NOT IN ('public', 'menu', 'displayname')
     AND entity_definition_keyname IS NOT NULL
 
     /* entity allowed-child, default-parent, optional-parent */
@@ -352,7 +378,7 @@ FROM (
         NULL AS value_reference
     FROM property_definition
     WHERE dataproperty NOT IN ('entu-changed-at', 'entu-changed-by', 'entu-created-at', 'entu-created-by')
-    AND entity_definition_keyname NOT IN ('conf-actions-add', 'conf-datatype', 'conf-entity', 'conf-menu-item', 'conf-property')
+    AND entity_definition_keyname NOT LIKE 'conf-%'
     AND entity_definition_keyname IN (SELECT keyname FROM entity_definition)
 
     /* property type */
@@ -366,7 +392,7 @@ FROM (
         NULL AS value_reference
     FROM property_definition
     WHERE dataproperty NOT IN ('entu-changed-at', 'entu-changed-by', 'entu-created-at', 'entu-created-by')
-    AND entity_definition_keyname NOT IN ('conf-actions-add', 'conf-datatype', 'conf-entity', 'conf-menu-item', 'conf-property')
+    AND entity_definition_keyname NOT LIKE 'conf-%'
     AND entity_definition_keyname IN (SELECT keyname FROM entity_definition)
 
     /* property _public */
@@ -380,7 +406,7 @@ FROM (
         NULL AS value_reference
     FROM property_definition
     WHERE dataproperty NOT IN ('entu-changed-at', 'entu-changed-by', 'entu-created-at', 'entu-created-by')
-    AND entity_definition_keyname NOT IN ('conf-actions-add', 'conf-datatype', 'conf-entity', 'conf-menu-item', 'conf-property')
+    AND entity_definition_keyname NOT LIKE 'conf-%'
     AND entity_definition_keyname IN (SELECT keyname FROM entity_definition)
 
     /* property parent entity */
@@ -394,7 +420,7 @@ FROM (
         LOWER(REPLACE(entity_definition_keyname, '-', '_')) AS value_reference
     FROM property_definition
     WHERE dataproperty NOT IN ('entu-changed-at', 'entu-changed-by', 'entu-created-at', 'entu-created-by')
-    AND entity_definition_keyname NOT IN ('conf-actions-add', 'conf-datatype', 'conf-entity', 'conf-menu-item', 'conf-property')
+    AND entity_definition_keyname NOT LIKE 'conf-%'
     AND entity_definition_keyname IN (SELECT keyname FROM entity_definition)
 
     /* property datatype */
@@ -408,7 +434,7 @@ FROM (
         NULL AS value_reference
     FROM property_definition
     WHERE dataproperty NOT IN ('entu-changed-at', 'entu-changed-by', 'entu-created-at', 'entu-created-by')
-    AND entity_definition_keyname NOT IN ('conf-actions-add', 'conf-datatype', 'conf-entity', 'conf-menu-item', 'conf-property')
+    AND entity_definition_keyname NOT LIKE 'conf-%'
     AND entity_definition_keyname IN (SELECT keyname FROM entity_definition)
 
     /* property default value */
@@ -422,7 +448,7 @@ FROM (
         NULL AS value_reference
     FROM property_definition
     WHERE dataproperty NOT IN ('entu-changed-at', 'entu-changed-by', 'entu-created-at', 'entu-created-by')
-    AND entity_definition_keyname NOT IN ('conf-actions-add', 'conf-datatype', 'conf-entity', 'conf-menu-item', 'conf-property')
+    AND entity_definition_keyname NOT LIKE 'conf-%'
     AND entity_definition_keyname IN (SELECT keyname FROM entity_definition)
     AND NULLIF(formula < 1, 1) IS NULL
     AND defaultvalue IS NOT NULL
@@ -438,7 +464,7 @@ FROM (
         NULL AS value_reference
     FROM property_definition
     WHERE dataproperty NOT IN ('entu-changed-at', 'entu-changed-by', 'entu-created-at', 'entu-created-by')
-    AND entity_definition_keyname NOT IN ('conf-actions-add', 'conf-datatype', 'conf-entity', 'conf-menu-item', 'conf-property')
+    AND entity_definition_keyname NOT LIKE 'conf-%'
     AND entity_definition_keyname IN (SELECT keyname FROM entity_definition)
     AND NULLIF(formula < 1, 1) IS NOT NULL
 
@@ -453,7 +479,7 @@ FROM (
         NULL AS value_reference
     FROM property_definition
     WHERE dataproperty NOT IN ('entu-changed-at', 'entu-changed-by', 'entu-created-at', 'entu-created-by')
-    AND entity_definition_keyname NOT IN ('conf-actions-add', 'conf-datatype', 'conf-entity', 'conf-menu-item', 'conf-property')
+    AND entity_definition_keyname NOT LIKE 'conf-%'
     AND entity_definition_keyname IN (SELECT keyname FROM entity_definition)
     AND visible = 0
 
@@ -468,7 +494,7 @@ FROM (
         NULL AS value_reference
     FROM property_definition
     WHERE dataproperty NOT IN ('entu-changed-at', 'entu-changed-by', 'entu-created-at', 'entu-created-by')
-    AND entity_definition_keyname NOT IN ('conf-actions-add', 'conf-datatype', 'conf-entity', 'conf-menu-item', 'conf-property')
+    AND entity_definition_keyname NOT LIKE 'conf-%'
     AND entity_definition_keyname IN (SELECT keyname FROM entity_definition)
     AND ordinal IS NOT NULL
 
@@ -483,7 +509,7 @@ FROM (
         NULL AS value_reference
     FROM property_definition
     WHERE dataproperty NOT IN ('entu-changed-at', 'entu-changed-by', 'entu-created-at', 'entu-created-by')
-    AND entity_definition_keyname NOT IN ('conf-actions-add', 'conf-datatype', 'conf-entity', 'conf-menu-item', 'conf-property')
+    AND entity_definition_keyname NOT LIKE 'conf-%'
     AND entity_definition_keyname IN (SELECT keyname FROM entity_definition)
     AND NULLIF(multilingual < 1, 1) IS NOT NULL
 
@@ -498,7 +524,7 @@ FROM (
         NULL AS value_reference
     FROM property_definition
     WHERE dataproperty NOT IN ('entu-changed-at', 'entu-changed-by', 'entu-created-at', 'entu-created-by')
-    AND entity_definition_keyname NOT IN ('conf-actions-add', 'conf-datatype', 'conf-entity', 'conf-menu-item', 'conf-property')
+    AND entity_definition_keyname NOT LIKE 'conf-%'
     AND entity_definition_keyname IN (SELECT keyname FROM entity_definition)
     AND NULLIF(multiplicity < 1, 1) IS NULL
 
@@ -513,7 +539,7 @@ FROM (
         NULL AS value_reference
     FROM property_definition
     WHERE dataproperty NOT IN ('entu-changed-at', 'entu-changed-by', 'entu-created-at', 'entu-created-by')
-    AND entity_definition_keyname NOT IN ('conf-actions-add', 'conf-datatype', 'conf-entity', 'conf-menu-item', 'conf-property')
+    AND entity_definition_keyname NOT LIKE 'conf-%'
     AND entity_definition_keyname IN (SELECT keyname FROM entity_definition)
     AND NULLIF(readonly < 1, 1) IS NOT NULL
     AND NULLIF(formula < 1, 1) IS NULL
@@ -529,7 +555,7 @@ FROM (
         NULL AS value_reference
     FROM property_definition
     WHERE dataproperty NOT IN ('entu-changed-at', 'entu-changed-by', 'entu-created-at', 'entu-created-by')
-    AND entity_definition_keyname NOT IN ('conf-actions-add', 'conf-datatype', 'conf-entity', 'conf-menu-item', 'conf-property')
+    AND entity_definition_keyname NOT LIKE 'conf-%'
     AND entity_definition_keyname IN (SELECT keyname FROM entity_definition)
     AND NULLIF(public < 1, 1) IS NOT NULL
 
@@ -544,7 +570,7 @@ FROM (
         NULL AS value_reference
     FROM property_definition
     WHERE dataproperty NOT IN ('entu-changed-at', 'entu-changed-by', 'entu-created-at', 'entu-created-by')
-    AND entity_definition_keyname NOT IN ('conf-actions-add', 'conf-datatype', 'conf-entity', 'conf-menu-item', 'conf-property')
+    AND entity_definition_keyname NOT LIKE 'conf-%'
     AND entity_definition_keyname IN (SELECT keyname FROM entity_definition)
     AND NULLIF(mandatory < 1, 1) IS NOT NULL
 
@@ -559,7 +585,7 @@ FROM (
         NULL AS value_reference
     FROM property_definition
     WHERE dataproperty NOT IN ('entu-changed-at', 'entu-changed-by', 'entu-created-at', 'entu-created-by')
-    AND entity_definition_keyname NOT IN ('conf-actions-add', 'conf-datatype', 'conf-entity', 'conf-menu-item', 'conf-property')
+    AND entity_definition_keyname NOT LIKE 'conf-%'
     AND entity_definition_keyname IN (SELECT keyname FROM entity_definition)
     AND NULLIF(search < 1, 1) IS NOT NULL
 
@@ -574,7 +600,7 @@ FROM (
         NULLIF(LOWER(TRIM(REPLACE(classifying_entity_definition_keyname, '-', '_'))), '') AS value_reference
     FROM property_definition
     WHERE dataproperty NOT IN ('entu-changed-at', 'entu-changed-by', 'entu-created-at', 'entu-created-by')
-    AND entity_definition_keyname NOT IN ('conf-actions-add', 'conf-datatype', 'conf-entity', 'conf-menu-item', 'conf-property')
+    AND entity_definition_keyname NOT LIKE 'conf-%'
     AND entity_definition_keyname IN (SELECT keyname FROM entity_definition)
     AND classifying_entity_definition_keyname IS NOT NULL
 
@@ -596,7 +622,7 @@ FROM (
         property_definition AS pd
     WHERE pd.keyname = t.property_definition_keyname
     AND t.property_definition_keyname NOT IN ('entu-changed-at', 'entu-changed-by', 'entu-created-at', 'entu-created-by')
-    AND pd.entity_definition_keyname NOT IN ('conf-actions-add', 'conf-datatype', 'conf-entity', 'conf-menu-item', 'conf-property')
+    AND pd.entity_definition_keyname NOT LIKE 'conf-%'
     AND pd.entity_definition_keyname IN (SELECT keyname FROM entity_definition)
     AND t.property_definition_keyname IS NOT NULL
 
@@ -611,7 +637,7 @@ FROM (
         NULL AS value_reference
     FROM translation
     WHERE field = 'menu'
-    AND entity_definition_keyname NOT IN ('conf-actions-add', 'conf-datatype', 'conf-entity', 'conf-menu-item', 'conf-property')
+    AND entity_definition_keyname NOT LIKE 'conf-%'
 
     /* menu _public */
     UNION SELECT
@@ -624,7 +650,7 @@ FROM (
         NULL AS value_reference
     FROM translation
     WHERE field = 'menu'
-    AND entity_definition_keyname NOT IN ('conf-actions-add', 'conf-datatype', 'conf-entity', 'conf-menu-item', 'conf-property')
+    AND entity_definition_keyname NOT LIKE 'conf-%'
 
     /* menu group */
     UNION SELECT
@@ -641,12 +667,12 @@ FROM (
         NULL AS value_reference
     FROM translation
     WHERE field = 'menu'
-    AND entity_definition_keyname NOT IN ('conf-actions-add', 'conf-datatype', 'conf-entity', 'conf-menu-item', 'conf-property')
+    AND entity_definition_keyname NOT LIKE 'conf-%'
 
-    /* menu title */
+    /* menu name */
     UNION SELECT
         CONCAT('menu_', entity_definition_keyname) AS entity_id,
-        'title' AS property_definition,
+        'name' AS property_definition,
         'string' AS property_type,
         CASE language
             WHEN 'estonian' THEN 'et'
@@ -658,7 +684,7 @@ FROM (
         NULL AS value_reference
     FROM translation
     WHERE field IN ('label', 'label_plural')
-    AND entity_definition_keyname NOT IN ('conf-actions-add', 'conf-datatype', 'conf-entity', 'conf-menu-item', 'conf-property')
+    AND entity_definition_keyname NOT LIKE 'conf-%'
     GROUP BY
         entity_definition_keyname,
         language
@@ -674,7 +700,7 @@ FROM (
         NULL AS value_reference
     FROM translation
     WHERE field = 'menu'
-    AND entity_definition_keyname NOT IN ('conf-actions-add', 'conf-datatype', 'conf-entity', 'conf-menu-item', 'conf-property')
+    AND entity_definition_keyname NOT LIKE 'conf-%'
     GROUP BY
         entity_definition_keyname
 ) AS x
