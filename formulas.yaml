@@ -36,7 +36,7 @@
     new: COUNT(referrer.eksponaat.asukoht)
 -
     old: '{self._created}'
-    new: '{_created}'
+    new: _created
 -
     old: '{self.-contract.date}'
     new: '{_contract.date}'
@@ -336,7 +336,7 @@
     new: CONCAT(aasta, ' ', kuu)
 -
     old: '@address@'
-    new: '{address}'
+    new: address
 -
     old: '@algus@ - @kestvus@'
     new: '{algus} - {kestvus}'
@@ -345,16 +345,16 @@
     new: '{algus}+{tunde}. {coach}'
 -
     old: '@applicant-name@'
-    new: '{applicant_name}'
+    new: applicant_name
 -
     old: '@assignee@'
-    new: '{assignee}'
+    new: assignee
 -
     old: '@asukoht@ @description@'
     new: '{asukoht} {description}'
 -
     old: '@asukoht@'
-    new: '{asukoht}'
+    new: asukoht
 -
     old: '@author@ - @title@'
     new: '{author} - {title}'
@@ -369,7 +369,7 @@
     new: '{author}. {year}. {journal}'
 -
     old: '@author@'
-    new: '{author}'
+    new: author
 -
     old: '@barcode@ (@publishing-date@) @author@'
     new: '{barcode} ({publishing_date}) {author}'
@@ -384,37 +384,37 @@
     new: '{barcode} {title}'
 -
     old: '@beer-name@'
-    new: '{beer_name}'
+    new: beer_name
 -
     old: '@begin@/@end@'
     new: '{begin}/{end}'
 -
     old: '@birthYear@'
-    new: '{birthYear}'
+    new: birthYear
 -
     old: '@bronnialgus@-@bronnil6pp@|@algus@-@l6pp@'
     new: '{bronnialgus}-{bronnil6pp}|{algus}-{l6pp}'
 -
     old: '@caption@'
-    new: '{caption}'
+    new: caption
 -
     old: '@cas-number@'
-    new: '{cas_number}'
+    new: cas_number
 -
     old: '@checkin@ (@start@)'
     new: '{checkin} ({start})'
 -
     old: '@chemical@'
-    new: '{chemical}'
+    new: chemical
 -
     old: '@citation@'
-    new: '{citation}'
+    new: citation
 -
     old: '@city@ / @name@'
     new: '{city} / {name}'
 -
     old: '@class@'
-    new: '{class}'
+    new: class
 -
     old: '@code@ @tag@'
     new: '{code} {tag}'
@@ -423,10 +423,10 @@
     new: '{code}-{name}'
 -
     old: '@color@'
-    new: '{color}'
+    new: color
 -
     old: '@comment@'
-    new: '{comment}'
+    new: comment
 -
     old: '@company@ @department@ @forename@ @surname@'
     new: '{company} {department} {forename} {surname}'
@@ -435,7 +435,7 @@
     new: '{company} {forename} {surname}'
 -
     old: '@company@'
-    new: '{company}'
+    new: company
 -
     old: '@company@<br/>Reg.Nr. @regnr@<br/>Aadress @address@'
     new: '{company}<br/>Reg.Nr. {regnr}<br/>Aadress {address}'
@@ -447,7 +447,7 @@
     new: '{conv_direction} : {related_person} : {conv_other_party} : {conv_opdepartment}'
 -
     old: '@customer@'
-    new: '{customer}'
+    new: customer
 -
     old: '@cv-organisation@'
     new: '{cv_organisation}'
@@ -456,7 +456,7 @@
     new: '{cv_start} - {cv_to}'
 -
     old: '@data-type@'
-    new: '{data_type}'
+    new: data_type
 -
     old: '@date@ (@object@) @value@'
     new: '{date} ({object}) {value}'
@@ -483,19 +483,19 @@
     new: '{date} {vendor}'
 -
     old: '@date@'
-    new: '{date}'
+    new: date
 -
     old: '@description@ (@equivalent@)'
     new: '{description} ({equivalent})'
 -
     old: '@description@'
-    new: '{description}'
+    new: description
 -
     old: '@developed@'
-    new: '{developed}'
+    new: developed
 -
     old: '@domain@'
-    new: '{domain}'
+    new: domain
 -
     old: '@donator@ @date@'
     new: '{donator} {date}'
@@ -504,7 +504,7 @@
     new: '{done} {due_date} {assignee}'
 -
     old: '@eesmark@'
-    new: '{eesmark}'
+    new: eesmark
 -
     old: '@email@ - @x-type@ - @confirmed@ @has-been-subsidised@'
     new: '{email} - {x_type} - {confirmed} {has_been_subsidised}'
@@ -516,19 +516,19 @@
     new: '{email} {phone}'
 -
     old: '@email@'
-    new: '{email}'
+    new: email
 -
     old: '@en-title@'
-    new: '{en_title}'
+    new: en_title
 -
     old: '@entu-user@ @notes@'
     new: '{entu_user} {notes}'
 -
     old: '@entu-user@'
-    new: '{entu_user}'
+    new: entu_user
 -
     old: '@equipment@'
-    new: '{equipment}'
+    new: equipment
 -
     old: '@esitaja@ arve nr. @number@'
     new: CONCAT(esitaja, ' arve nr. ', number)
@@ -546,19 +546,19 @@
     new: '{et_supertitle} / {artist} / {et_name} / {et_subtitle}'
 -
     old: '@et-title@'
-    new: '{et_title}'
+    new: et_title
 -
     old: '@featured@'
-    new: '{featured}'
+    new: featured
 -
     old: '@file@'
-    new: '{file}'
+    new: file
 -
     old: '@filename@'
     new: '{filename}'
 -
     old: '@filter@'
-    new: '{filter}'
+    new: filter
 -
     old: '@flavor@ / @product@'
     new: '{flavor} / {product}'
@@ -579,13 +579,13 @@
     new: '{fw_name} {rv_name}'
 -
     old: '@geo@'
-    new: '{geo}'
+    new: geo
 -
     old: '@grade@ @ordinal@'
     new: '{grade} {ordinal}'
 -
     old: '@grade@'
-    new: '{grade}'
+    new: grade
 -
     old: '@group@ - @name@'
     new: '{group} - {name}'
@@ -594,19 +594,19 @@
     new: '{group} {name}'
 -
     old: '@group@'
-    new: '{group}'
+    new: group
 -
     old: '@health@'
-    new: '{health}'
+    new: health
 -
     old: '@hours@:@minutes@'
     new: '{hours}:{minutes}'
 -
     old: '@id@'
-    new: '{id}'
+    new: id
 -
     old: '@info@'
-    new: '{info}'
+    new: info
 -
     old: '@inventory-number@ - @title@'
     new: '{inventory_number} - {title}'
@@ -627,7 +627,7 @@
     new: '{kuup2ev}<br/>{kirjeldus}'
 -
     old: '@label-et@'
-    new: '{label_et}'
+    new: label_et
 -
     old: '@label@(@dataproperty@)'
     new: '{label}({dataproperty})'
@@ -651,19 +651,19 @@
     new: '{library_name} {publishing_date}'
 -
     old: '@link@'
-    new: '{link}'
+    new: link
 -
     old: '@location@, @year@'
     new: '{location}, {year}'
 -
     old: '@media@'
-    new: '{media}'
+    new: media
 -
     old: '@molecul-name@'
     new: '{molecul_name}'
 -
     old: '@name-et@'
-    new: '{name_et}'
+    new: name_et
 -
     old: '@name@ - @description@'
     new: '{name} - {description}'
@@ -684,7 +684,7 @@
     new: '{name}: {ingredient}'
 -
     old: '@name@'
-    new: '{name}'
+    new: name
 -
     old: '@name@<br/>@contact-name@<br/>Aadress @address@'
     new: '{name}<br/>{contact_name}<br/>Aadress {address}'
@@ -696,13 +696,13 @@
     new: '{nimetus} {date}'
 -
     old: '@nimetus@'
-    new: '{nimetus}'
+    new: nimetus
 -
     old: '@nimi@'
-    new: '{nimi}'
+    new: nimi
 -
     old: '@notes@'
-    new: '{notes}'
+    new: notes
 -
     old: '@number@ - @customerr@ @customer@'
     new: '{number} - {customerr} {customer}'
@@ -738,7 +738,7 @@
     new: '{number}-{letter}'
 -
     old: '@number@'
-    new: '{number}'
+    new: number
 -
     old: '@number@@letter@'
     new: '{number}{letter}'
@@ -750,19 +750,19 @@
     new: '{ordinal}. {name} ({data_property})'
 -
     old: '@ordinal@'
-    new: '{ordinal}'
+    new: ordinal
 -
     old: '@osakond@'
-    new: '{osakond}'
+    new: osakond
 -
     old: '@paragraph@'
-    new: '{paragraph}'
+    new: paragraph
 -
     old: '@parent@'
-    new: '{parent}'
+    new: parent
 -
     old: '@path@'
-    new: '{path}'
+    new: path
 -
     old: '@path@<br/>Eksponaate: @eksponaate@'
     new: '{path}<br/>Eksponaate: {eksponaate}'
@@ -786,16 +786,16 @@
     new: '{person} - {eksponaat}'
 -
     old: '@person@'
-    new: '{person}'
+    new: person
 -
     old: '@phone@ @address@'
     new: '{phone} {address}'
 -
     old: '@playlist@'
-    new: '{playlist}'
+    new: playlist
 -
     old: '@prefix@'
-    new: '{prefix}'
+    new: prefix
 -
     old: '@prefix@#n@suffix@'
     new: '{prefix}#n{suffix}'
@@ -804,22 +804,22 @@
     new: '{pretitle} {title}'
 -
     old: '@project@'
-    new: '{project}'
+    new: project
 -
     old: '@public@'
-    new: '{public}'
+    new: public
 -
     old: '@published@ @responsible@'
     new: '{published} {responsible}'
 -
     old: '@publishing-date@'
-    new: '{publishing_date}'
+    new: publishing_date
 -
     old: '@question@'
-    new: '{question}'
+    new: question
 -
     old: '@reason@'
-    new: '{reason}'
+    new: reason
 -
     old: '@reg-time@<br/>@conv-direction@ : @related-person@ : @conv-other-party@ : @conv-opdepartment@'
     new: '{reg_time}<br/>{conv_direction} : {related_person} : {conv_other_party} : {conv_opdepartment}'
@@ -831,7 +831,7 @@
     new: '{reg_time}<br/>{related_person}; {document_kind}; {document_issuer}'
 -
     old: '@region@'
-    new: '{region}'
+    new: region
 -
     old: '@registry-number@ : @title@'
     new: '{registry_number} : {title}'
@@ -840,10 +840,10 @@
     new: '{registry_number} ({date})'
 -
     old: '@relation-type@'
-    new: '{relation_type}'
+    new: relation_type
 -
     old: '@repressioonid@'
-    new: '{repressioonid}'
+    new: repressioonid
 -
     old: '@returning-date@ - @returned-date@'
     new: '{returning_date} - {returned_date}'
@@ -855,10 +855,10 @@
     new: '{saaja}: {eesmark}'
 -
     old: '@school@'
-    new: '{school}'
+    new: school
 -
     old: '@seisukord@'
-    new: '{seisukord}'
+    new: seisukord
 -
     old: '@series@@prefix@'
     new: '{series}{prefix}'
@@ -879,43 +879,43 @@
     new: '{start}..{end} {type}:{ordinal}'
 -
     old: '@storyteller@'
-    new: '{storyteller}'
+    new: storyteller
 -
     old: '@strain@'
-    new: '{strain}'
+    new: strain
 -
     old: '@subtitle@'
-    new: '{subtitle}'
+    new: subtitle
 -
     old: '@surname@, @forename@'
     new: '{surname}, {forename}'
 -
     old: '@syydistus@'
-    new: '{syydistus}'
+    new: syydistus
 -
     old: '@tag@ @caption@'
     new: '{tag} {caption}'
 -
     old: '@tag@'
-    new: '{tag}'
+    new: tag
 -
     old: '@target-region-name@'
-    new: '{target_region_name}'
+    new: target_region_name
 -
     old: '@teenus@'
     new: teenus
 -
     old: '@time@'
-    new: '{time}'
+    new: time
 -
     old: '@title-et@'
-    new: '{title_et}'
+    new: title_et
 -
     old: '@title@ @subtitle@ @notes@ @description@'
     new: '{title} {subtitle} {notes} {description}'
 -
     old: '@title@'
-    new: '{title}'
+    new: title
 -
     old: '@tootegrupp@ @suurus@ @nimetus@'
     new: '{tootegrupp} {suurus} {nimetus}'
@@ -927,7 +927,7 @@
     new: '{type} for {definition}'
 -
     old: '@url@'
-    new: '{url}'
+    new: url
 -
     old: '@valid-from@...@valid-to@'
     new: '{valid_from}…{valid_to}'
@@ -939,34 +939,34 @@
     new: '{width}x{height}'
 -
     old: '@year@ @author@'
-    new: '{year} {author}'
+    new: CONCAT(year, ' ',author)
 -
     old: '@year@'
     new: year
 -
     old: 'http://inventuur.entu.eu/#/eka/{self.id}/asset/asset-inventeerimisakt/{self.id}/vara-inventeerimisakt'
-    new: 'http://inventuur.entu.eu/#/eka/{id}/asset/asset-inventeerimisakt/{id}/vara-inventeerimisakt'
+    new: CONCAT('http://inventuur.entu.eu/#/eka/', id, '/asset/asset-inventeerimisakt/', id, '/vara-inventeerimisakt')
 -
     old: 'http://inventuur.entu.eu/#/eka/{self.id}/asset/asset-mahakandmisakt/{self.id}/vara-mahakandmisakt'
-    new: 'http://inventuur.entu.eu/#/eka/{id}/asset/asset-mahakandmisakt/{id}/vara-mahakandmisakt'
+    new: CONCAT('http://inventuur.entu.eu/#/eka/', id, '/asset/asset-mahakandmisakt/', id, '/vara-mahakandmisakt')
 -
     old: 'http://www.piletilevi.ee/mobile/est/#view=concert&concert={self.pl-id}'
-    new: 'http://www.piletilevi.ee/mobile/est/#view=concert&concert={pl_id}'
+    new: CONCAT('http://www.piletilevi.ee/mobile/est/#view=concert&concert=', pl_id)
 -
     old: 'https://{self.domain}'
     new: CONCAT('https://', domain)
 -
     old: 'https://inventuur.entu.eu/#/okupatsioon/{self.id}/eksponaat/eksponaat-cl-asukoht/*/cl-asukoht'
-    new: 'https://inventuur.entu.eu/#/okupatsioon/{id}/eksponaat/eksponaat-cl-asukoht/*/cl-asukoht'
+    new: CONCAT('https://inventuur.entu.eu/#/okupatsioon/', id, '/eksponaat/eksponaat-cl-asukoht/*/cl-asukoht')
 -
     old: 'https://inventuur.entu.eu/#/okupatsioon/{self.id}/eksponaat/eksponaat-represseeritu-t/*/represseeritu'
-    new: 'https://inventuur.entu.eu/#/okupatsioon/{id}/eksponaat/eksponaat-represseeritu_t/*/represseeritu'
+    new: CONCAT('https://inventuur.entu.eu/#/okupatsioon/', id, '/eksponaat/eksponaat-represseeritu_t/*/represseeritu')
 -
     old: 'https://inventuur.entu.eu/#/okupatsioon/{self.id}/eksponaat/eksponaat-sari/*/sari'
-    new: 'https://inventuur.entu.eu/#/okupatsioon/{id}/eksponaat/eksponaat-sari/*/sari'
+    new: CONCAT('https://inventuur.entu.eu/#/okupatsioon/', id, '/eksponaat/eksponaat-sari/*/sari')
 -
     old: 'Museaale: @eksponaate@<br/>Teavikuid: @eksemplare@'
-    new: CONCAT('Museaale: ', eksponaate, '<br/>Teavikuid: ', eksemplare)
+    new: "CONCAT('Museaale: ', eksponaate, '<br/>Teavikuid: ', eksemplare)"
 -
     old: 'Schedule: @layout@'
     new: CONCAT('Schedule: ', layout)
