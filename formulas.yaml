@@ -15,25 +15,25 @@
     new: '[{registry_number}]'
 -
     old: '{COUNT(self.child.copy.id)}'
-    new: '{COUNT(child.copy.id)}'
+    new: COUNT(child.copy.id)
 -
     old: '{COUNT(self.files)}'
-    new: '{COUNT(files)}'
+    new: COUNT(files)
 -
     old: '{COUNT(self.public-file)}'
-    new: '{COUNT(public_file)}'
+    new: COUNT(public_file)
 -
     old: '{COUNT(self.public-files)}'
-    new: '{COUNT(public_files)}'
+    new: COUNT(public_files)
 -
     old: '{COUNT(self.referrer.asset.id)}'
-    new: '{COUNT(referrer.asset.id)}'
+    new: COUNT(referrer.asset.id)
 -
     old: '{COUNT(self.referrer.eksemplar.asukoht)}'
-    new: '{COUNT(referrer.eksemplar.asukoht)}'
+    new: COUNT(referrer.eksemplar.asukoht)
 -
     old: '{COUNT(self.referrer.eksponaat.asukoht)}'
-    new: '{COUNT(referrer.eksponaat.asukoht)}'
+    new: COUNT(referrer.eksponaat.asukoht)
 -
     old: '{self._created}'
     new: '{_created}'
@@ -270,70 +270,70 @@
     new: '{tag.full_name_ru}'
 -
     old: '{SUM(self.child.*.budget-hp)}'
-    new: '{SUM(child.*.budget_hp)}'
+    new: SUM(child.*.budget_hp)
 -
     old: '{SUM(self.child.*.budget)}'
-    new: '{SUM(child.*.budget)}'
+    new: SUM(child.*.budget)
 -
     old: '{SUM(self.child.*.expenses-hp)}'
-    new: '{SUM(child.*.expenses_hp)}'
+    new: SUM(child.*.expenses_hp)
 -
     old: '{SUM(self.child.*.expenses)}'
-    new: '{SUM(child.*.expenses)}'
+    new: SUM(child.*.expenses)
 -
     old: '{SUM(self.child.*.funding-hp)}'
-    new: '{SUM(child.*.funding_hp)}'
+    new: SUM(child.*.funding_hp)
 -
     old: '{SUM(self.child.*.funding)}'
-    new: '{SUM(child.*.funding)}'
+    new: SUM(child.*.funding)
 -
     old: '{SUM(self.child.budget.expenses-hp)}'
-    new: '{SUM(child.budget.expenses_hp)}'
+    new: SUM(child.budget.expenses_hp)
 -
     old: '{SUM(self.child.budget.expenses)}'
-    new: '{SUM(child.budget.expenses)}'
+    new: SUM(child.budget.expenses)
 -
     old: '{SUM(self.child.budget.sum-hp)}'
-    new: '{SUM(child.budget.sum_hp)}'
+    new: SUM(child.budget.sum_hp)
 -
     old: '{SUM(self.child.budget.sum)}'
-    new: '{SUM(child.budget.sum)}'
+    new: SUM(child.budget.sum)
 -
     old: '{SUM(self.child.copy.price)}'
-    new: '{SUM(child.copy.price)}'
+    new: SUM(child.copy.price)
 -
     old: '{SUM(self.child.expense.sum-hp)}'
-    new: '{SUM(child.expense.sum_hp)}'
+    new: SUM(child.expense.sum_hp)
 -
     old: '{SUM(self.child.expense.sum)}'
-    new: '{SUM(child.expense.sum)}'
+    new: SUM(child.expense.sum)
 -
     old: '{SUM(self.child.funding-hp.actual-sum)}'
-    new: '{SUM(child.funding_hp.actual_sum)}'
+    new: SUM(child.funding_hp.actual_sum)
 -
     old: '{SUM(self.child.funding.actual-sum)+SUM(self.child.funding-hp.actual-sum)}'
-    new: '{SUM(child.funding.actual_sum) + SUM(child.funding_hp.actual_sum)}'
+    new: SUM(child.funding.actual_sum, child.funding_hp.actual_sum)
 -
     old: '{SUM(self.referrer.asset.value)}'
-    new: '{SUM(referrer.asset.value)}'
+    new: SUM(referrer.asset.value)
 -
     old: '{SUM(self.referrer.invoice-in.total)}'
-    new: '{SUM(referrer.invoice_in.total)}'
+    new: SUM(referrer.invoice_in.total)
 -
     old: '{SUM(self.referrer.invoice-in.vat)}'
-    new: '{SUM(referrer.invoice_in.vat)}'
+    new: SUM(referrer.invoice_in.vat)
 -
     old: '{SUM(self.referrer.invoice-out.total)}'
-    new: '{SUM(referrer.invoice_out.total)}'
+    new: SUM(referrer.invoice_out.total)
 -
     old: '{SUM(self.referrer.invoice-out.vat)}'
-    new: '{SUM(referrer.invoice_out.vat)}'
+    new: SUM(referrer.invoice_out.vat)
 -
     old: '@@'
-    new: '{}'
+    new:
 -
     old: '@aasta@ @kuu@'
-    new: '{aasta} {kuu}'
+    new: CONCAT(aasta, ' ', kuu)
 -
     old: '@address@'
     new: '{address}'
@@ -531,7 +531,7 @@
     new: '{equipment}'
 -
     old: '@esitaja@ arve nr. @number@'
-    new: '{esitaja} arve nr. {number}'
+    new: CONCAT(esitaja, ' arve nr. ', number)
 -
     old: '@et-name@ @performance@ @et-subtitle@ @resident@'
     new: '{et_name} {performance} {et_subtitle} {resident}'
@@ -564,7 +564,7 @@
     new: '{flavor} / {product}'
 -
     old: '@forename@ @surname@'
-    new: '{forename} {surname}'
+    new: CONCAT(forename, ' ', surname)
 -
     old: '@from@-@to@'
     new: '{from}-{to}'
@@ -711,10 +711,10 @@
     new: '{number} - {date}'
 -
     old: '@number@ - @issued-date@ … @due-date@ - @customer@'
-    new: '{number} - {issued_date} … {due_date} - {customer}'
+    new: CONCAT(number, ' - ', issued_date, ' … ', due_date, ' - ', customer)
 -
     old: '@number@ - @issued-date@ … @due-date@'
-    new: '{number} - {issued_date} … {due_date}'
+    new: CONCAT(number, ' - ', issued_date, ' … ', due_date,)
 -
     old: '@number@ @company@'
     new: '{number} {company}'
@@ -903,7 +903,7 @@
     new: '{target_region_name}'
 -
     old: '@teenus@'
-    new: '{teenus}'
+    new: teenus
 -
     old: '@time@'
     new: '{time}'
@@ -933,7 +933,7 @@
     new: '{valid_from}…{valid_to}'
 -
     old: '@varustus@'
-    new: '{varustus}'
+    new: varustus
 -
     old: '@width@x@height@'
     new: '{width}x{height}'
@@ -942,7 +942,7 @@
     new: '{year} {author}'
 -
     old: '@year@'
-    new: '{year}'
+    new: year
 -
     old: 'http://inventuur.entu.eu/#/eka/{self.id}/asset/asset-inventeerimisakt/{self.id}/vara-inventeerimisakt'
     new: 'http://inventuur.entu.eu/#/eka/{id}/asset/asset-inventeerimisakt/{id}/vara-inventeerimisakt'
@@ -954,7 +954,7 @@
     new: 'http://www.piletilevi.ee/mobile/est/#view=concert&concert={pl_id}'
 -
     old: 'https://{self.domain}'
-    new: 'https://{domain}'
+    new: CONCAT('https://', domain)
 -
     old: 'https://inventuur.entu.eu/#/okupatsioon/{self.id}/eksponaat/eksponaat-cl-asukoht/*/cl-asukoht'
     new: 'https://inventuur.entu.eu/#/okupatsioon/{id}/eksponaat/eksponaat-cl-asukoht/*/cl-asukoht'
@@ -966,7 +966,7 @@
     new: 'https://inventuur.entu.eu/#/okupatsioon/{id}/eksponaat/eksponaat-sari/*/sari'
 -
     old: 'Museaale: @eksponaate@<br/>Teavikuid: @eksemplare@'
-    new: 'Museaale: {eksponaate}<br/>Teavikuid: {eksemplare}'
+    new: CONCAT('Museaale: ', eksponaate, '<br/>Teavikuid: ', eksemplare)
 -
     old: 'Schedule: @layout@'
-    new: 'Schedule: {layout}'
+    new: CONCAT('Schedule: ', layout)
