@@ -1,18 +1,18 @@
 -
     old: ';{self.varustus.triipkood};{self.varustus.invnr};'
-    new: ';{varustus.triipkood};{varustus.invnr};'
+    new: CONCAT(';', varustus.triipkood, ';', varustus.invnr, ';')
 -
     old: '(@inkmd@) @description@'
-    new: '({inkmd}) {description}'
+    new: CONCAT('(', inkmd, ') ', description)
 -
     old: '(@kuup2ev@) @maksja@'
-    new: '({kuup2ev}) {maksja}'
+    new: CONCAT('(', kuup2ev, ') ', maksja)
 -
     old: '(@outkmd@) @description@'
-    new: '({outkmd}) {description}'
+    new: CONCAT('(', outkmd, ') ', description)
 -
     old: '[{self.registry-number}]'
-    new: '[{registry_number}]'
+    new: CONCAT('[', registry_number, ']')
 -
     old: '{COUNT(self.child.copy.id)}'
     new: COUNT(child.copy.id)
@@ -39,13 +39,13 @@
     new: _created
 -
     old: '{self.-contract.date}'
-    new: '{_contract.date}'
+    new: _contract.date
 -
     old: '{self.-contract.enddate}'
-    new: '{_contract.enddate}'
+    new: _contract.enddate
 -
     old: '{self.-contract.number}'
-    new: '{_contract.number}'
+    new: _contract.number
 -
     old: '{self.author} {self.title} {self.journal} {self.pages} {self.year}'
     new: '{author} {title} {journal} {pages} {year}'
@@ -60,7 +60,7 @@
     new: '{child.laenutuse_rida.barcode}'
 -
     old: '{self.childperson.group}'
-    new: '{childperson.group}'
+    new: childperson.group
 -
     old: '{self.funding - self.expenses}'
     new: '{funding - expenses}'
@@ -69,7 +69,7 @@
     new: '{funding_hp - expenses_hp}'
 -
     old: '{self.inventeerimisakt.date}'
-    new: '{inventeerimisakt.date}'
+    new: inventeerimisakt.date
 -
     old: '{self.parent..author}'
     new: '{parent.*.author}'
@@ -204,19 +204,19 @@
     new: '{parent.vastuv6tuakt.yleandmistingimus}'
 -
     old: '{self.parentperson.email}'
-    new: '{parentperson.email}'
+    new: parentperson.email
 -
     old: '{self.parentperson.idcode}'
-    new: '{parentperson.idcode}'
+    new: parentperson.idcode
 -
     old: '{self.parentperson.phone}'
-    new: '{parentperson.phone}'
+    new: parentperson.phone
 -
     old: '{self.person.name}'
-    new: '{person.name}'
+    new: person.name
 -
     old: '{self.premiere.start-time}'
-    new: '{premiere.start_time}'
+    new: premiere.start_time
 -
     old: '{self.referrer.contract.childperson}'
     new: '{referrer.contract.childperson}'
@@ -225,34 +225,34 @@
     new: '{referrer.flavor.molecul_name}'
 -
     old: '{self.region.fullName}'
-    new: '{region.full_name}'
+    new: region.full_name
 -
     old: '{self.represseeritu-t.lisainfo}'
-    new: '{represseeritu_t.lisainfo}'
+    new: represseeritu_t.lisainfo
 -
     old: '{self.represseeritu-t.memento}'
-    new: '{represseeritu_t.memento}'
+    new: represseeritu_t.memento
 -
     old: '{self.represseeritu-t.mitteavalikLisainfo}'
-    new: '{represseeritu_t.mitteavalikLisainfo}'
+    new: represseeritu_t.mitteavalikLisainfo
 -
     old: '{self.represseeritu-t.syydistus}'
-    new: '{represseeritu_t.syydistus}'
+    new: represseeritu_t.syydistus
 -
     old: '{self.screen-group.published}'
-    new: '{screen_group.published}'
+    new: screen_group.published
 -
     old: '{self.storyteller.birthYear}'
-    new: '{storyteller.birthYear}'
+    new: storyteller.birthYear
 -
     old: '{self.subject.fullName-en}'
-    new: '{subject.full_name_en}'
+    new: subject.full_name_en
 -
     old: '{self.subject.fullName-et}'
-    new: '{subject.full_name_et}'
+    new: subject.full_name_et
 -
     old: '{self.subject.fullName-ru}'
-    new: '{subject.full_name_ru}'
+    new: subject.full_name_ru
 -
     old: '{self.sum - self.expenses}'
     new: '{sum - expenses}'
@@ -261,13 +261,13 @@
     new: '{sum_hp - expenses_hp}'
 -
     old: '{self.tag.fullName-en}'
-    new: '{tag.full_name_en}'
+    new: tag.full_name_en
 -
     old: '{self.tag.fullName-et}'
-    new: '{tag.full_name_et}'
+    new: tag.full_name_et
 -
     old: '{self.tag.fullName-ru}'
-    new: '{tag.full_name_ru}'
+    new: tag.full_name_ru
 -
     old: '{SUM(self.child.*.budget-hp)}'
     new: SUM(child.*.budget_hp)
@@ -969,4 +969,4 @@
     new: "CONCAT('Museaale: ', eksponaate, '<br/>Teavikuid: ', eksemplare)"
 -
     old: 'Schedule: @layout@'
-    new: CONCAT('Schedule: ', layout)
+    new: "CONCAT('Schedule: ', layout)"
