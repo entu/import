@@ -600,7 +600,7 @@
     new: health
 -
     old: '@hours@:@minutes@'
-    new: CONCAT(hours, ':', minutes)
+    new: "CONCAT(hours, ':', minutes)"
 -
     old: '@id@'
     new: id
@@ -681,7 +681,7 @@
     new: CONCAT(name, ' ', equipment, ' ', eluent, ' ', column, ' ', detector, ' ', sample, ' ', created)
 -
     old: '@name@: @ingredient@'
-    new: CONCAT(name, ': ', ingredient)
+    new: "CONCAT(name, ': ', ingredient)"
 -
     old: '@name@'
     new: name
@@ -771,7 +771,7 @@
     new: CONCAT(performance, ' ', en_subtitle, ' ', resident)
 -
     old: '@performer@: @title@'
-    new: CONCAT(performer, ': ', title)
+    new: "CONCAT(performer, ': ', title)"
 -
     old: '@period@ @parentperson@/@childperson@'
     new: CONCAT(period, ' ', parentperson, '/', childperson)
@@ -852,7 +852,7 @@
     new: CONCAT(room, ' - ', person)
 -
     old: '@saaja@: @eesmark@'
-    new: CONCAT(saaja, ': ', eesmark)
+    new: "CONCAT(saaja, ': ', eesmark)"
 -
     old: '@school@'
     new: school
@@ -876,7 +876,7 @@
     new: CONCAT(start, '-', end)
 -
     old: '@start@..@end@ @type@:@ordinal@'
-    new: CONCAT(start, '..', end, ' ', type, ':', ordinal)
+    new: "CONCAT(start, '..', end, ' ', type, ':', ordinal)"
 -
     old: '@storyteller@'
     new: storyteller
