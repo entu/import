@@ -63,10 +63,10 @@
     new: childperson.group
 -
     old: '{self.funding - self.expenses}'
-    new: '{funding - expenses}'
+    new: SUBTRACT(funding, expenses)
 -
     old: '{self.funding-hp - self.expenses-hp}'
-    new: '{funding_hp - expenses_hp}'
+    new: SUBTRACT(funding_hp, expenses_hp)
 -
     old: '{self.inventeerimisakt.date}'
     new: inventeerimisakt.date
@@ -255,10 +255,10 @@
     new: subject.full_name_ru
 -
     old: '{self.sum - self.expenses}'
-    new: '{sum - expenses}'
+    new: SUBTRACT(sum, expenses)
 -
     old: '{self.sum-hp - self.expenses-hp}'
-    new: '{sum_hp - expenses_hp}'
+    new: SUBTRACT(sum_hp, expenses_hp)
 -
     old: '{self.tag.fullName-en}'
     new: tag.full_name_en
