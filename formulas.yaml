@@ -765,7 +765,7 @@
     new: path
 -
     old: '@path@<br/>Eksponaate: @eksponaate@'
-    new: CONCAT(path, '<br/>Eksponaate: ', eksponaate)
+    new: "CONCAT(path, '<br/>Eksponaate: ', eksponaate)"
 -
     old: '@performance@ @en-subtitle@ @resident@'
     new: CONCAT(performance, ' ', en_subtitle, ' ', resident)
