@@ -444,7 +444,7 @@
     new: CONCAT(conference, ', ', year)
 -
     old: '@conv-direction@ : @related-person@ : @conv-other-party@ : @conv-opdepartment@'
-    new: CONCAT(conv_direction, ' : ', related_person, ' : ', conv_other_party, ' : ', conv_opdepartment)
+    new: "CONCAT(conv_direction, ' : ', related_person, ' : ', conv_other_party, ' : ', conv_opdepartment)"
 -
     old: '@customer@'
     new: customer
@@ -822,7 +822,7 @@
     new: reason
 -
     old: '@reg-time@<br/>@conv-direction@ : @related-person@ : @conv-other-party@ : @conv-opdepartment@'
-    new: CONCAT(reg_time, '<br/>', conv_direction, ' : ', related_person, ' : ', conv_other_party, ' : ', conv_opdepartment)
+    new: "CONCAT(reg_time, '<br/>', conv_direction, ' : ', related_person, ' : ', conv_other_party, ' : ', conv_opdepartment)"
 -
     old: '@reg-time@<br/>@related-person@, @start-datetime@ - @end-datetime@'
     new: CONCAT(reg_time, '<br/>', related_person, ', 'start_datetime, ' - ', end_datetime}'
@@ -834,7 +834,7 @@
     new: region
 -
     old: '@registry-number@ : @title@'
-    new: CONCAT(registry_number, ' : ', title)
+    new: "CONCAT(registry_number, ' : ', title)"
 -
     old: '@registry-number@ (@date@)'
     new: CONCAT(registry_number, ' (', date, ')')
