@@ -338,7 +338,11 @@ FROM (
     /* entity translation (label, label_plural, ...) fields */
     UNION SELECT
         entity_definition_keyname AS entity_id,
-        TRIM(field) AS property_definition,
+        CASE TRIM(field)
+            WHEN 'label' THEN 'name'
+            WHEN 'label_plural' THEN 'plural_name'
+            ELSE TRIM(field)
+        END AS property_definition,
         'string' AS property_type,
         CASE language
             WHEN 'estonian' THEN 'et'
