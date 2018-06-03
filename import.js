@@ -172,7 +172,7 @@ const importProps = (mysqlDb, callback) => {
                 _.set(x, 'deleted.at', x.deleted_at)
                 _.unset(x, 'deleted_at')
               }
-              if (x.datatype === 'datetime') {
+              if (x.datatype === 'datetime' || x.datatype === 'atby') {
                 _.set(x, 'datetime', x.date)
                 _.unset(x, 'date')
               }
@@ -295,7 +295,7 @@ const importProps = (mysqlDb, callback) => {
                   _.unset(changed, 'by')
                 }
 
-                changed.date = createdAt
+                changed.datetime = createdAt
               }
 
               if (deletedAt && (!changed.at || changed.at < deletedAt)) {
@@ -305,7 +305,7 @@ const importProps = (mysqlDb, callback) => {
                   _.unset(changed, 'by')
                 }
 
-                changed.date = deletedAt
+                changed.datetime = deletedAt
               }
             })
             properties = properties.filter(p => _.isEmpty(p.deleted))
