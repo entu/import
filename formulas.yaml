@@ -970,3 +970,6 @@
 -
     old: 'Schedule: @layout@'
     new: "CONCAT('Schedule: ', layout)"
+-
+    old: '@forename@ @surname@'
+    new: CONCAT(forename, ' ', surname)
