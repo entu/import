@@ -973,3 +973,6 @@
 -
     old: '@eesnimi@ @perenimi@'
     new: CONCAT(eesnimi, ' ', perenimi)
+-
+    old: '@kirjekood@'
+    new: kirjekood
