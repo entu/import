@@ -1,4 +1,4 @@
-FROM node:8-slim
+FROM node:10-slim
 
 ADD ./ /usr/src/entu-import
 RUN cd /usr/src/entu-import && npm --silent install
