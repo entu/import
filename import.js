@@ -126,9 +126,9 @@ const importProps = (mysqlDb, callback) => {
       var count = limit
       var offset = 0
 
-      async.whilst(
-        () => { return count === limit },
-        (callback) => {
+      // async.whilst(
+      //   () => { return count === limit },
+      //   (callback) => {
           sqlCon.query(require('./sql/get_properties.sql'), [limit, offset], (err, props) => {
             if (err) { return callback(err) }
 
@@ -209,7 +209,7 @@ const importProps = (mysqlDb, callback) => {
 
             mongoCon.db(mysqlDb).collection('property').insertMany(correctedProps, callback)
           })
-        }, callback)
+        // }, callback)
     },
 
     (callback) => {
