@@ -351,7 +351,7 @@ const importProps = (mysqlDb, callback) => {
             }
 
             if (!_.isEmpty(p)) {
-              mongoCon.db(mysqlDb).collection('entity').update({ _id: entity._id }, { $set: p }, (err) => {
+              mongoCon.db(mysqlDb).collection('entity').updateOne({ _id: entity._id }, { $set: p }, (err) => {
                 if (err) { return callback(err) }
 
                 l--
