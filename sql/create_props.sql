@@ -253,6 +253,7 @@ AND pd.dataproperty NOT IN (
     'database-password',
     'database-port',
     'database-ssl-path',
+    'database-ssl-ca',
     'database-user',
     'mongodb'
 )
