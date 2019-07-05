@@ -11,12 +11,12 @@ SELECT
     value_decimal AS `decimal`,
     CASE type
         WHEN '_created' THEN created_at
-        WHEN '_deleted' THEN deleted_at
+        WHEN '_deleted' THEN created_at
         ELSE value_date
     END AS `date`,
     CASE type
         WHEN '_created' THEN created_by
-        WHEN '_deleted' THEN deleted_by
+        WHEN '_deleted' THEN created_by
         ELSE value_reference
     END AS `reference`,
     created_at,
