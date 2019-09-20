@@ -723,14 +723,6 @@ FROM (
         NULL AS value_integer,
         NULL AS value_reference
     UNION SELECT
-        'menu_conf_property' AS entity_id,
-        '_type' AS property_definition,
-        'string' AS property_type,
-        NULL property_language,
-        'menu' AS value_text,
-        NULL AS value_integer,
-        NULL AS value_reference
-    UNION SELECT
         'menu_conf_menu' AS entity_id,
         '_type' AS property_definition,
         'string' AS property_type,
@@ -742,14 +734,6 @@ FROM (
     /* conf menu _public */
     UNION SELECT
         'menu_conf_entity' AS entity_id,
-        '_public' AS property_definition,
-        'boolean' AS property_type,
-        NULL AS property_language,
-        NULL AS value_text,
-        1 AS value_integer,
-        NULL AS value_reference
-    UNION SELECT
-        'menu_conf_property' AS entity_id,
         '_public' AS property_definition,
         'boolean' AS property_type,
         NULL AS property_language,
@@ -775,14 +759,6 @@ FROM (
         NULL AS value_integer,
         NULL AS value_reference
     UNION SELECT
-        'menu_conf_property' AS entity_id,
-        'group' AS property_definition,
-        'string' AS property_type,
-        'et' property_language,
-        'Seaded' AS value_text,
-        NULL AS value_integer,
-        NULL AS value_reference
-    UNION SELECT
         'menu_conf_menu' AS entity_id,
         'group' AS property_definition,
         'string' AS property_type,
@@ -793,14 +769,6 @@ FROM (
 
     UNION SELECT
         'menu_conf_entity' AS entity_id,
-        'group' AS property_definition,
-        'string' AS property_type,
-        'en' property_language,
-        'Configuration' AS value_text,
-        NULL AS value_integer,
-        NULL AS value_reference
-    UNION SELECT
-        'menu_conf_property' AS entity_id,
         'group' AS property_definition,
         'string' AS property_type,
         'en' property_language,
@@ -826,14 +794,6 @@ FROM (
         NULL AS value_integer,
         NULL AS value_reference
     UNION SELECT
-        'menu_conf_property' AS entity_id,
-        'name' AS property_definition,
-        'string' AS property_type,
-        'et' property_language,
-        'Parameetrid' AS value_text,
-        NULL AS value_integer,
-        NULL AS value_reference
-    UNION SELECT
         'menu_conf_menu' AS entity_id,
         'name' AS property_definition,
         'string' AS property_type,
@@ -848,14 +808,6 @@ FROM (
         'string' AS property_type,
         'en' property_language,
         'Entities' AS value_text,
-        NULL AS value_integer,
-        NULL AS value_reference
-    UNION SELECT
-        'menu_conf_property' AS entity_id,
-        'name' AS property_definition,
-        'string' AS property_type,
-        'en' property_language,
-        'Properties' AS value_text,
         NULL AS value_integer,
         NULL AS value_reference
     UNION SELECT
@@ -877,14 +829,6 @@ FROM (
         NULL AS value_integer,
         NULL AS value_reference
     UNION SELECT
-        'menu_conf_property' AS entity_id,
-        'query' AS property_definition,
-        'string' AS property_type,
-        NULL property_language,
-        '_type.string=property' AS value_text,
-        NULL AS value_integer,
-        NULL AS value_reference
-    UNION SELECT
         'menu_conf_menu' AS entity_id,
         'query' AS property_definition,
         'string' AS property_type,
@@ -903,14 +847,6 @@ FROM (
         1000 AS value_integer,
         NULL AS value_reference
     UNION SELECT
-        'menu_conf_property' AS entity_id,
-        'ordinal' AS property_definition,
-        'integer' AS property_type,
-        NULL property_language,
-        NULL AS value_text,
-        1000 AS value_integer,
-        NULL AS value_reference
-    UNION SELECT
         'menu_conf_menu' AS entity_id,
         'ordinal' AS property_definition,
         'integer' AS property_type,
@@ -918,7 +854,6 @@ FROM (
         NULL AS value_text,
         1000 AS value_integer,
         NULL AS value_reference
-
 ) AS x
 WHERE NULLIF(TRIM(entity_id), '') IS NOT NULL
 ORDER BY
