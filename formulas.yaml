@@ -612,10 +612,10 @@
     new: CONCAT(inventory_number, ' - ', title)
 -
     old: '@inventory-number@ @barcode@ @title@'
-    new: CONCAT(inventory_number, ' ', barcode, ' ',title)
+    new: CONCAT(inventory_number, ' ', barcode, ' ', title)
 -
     old: '@inventory-number@ @title@ @number@'
-    new: CONCAT(inventory_number, ' ', title, ' ',number)
+    new: CONCAT(inventory_number, ' ', title, ' ', number)
 -
     old: '@inventory-number@ @title@'
     new: CONCAT(inventory_number, ' ', title)
@@ -825,10 +825,10 @@
     new: "CONCAT(reg_time, '<br/>', conv_direction, ' : ', related_person, ' : ', conv_other_party, ' : ', conv_opdepartment)"
 -
     old: '@reg-time@<br/>@related-person@, @start-datetime@ - @end-datetime@'
-    new: CONCAT(reg_time, '<br/>', related_person, ', 'start_datetime, ' - ', end_datetime}'
+    new: CONCAT(reg_time, '<br/>', related_person, ', ', start_datetime, ' - ', end_datetime)
 -
     old: '@reg-time@<br/>@related-person@; @document-kind@; @document-issuer@'
-    new: CONCAT(reg_time, '<br/>', related_person}; {document_kind}; {document_issuer}'
+    new: CONCAT(reg_time, '<br/>', related_person, '; ', document_kind, '; ', document_issuer)
 -
     old: '@region@'
     new: region
@@ -939,7 +939,7 @@
     new: CONCAT(width, 'x', height)
 -
     old: '@year@ @author@'
-    new: CONCAT(year, ' ',author)
+    new: CONCAT(year, ' ', author)
 -
     old: '@year@'
     new: year
