@@ -274,7 +274,7 @@ SELECT
     NULLIF(TRIM(value_reference), '') AS value_reference
 FROM (
 
-    /* entity keynames */
+    /* entity key */
     SELECT
         keyname AS entity_id,
         'key' AS property_definition,
@@ -371,13 +371,17 @@ FROM (
     WHERE entity_definition_keyname IS NOT NULL
     AND relationship_definition_keyname IN ('allowed-child', 'default-parent', 'optional-parent')
 
-    /* property keynames */
+    /* property key */
     UNION SELECT
         CONCAT(entity_definition_keyname, '_', dataproperty) AS entity_id,
         'key' AS property_definition,
         'string' AS property_type,
         NULL AS property_language,
-        LOWER(REPLACE(dataproperty, '-', '_')) AS value_text,
+        IF(
+            dataproperty = 'title',
+            'name',
+            LOWER(REPLACE(dataproperty, '-', '_'))
+        ) AS value_text,
         NULL AS value_integer,
         NULL AS value_reference
     FROM property_definition
@@ -634,7 +638,7 @@ FROM (
     AND pd.entity_definition_keyname IN (SELECT keyname FROM entity_definition)
     AND t.property_definition_keyname IS NOT NULL
 
-    /* menu keynames */
+    /* menu key */
     UNION SELECT
         CONCAT('menu_', entity_definition_keyname) AS entity_id,
         '_type' AS property_definition,
@@ -712,7 +716,7 @@ FROM (
     GROUP BY
         entity_definition_keyname
 
-    /* conf menu keynames */
+    /* conf menu key */
     UNION SELECT
         'menu_conf_entity' AS entity_id,
         '_type' AS property_definition,
