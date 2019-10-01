@@ -367,8 +367,7 @@ FROM (
         NULL AS value_text,
         NULL AS value_integer,
         IFNULL(related_entity_id, LOWER(REPLACE(related_entity_definition_keyname, '-', '_'))) AS value_reference
-    FROM
-        relationship
+    FROM relationship
     WHERE entity_definition_keyname IS NOT NULL
     AND relationship_definition_keyname IN ('allowed-child', 'default-parent', 'optional-parent')
 
@@ -378,7 +377,7 @@ FROM (
         'key' AS property_definition,
         'string' AS property_type,
         NULL AS property_language,
-        LOWER(REPLACE(keyname, '-', '_')) AS value_text,
+        LOWER(REPLACE(dataproperty, '-', '_')) AS value_text,
         NULL AS value_integer,
         NULL AS value_reference
     FROM property_definition
