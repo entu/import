@@ -774,11 +774,11 @@ FROM (
     UNION SELECT
         CONCAT('menu_', TRIM(LOWER(REPLACE(entity_definition_keyname, '-', '_')))) AS entity_id,
         'add' AS property_definition,
-        'json' AS property_type,
+        'reference' AS property_type,
         NULL property_language,
         TRIM(LOWER(REPLACE(entity_definition_keyname, '-', '_'))) AS value_text,
         NULL AS value_integer,
-        related_entity_id AS value_reference
+        NULL AS value_reference
     FROM relationship
     WHERE relationship_definition_keyname = 'optional-parent'
     AND is_deleted = 0
