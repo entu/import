@@ -676,7 +676,7 @@ FROM (
 
     /* menu key */
     UNION SELECT
-        CONCAT('menu_', entity_definition_keyname) AS entity_id,
+        CONCAT('menu_', TRIM(LOWER(REPLACE(entity_definition_keyname, '-', '_')))) AS entity_id,
         '_type' AS property_definition,
         'string' AS property_type,
         NULL property_language,
@@ -689,7 +689,7 @@ FROM (
 
     /* menu rights */
     UNION SELECT
-        CONCAT('menu_', entity_definition_keyname) AS entity_id,
+        CONCAT('menu_', TRIM(LOWER(REPLACE(entity_definition_keyname, '-', '_')))) AS entity_id,
         CASE TRIM(users.user)
             WHEN 'argoroots@gmail.com' OR 'mihkel.putrinsh@gmail.com' THEN '_owner'
             ELSE '_viewer'
@@ -720,7 +720,7 @@ FROM (
 
     /* menu group */
     UNION SELECT
-        CONCAT('menu_', entity_definition_keyname) AS entity_id,
+        CONCAT('menu_', TRIM(LOWER(REPLACE(entity_definition_keyname, '-', '_')))) AS entity_id,
         'group' AS property_definition,
         'string' AS property_type,
         CASE language
@@ -737,7 +737,7 @@ FROM (
 
     /* menu name */
     UNION SELECT
-        CONCAT('menu_', entity_definition_keyname) AS entity_id,
+        CONCAT('menu_', TRIM(LOWER(REPLACE(entity_definition_keyname, '-', '_')))) AS entity_id,
         'name' AS property_definition,
         'string' AS property_type,
         CASE language
@@ -757,7 +757,7 @@ FROM (
 
     /* menu query */
     UNION SELECT
-        CONCAT('menu_', entity_definition_keyname) AS entity_id,
+        CONCAT('menu_', TRIM(LOWER(REPLACE(entity_definition_keyname, '-', '_')))) AS entity_id,
         'query' AS property_definition,
         'string' AS property_type,
         NULL property_language,
@@ -767,6 +767,21 @@ FROM (
     FROM translation
     WHERE field = 'menu'
     AND entity_definition_keyname NOT LIKE 'conf-%'
+    GROUP BY
+        entity_definition_keyname
+
+    /* menu add definitions */
+    UNION SELECT
+        CONCAT('menu_', TRIM(LOWER(REPLACE(entity_definition_keyname, '-', '_')))) AS entity_id,
+        'add' AS property_definition,
+        'json' AS property_type,
+        NULL property_language,
+        TRIM(LOWER(REPLACE(entity_definition_keyname, '-', '_'))) AS value_text,
+        NULL AS value_integer,
+        related_entity_id AS value_reference
+    FROM relationship
+    WHERE relationship_definition_keyname = 'optional-parent'
+    AND is_deleted = 0
     GROUP BY
         entity_definition_keyname
 
