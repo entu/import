@@ -776,9 +776,9 @@ FROM (
         'add' AS property_definition,
         'reference' AS property_type,
         NULL property_language,
-        TRIM(LOWER(REPLACE(entity_definition_keyname, '-', '_'))) AS value_text,
+        NULL AS value_text,
         NULL AS value_integer,
-        NULL AS value_reference
+        TRIM(LOWER(REPLACE(entity_definition_keyname, '-', '_'))) AS value_reference
     FROM relationship
     WHERE relationship_definition_keyname = 'optional-parent'
     AND is_deleted = 0
