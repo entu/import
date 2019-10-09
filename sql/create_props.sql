@@ -298,16 +298,34 @@ FROM (
     FROM entity_definition
     WHERE keyname NOT LIKE 'conf-%'
 
-    /* entity _public */
+    /* entity rights */
     UNION SELECT
         keyname AS entity_id,
-        '_public' AS property_definition,
-        'boolean' AS property_type,
+        CASE TRIM(users.user)
+            WHEN 'argoroots@gmail.com' OR 'mihkel.putrinsh@gmail.com' THEN '_owner'
+            ELSE '_viewer'
+        END AS property_definition,
+        'reference' AS property_type,
         NULL AS property_language,
         NULL AS value_text,
-        1 AS value_integer,
-        NULL AS value_reference
-    FROM entity_definition
+        NULL AS value_integer,
+        users.id AS value_reference
+    FROM
+        entity_definition,
+        (
+            SELECT
+                entity.id,
+                property.value_string AS user
+            FROM
+                property,
+                entity,
+                property_definition
+            WHERE entity.id = property.entity_id
+            AND property_definition.keyname = property_definition_keyname
+            AND property.is_deleted = 0
+            AND entity.is_deleted = 0
+            AND property_definition.dataproperty = 'entu-user'
+        ) AS users
     WHERE keyname NOT LIKE 'conf-%'
 
     /* entity open-after-add properties */
@@ -403,16 +421,34 @@ FROM (
     AND entity_definition_keyname NOT LIKE 'conf-%'
     AND entity_definition_keyname IN (SELECT keyname FROM entity_definition)
 
-    /* property _public */
+    /* property rights */
     UNION SELECT
         CONCAT(entity_definition_keyname, '_', dataproperty) AS entity_id,
-        '_public' AS property_definition,
-        'boolean' AS property_type,
+        CASE TRIM(users.user)
+            WHEN 'argoroots@gmail.com' OR 'mihkel.putrinsh@gmail.com' THEN '_owner'
+            ELSE '_viewer'
+        END AS property_definition,
+        'reference' AS property_type,
         NULL AS property_language,
         NULL AS value_text,
-        1 AS value_integer,
-        NULL AS value_reference
-    FROM property_definition
+        NULL AS value_integer,
+        users.id AS value_reference
+    FROM
+        property_definition,
+        (
+            SELECT
+                entity.id,
+                property.value_string AS user
+            FROM
+                property,
+                entity,
+                property_definition
+            WHERE entity.id = property.entity_id
+            AND property_definition.keyname = property_definition_keyname
+            AND property.is_deleted = 0
+            AND entity.is_deleted = 0
+            AND property_definition.dataproperty = 'entu-user'
+        ) AS users
     WHERE dataproperty NOT IN ('entu-changed-at', 'entu-changed-by', 'entu-created-at', 'entu-created-by')
     AND entity_definition_keyname NOT LIKE 'conf-%'
     AND entity_definition_keyname IN (SELECT keyname FROM entity_definition)
@@ -597,7 +633,7 @@ FROM (
     AND entity_definition_keyname IN (SELECT keyname FROM entity_definition)
     AND NULLIF(search < 1, 1) IS NOT NULL
 
-    /* property has classifier */
+    /* property has classifier (reference property) */
     UNION SELECT
         CONCAT(entity_definition_keyname, '_', dataproperty) AS entity_id,
         'classifier' AS property_definition,
@@ -651,16 +687,34 @@ FROM (
     WHERE field = 'menu'
     AND entity_definition_keyname NOT LIKE 'conf-%'
 
-    /* menu _public */
+    /* menu rights */
     UNION SELECT
         CONCAT('menu_', entity_definition_keyname) AS entity_id,
-        '_public' AS property_definition,
-        'boolean' AS property_type,
+        CASE TRIM(users.user)
+            WHEN 'argoroots@gmail.com' OR 'mihkel.putrinsh@gmail.com' THEN '_owner'
+            ELSE '_viewer'
+        END AS property_definition,
+        'reference' AS property_type,
         NULL AS property_language,
         NULL AS value_text,
-        1 AS value_integer,
-        NULL AS value_reference
-    FROM translation
+        NULL AS value_integer,
+        users.id AS value_reference
+    FROM
+        translation,
+        (
+            SELECT
+                entity.id,
+                property.value_string AS user
+            FROM
+                property,
+                entity,
+                property_definition
+            WHERE entity.id = property.entity_id
+            AND property_definition.keyname = property_definition_keyname
+            AND property.is_deleted = 0
+            AND entity.is_deleted = 0
+            AND property_definition.dataproperty = 'entu-user'
+        ) AS users
     WHERE field = 'menu'
     AND entity_definition_keyname NOT LIKE 'conf-%'
 
@@ -734,23 +788,57 @@ FROM (
         NULL AS value_integer,
         NULL AS value_reference
 
-    /* conf menu _public */
+    /* conf menu rights */
     UNION SELECT
         'menu_conf_entity' AS entity_id,
-        '_public' AS property_definition,
-        'boolean' AS property_type,
+        CASE TRIM(users.user)
+            WHEN 'argoroots@gmail.com' OR 'mihkel.putrinsh@gmail.com' THEN '_owner'
+            ELSE '_viewer'
+        END AS property_definition,
+        'reference' AS property_type,
         NULL AS property_language,
         NULL AS value_text,
-        1 AS value_integer,
-        NULL AS value_reference
+        NULL AS value_integer,
+        users.id AS value_reference
+    FROM (
+        SELECT
+            entity.id,
+            property.value_string AS user
+        FROM
+            property,
+            entity,
+            property_definition
+        WHERE entity.id = property.entity_id
+        AND property_definition.keyname = property_definition_keyname
+        AND property.is_deleted = 0
+        AND entity.is_deleted = 0
+        AND property_definition.dataproperty = 'entu-user'
+    ) AS users
     UNION SELECT
         'menu_conf_menu' AS entity_id,
-        '_public' AS property_definition,
-        'boolean' AS property_type,
+        CASE TRIM(users.user)
+            WHEN 'argoroots@gmail.com' OR 'mihkel.putrinsh@gmail.com' THEN '_owner'
+            ELSE '_viewer'
+        END AS property_definition,
+        'reference' AS property_type,
         NULL AS property_language,
         NULL AS value_text,
-        1 AS value_integer,
-        NULL AS value_reference
+        NULL AS value_integer,
+        users.id AS value_reference
+    FROM (
+        SELECT
+            entity.id,
+            property.value_string AS user
+        FROM
+            property,
+            entity,
+            property_definition
+        WHERE entity.id = property.entity_id
+        AND property_definition.keyname = property_definition_keyname
+        AND property.is_deleted = 0
+        AND entity.is_deleted = 0
+        AND property_definition.dataproperty = 'entu-user'
+    ) AS users
 
     /* conf menu group */
     UNION SELECT
