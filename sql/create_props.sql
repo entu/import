@@ -391,7 +391,7 @@ FROM (
 
     /* entity add from menu */
     UNION SELECT
-        entity_definition_keyname
+        entity_definition_keyname,
         'add_from_menu' AS property_definition,
         'reference' AS property_type,
         NULL AS property_language,
