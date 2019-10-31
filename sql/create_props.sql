@@ -376,7 +376,7 @@ FROM (
     AND field NOT IN ('public', 'menu', 'displayname')
     AND entity_definition_keyname IS NOT NULL
 
-    /* entity allowed-child, default-parent, optional-parent */
+    /* entity allowed-child, default-parent */
     UNION SELECT
         entity_definition_keyname,
         relationship_definition_keyname AS property_definition,
@@ -387,7 +387,23 @@ FROM (
         IFNULL(related_entity_id, LOWER(REPLACE(related_entity_definition_keyname, '-', '_'))) AS value_reference
     FROM relationship
     WHERE entity_definition_keyname IS NOT NULL
-    AND relationship_definition_keyname IN ('allowed-child', 'default-parent', 'optional-parent')
+    AND relationship_definition_keyname IN ('allowed-child', 'default-parent')
+
+    /* entity add from menu */
+    UNION SELECT
+        entity_definition_keyname
+        'add_from_menu' AS property_definition,
+        'reference' AS property_type,
+        NULL AS property_language,
+        NULL AS value_text,
+        NULL AS value_integer,
+        CONCAT('menu_', TRIM(LOWER(REPLACE(entity_definition_keyname, '-', '_')))) AS value_reference
+    FROM relationship
+    WHERE relationship_definition_keyname = 'optional-parent'
+    AND is_deleted = 0
+    GROUP BY
+        entity_definition_keyname
+
 
     /* property key */
     UNION SELECT
@@ -767,21 +783,6 @@ FROM (
     FROM translation
     WHERE field = 'menu'
     AND entity_definition_keyname NOT LIKE 'conf-%'
-    GROUP BY
-        entity_definition_keyname
-
-    /* menu add definitions */
-    UNION SELECT
-        CONCAT('menu_', TRIM(LOWER(REPLACE(entity_definition_keyname, '-', '_')))) AS entity_id,
-        'add' AS property_definition,
-        'reference' AS property_type,
-        NULL property_language,
-        NULL AS value_text,
-        NULL AS value_integer,
-        TRIM(LOWER(REPLACE(entity_definition_keyname, '-', '_'))) AS value_reference
-    FROM relationship
-    WHERE relationship_definition_keyname = 'optional-parent'
-    AND is_deleted = 0
     GROUP BY
         entity_definition_keyname
 
