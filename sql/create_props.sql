@@ -376,7 +376,7 @@ FROM (
     AND field NOT IN ('public', 'menu', 'displayname')
     AND entity_definition_keyname IS NOT NULL
 
-    /* entity allowed-child, default-parent */
+    /* entity allowed-child, default-parent, optional-parent */
     UNION SELECT
         entity_definition_keyname,
         relationship_definition_keyname AS property_definition,
@@ -387,7 +387,7 @@ FROM (
         IFNULL(related_entity_id, LOWER(REPLACE(related_entity_definition_keyname, '-', '_'))) AS value_reference
     FROM relationship
     WHERE entity_definition_keyname IS NOT NULL
-    AND relationship_definition_keyname IN ('allowed-child', 'default-parent')
+    AND relationship_definition_keyname IN ('allowed-child', 'default-parent', 'optional-parent')
 
     /* entity add from menu */
     UNION SELECT
