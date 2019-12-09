@@ -122,7 +122,7 @@ const importProps = (mysqlDb, callback) => {
     (callback) => {
       log('insert props to mongodb')
 
-      var limit = 100000
+      var limit = 10000000
       var count = limit
       var offset = 0
 
