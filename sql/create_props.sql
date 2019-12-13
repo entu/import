@@ -277,7 +277,7 @@ FROM (
     /* entity key */
     SELECT
         keyname AS entity_id,
-        'key' AS property_definition,
+        'name' AS property_definition,
         'string' AS property_type,
         NULL AS property_language,
         LOWER(REPLACE(keyname, '-', '_')) AS value_text,
@@ -357,11 +357,7 @@ FROM (
     /* entity translation (label, label_plural, ...) fields */
     UNION SELECT
         entity_definition_keyname AS entity_id,
-        CASE TRIM(field)
-            WHEN 'label' THEN 'name'
-            WHEN 'label_plural' THEN 'plural_name'
-            ELSE TRIM(field)
-        END AS property_definition,
+        CASE TRIM(field) AS property_definition,
         'string' AS property_type,
         CASE language
             WHEN 'estonian' THEN 'et'
@@ -408,7 +404,7 @@ FROM (
     /* property key */
     UNION SELECT
         CONCAT(entity_definition_keyname, '_', dataproperty) AS entity_id,
-        'key' AS property_definition,
+        'name' AS property_definition,
         'string' AS property_type,
         NULL AS property_language,
         IF(
@@ -667,11 +663,7 @@ FROM (
     /* property translation (label, ...) fields */
     UNION SELECT
         CONCAT(pd.entity_definition_keyname, '_', pd.dataproperty) AS entity_id,
-        CASE TRIM(t.field)
-            WHEN 'label' THEN 'name'
-            WHEN 'label_plural' THEN 'plural_name'
-            ELSE TRIM(t.field)
-        END AS property_definition,
+        CASE TRIM(t.field) AS property_definition,
         'string' AS property_type,
         CASE t.language
             WHEN 'estonian' THEN 'et'
