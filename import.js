@@ -20,7 +20,13 @@ const MYSQL_HOST = process.env.MYSQL_HOST || '127.0.0.1'
 const MYSQL_PORT = process.env.MYSQL_PORT || 3306
 const MYSQL_USER = process.env.MYSQL_USER
 const MYSQL_PASSWORD = process.env.MYSQL_PASSWORD
+
 const MONGODB = process.env.MONGODB || 'mongodb://localhost:27017/'
+
+const AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID
+const AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY
+const AWS_REGION = process.env.AWS_REGION
+const AWS_ACCOUNT_ID = process.env.AWS_ACCOUNT_ID
 
 const formulas = yaml.safeLoad(fs.readFileSync(path.resolve(__dirname, 'formulas.yaml'), 'utf8'))
 
@@ -44,6 +50,11 @@ const importProps = (mysqlDb, callback) => {
     database: mysqlDb,
     multipleStatements: true
   })
+
+  aws.config = new aws.Config()
+  aws.config.accessKeyId = AWS_ACCESS_KEY_ID
+  aws.config.secretAccessKey = AWS_SECRET_ACCESS_KEY
+  aws.config.region = AWS_REGION
 
   async.series([
     (callback) => {
@@ -258,119 +269,18 @@ const importProps = (mysqlDb, callback) => {
         if (err) { return callback(err) }
 
         var l = entities.length
+        var sqs = new aws.SQS()
+        var queueUrl = `https://sqs.${AWS_REGION}.amazonaws.com/${AWS_ACCOUNT_ID}/entu-api-entity-aggregate-queue`
+
         async.eachSeries(entities, (entity, callback) => {
-          mongoCon.db(mysqlDb).collection('property').find({ entity: entity._id }).toArray((err, properties) => {
-            if (err) { return callback(err) }
+          const message = {
+            account: mysqlDb,
+            entity: entity._id.toString()
+          }
 
-            let changed = {}
-            let search = {
-              public: [],
-              private: []
-            }
-            properties.forEach(property => {
-              let createdAt = _.get(property, 'created.at')
-              let createdBy = _.get(property, 'created.by')
-              let deletedAt = _.get(property, 'deleted.at')
-              let deletedBy = _.get(property, 'deleted.by')
-
-              if (property.search && !property.deleted && property.string) {
-                search[property.public === true ? 'public' : 'private'].push(property.string.toLowerCase())
-              }
-              if (property.search && !property.deleted && property.filename) {
-                search[property.public === true ? 'public' : 'private'].push(property.filename.toLowerCase())
-              }
-              if (property.search && !property.deleted && property.integer) {
-                search[property.public === true ? 'public' : 'private'].push(property.integer)
-              }
-              if (property.search && !property.deleted && property.decimal) {
-                search[property.public === true ? 'public' : 'private'].push(property.decimal)
-              }
-
-              if (createdAt && (!changed.at || changed.at < createdAt)) {
-                if (createdBy) {
-                  changed.reference = createdBy
-                } else {
-                  _.unset(changed, 'by')
-                }
-
-                changed.datetime = createdAt
-              }
-
-              if (deletedAt && (!changed.at || changed.at < deletedAt)) {
-                if (deletedBy) {
-                  changed.reference = deletedBy
-                } else {
-                  _.unset(changed, 'by')
-                }
-
-                changed.datetime = deletedAt
-              }
-            })
-            properties = properties.filter(p => _.isEmpty(p.deleted))
-
-            let p = _.groupBy(properties, v => { return v.public === true ? 'public' : 'private' })
-
-            if (p.public) {
-              p.public = _.mapValues(_.groupBy(p.public, 'type'), (o) => {
-                return _.map(o, (p) => {
-                  return _.omit(p, ['entity', 'type', 'created', 'search', 'public'])
-                })
-              })
-            }
-            if (p.private) {
-              p.private = _.mapValues(_.groupBy(p.private, 'type'), (o) => {
-                return _.map(o, (p) => {
-                  return _.omit(p, ['entity', 'type', 'created', 'search', 'public'])
-                })
-              })
-            }
-
-            _.set(p, 'search.public', cleanupArrayToStr(search.public))
-            if (p.search.public.length === 0) {
-              _.unset(p, 'search.public')
-            }
-            _.set(p, 'search.private', cleanupArrayToStr(search.private.concat(search.public)))
-            if (p.search.private.length === 0) {
-              _.unset(p, 'search.private')
-            }
-            if (_.isEmpty(p.search)) {
-              _.unset(p, 'search')
-            }
-
-            if (!_.isEmpty(changed)) {
-              _.set(p, 'private._changed.0', changed)
-            }
-            p.private = Object.assign({}, _.get(p, 'public', {}), _.get(p, 'private', {}))
-
-            const access = _.map(_.union(_.get(p, 'private._viewer', []), _.get(p, 'private._expander', []), _.get(p, 'private._editor', []), _.get(p, 'private._owner', [])), 'reference')
-            if (_.get(p, 'private._public.0.boolean', false) === true) {
-              access.push('public')
-            }
-            if (access.length > 0) {
-              p.access = access
-            }
-
-            if (!_.isEmpty(p)) {
-              mongoCon.db(mysqlDb).collection('entity').updateOne({ _id: entity._id }, { $set: p }, (err) => {
-                if (err) { return callback(err) }
-
-                l--
-                if (l % 10000 === 0 && l > 0) {
-                  log(`${l} entities to go`)
-                }
-                return callback(null)
-              })
-            } else {
-              return callback(null)
-            }
-          })
+          sqs.sendMessage({ QueueUrl: queueUrl, MessageBody: JSON.stringify(message) }, callback)
         }, callback)
       })
-    },
-
-    (callback) => {
-      log('delete deleted entities')
-      mongoCon.db(mysqlDb).collection('entity').deleteMany({ _deleted: { $exists: true } }, callback)
     },
 
     (callback) => {
