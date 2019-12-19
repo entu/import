@@ -270,7 +270,7 @@ const importProps = (mysqlDb, callback) => {
 
         var l = entities.length
         var sqs = new aws.SQS()
-        var queueUrl = `https://sqs.${AWS_REGION}.amazonaws.com/${AWS_ACCOUNT_ID}/entu-api-entity-aggregate-queue`
+        var queueUrl = `https://sqs.${AWS_REGION}.amazonaws.com/${AWS_ACCOUNT_ID}/entu-api-entity-aggregate-queue.fifo`
 
         async.eachSeries(entities, (entity, callback) => {
           const message = {
