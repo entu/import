@@ -278,7 +278,7 @@ const importProps = (mysqlDb, callback) => {
             entity: entity._id.toString()
           }
 
-          sqs.sendMessage({ QueueUrl: queueUrl, MessageBody: JSON.stringify(message) }, callback)
+          sqs.sendMessage({ QueueUrl: queueUrl, MessageGroupId: mysqlDb, MessageBody: JSON.stringify(message) }, callback)
         }, callback)
       })
     },
