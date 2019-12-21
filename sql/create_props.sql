@@ -57,7 +57,7 @@ INSERT INTO props (entity, type, datatype, value_text, created_at, created_by)
 SELECT
     id,
     '_type',
-    'string',
+    'reference',
     TRIM(LOWER(REPLACE(entity_definition_keyname, '-', '_'))),
     created,
     IF(TRIM(created_by) REGEXP '^-?[0-9]+$', TRIM(created_by), NULL)
@@ -274,8 +274,20 @@ SELECT
     NULLIF(TRIM(value_reference), '') AS value_reference
 FROM (
 
-    /* entity key */
+    /* entity id */
     SELECT
+        keyname AS entity_id,
+        '_mid' AS property_definition,
+        'string' AS property_type,
+        NULL AS property_language,
+        LOWER(REPLACE(keyname, '-', '_')) AS value_text,
+        NULL AS value_integer,
+        NULL AS value_reference
+    FROM entity_definition
+    WHERE keyname NOT LIKE 'conf-%'
+
+    /* entity key */
+    UNION SELECT
         keyname AS entity_id,
         'name' AS property_definition,
         'string' AS property_type,
@@ -290,7 +302,7 @@ FROM (
     UNION SELECT
         keyname AS entity_id,
         '_type' AS property_definition,
-        'string' AS property_type,
+        'reference' AS property_type,
         NULL AS property_language,
         'entity' AS value_text,
         NULL AS value_integer,
@@ -423,7 +435,7 @@ FROM (
     UNION SELECT
         CONCAT(entity_definition_keyname, '_', dataproperty) AS entity_id,
         '_type' AS property_definition,
-        'string' AS property_type,
+        'reference' AS property_type,
         NULL AS property_language,
         'property' AS value_text,
         NULL AS value_integer,
@@ -686,7 +698,7 @@ FROM (
     UNION SELECT
         CONCAT('menu_', TRIM(LOWER(REPLACE(entity_definition_keyname, '-', '_')))) AS entity_id,
         '_type' AS property_definition,
-        'string' AS property_type,
+        'reference' AS property_type,
         NULL property_language,
         'menu' AS value_text,
         NULL AS value_integer,
@@ -782,7 +794,7 @@ FROM (
     UNION SELECT
         'menu_conf_entity' AS entity_id,
         '_type' AS property_definition,
-        'string' AS property_type,
+        'reference' AS property_type,
         NULL property_language,
         'menu' AS value_text,
         NULL AS value_integer,
@@ -790,7 +802,7 @@ FROM (
     UNION SELECT
         'menu_conf_menu' AS entity_id,
         '_type' AS property_definition,
-        'string' AS property_type,
+        'reference' AS property_type,
         NULL property_language,
         'menu' AS value_text,
         NULL AS value_integer,
