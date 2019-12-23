@@ -53,7 +53,7 @@ WHERE entity_definition_keyname NOT LIKE 'conf-%';
 
 
 /* entity type */
-INSERT INTO props (entity, type, datatype, value_text, created_at, created_by)
+INSERT INTO props (entity, type, datatype, value_reference, created_at, created_by)
 SELECT
     id,
     '_type',
@@ -304,9 +304,9 @@ FROM (
         '_type' AS property_definition,
         'reference' AS property_type,
         NULL AS property_language,
-        'entity' AS value_text,
+        NULL AS value_text,
         NULL AS value_integer,
-        NULL AS value_reference
+        'entity' AS value_reference
     FROM entity_definition
     WHERE keyname NOT LIKE 'conf-%'
 
@@ -437,9 +437,9 @@ FROM (
         '_type' AS property_definition,
         'reference' AS property_type,
         NULL AS property_language,
-        'property' AS value_text,
+        NULL AS value_text,
         NULL AS value_integer,
-        NULL AS value_reference
+        'property' AS value_reference
     FROM property_definition
     WHERE dataproperty NOT IN ('entu-changed-at', 'entu-changed-by', 'entu-created-at', 'entu-created-by')
     AND entity_definition_keyname NOT LIKE 'conf-%'
@@ -700,9 +700,9 @@ FROM (
         '_type' AS property_definition,
         'reference' AS property_type,
         NULL property_language,
-        'menu' AS value_text,
+        NULL AS value_text,
         NULL AS value_integer,
-        NULL AS value_reference
+        'menu' AS value_reference
     FROM translation
     WHERE field = 'menu'
     AND entity_definition_keyname NOT LIKE 'conf-%'
@@ -796,17 +796,17 @@ FROM (
         '_type' AS property_definition,
         'reference' AS property_type,
         NULL property_language,
-        'menu' AS value_text,
+        NULL AS value_text,
         NULL AS value_integer,
-        NULL AS value_reference
+        'menu' AS value_reference
     UNION SELECT
         'menu_conf_menu' AS entity_id,
         '_type' AS property_definition,
         'reference' AS property_type,
         NULL property_language,
-        'menu' AS value_text,
+        NULL AS value_text,
         NULL AS value_integer,
-        NULL AS value_reference
+        'menu' AS value_reference
 
     /* conf menu rights */
     UNION SELECT
