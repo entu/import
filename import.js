@@ -272,8 +272,8 @@ const importProps = (mysqlDb, callback) => {
       sqs.createQueue({
         QueueName: `entu-api-entity-aggregate-queue-${mysqlDb}.fifo`,
         Attributes: {
-          FifoQueue: true,
-          ContentBasedDeduplication: true
+          FifoQueue: 'true',
+          ContentBasedDeduplication: 'true'
         }
       }, function (err, data) {
         if (err) { return callback(err) }
