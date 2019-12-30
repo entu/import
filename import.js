@@ -278,6 +278,8 @@ const importProps = (mysqlDb, callback) => {
       }, function (err, data) {
         if (err) { return callback(err) }
 
+        console.log(data)
+
         queueUrl = data.QueueUrl
 
         sqs.getQueueAttributes({
@@ -285,6 +287,8 @@ const importProps = (mysqlDb, callback) => {
           AttributeNames: ['QueueArn']
         }, function (err, data) {
           if (err) { return callback(err) }
+
+          console.log(data)
 
           lambda.createEventSourceMapping({
             EventSourceArn: data.QueueArn,
