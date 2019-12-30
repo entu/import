@@ -42,6 +42,7 @@ const importProps = (mysqlDb, callback) => {
   log(`start database ${mysqlDb} import`)
 
   var mongoCon
+  var queueUrl
   var sqlCon = mysql.createConnection({
     host: MYSQL_HOST,
     port: MYSQL_PORT,
@@ -263,6 +264,37 @@ const importProps = (mysqlDb, callback) => {
     },
 
     (callback) => {
+      log('create sqs queue')
+
+      var sqs = new aws.SQS()
+      var lambda = new aws.Lambda()
+
+      sqs.createQueue({
+        QueueName: `entu-api-entity-aggregate-queue-${mysqlDb}.fifo`,
+        Attributes: {
+          FifoQueue: true,
+          ContentBasedDeduplication: true
+        }
+      }, function (err, data) {
+        if (err) { return callback(err) }
+
+        queueUrl = data.QueueUrl
+
+        sqs.getQueueAttributes({
+          QueueUrl: queueUrl,
+          AttributeNames: ['QueueArn']
+        }, function (err, data) {
+          if (err) { return callback(err) }
+
+          lambda.createEventSourceMapping({
+            EventSourceArn: data.QueueArn,
+            FunctionName: 'entu-api-entity-aggregate'
+          }, callback)
+        })
+      })
+    },
+
+    (callback) => {
       log('create entities')
 
       mongoCon.db(mysqlDb).collection('entity').find({}, { _id: true }).sort({ _id: 1 }).toArray((err, entities) => {
@@ -270,7 +302,6 @@ const importProps = (mysqlDb, callback) => {
 
         var l = entities.length
         var sqs = new aws.SQS()
-        var queueUrl = `https://sqs.${AWS_REGION}.amazonaws.com/${AWS_ACCOUNT_ID}/entu-api-entity-aggregate-queue.fifo`
 
         async.eachSeries(entities, (entity, callback) => {
           const message = {
