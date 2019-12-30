@@ -278,8 +278,6 @@ const importProps = (mysqlDb, callback) => {
       }, function (err, data) {
         if (err) { return callback(err) }
 
-        console.log(data)
-
         queueUrl = data.QueueUrl
 
         sqs.getQueueAttributes({
@@ -288,10 +286,8 @@ const importProps = (mysqlDb, callback) => {
         }, function (err, data) {
           if (err) { return callback(err) }
 
-          console.log(data)
-
           lambda.createEventSourceMapping({
-            EventSourceArn: data.QueueArn,
+            EventSourceArn: data.Attributes.QueueArn,
             FunctionName: 'entu-api-entity-aggregate'
           }, callback)
         })
