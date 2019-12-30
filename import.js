@@ -289,7 +289,8 @@ const importProps = (mysqlDb, callback) => {
 
           lambda.createEventSourceMapping({
             EventSourceArn: data.Attributes.QueueArn,
-            FunctionName: 'entu-api-entity-aggregate'
+            FunctionName: 'entu-api-entity-aggregate',
+            BatchSize: '1'
           }, callback)
         })
       })
