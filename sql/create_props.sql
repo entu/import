@@ -314,7 +314,8 @@ FROM (
     UNION SELECT
         keyname AS entity_id,
         CASE TRIM(users.user)
-            WHEN 'argoroots@gmail.com' OR 'mihkel.putrinsh@gmail.com' THEN '_owner'
+            WHEN 'argoroots@gmail.com' THEN '_owner'
+            WHEN 'mihkel.putrinsh@gmail.com' THEN '_owner'
             ELSE '_viewer'
         END AS property_definition,
         'reference' AS property_type,
@@ -449,7 +450,8 @@ FROM (
     UNION SELECT
         CONCAT(entity_definition_keyname, '_', dataproperty) AS entity_id,
         CASE TRIM(users.user)
-            WHEN 'argoroots@gmail.com' OR 'mihkel.putrinsh@gmail.com' THEN '_owner'
+            WHEN 'argoroots@gmail.com' THEN '_owner'
+            WHEN 'mihkel.putrinsh@gmail.com' THEN '_owner'
             ELSE '_viewer'
         END AS property_definition,
         'reference' AS property_type,
@@ -711,7 +713,8 @@ FROM (
     UNION SELECT
         CONCAT('menu_', TRIM(LOWER(REPLACE(entity_definition_keyname, '-', '_')))) AS entity_id,
         CASE TRIM(users.user)
-            WHEN 'argoroots@gmail.com' OR 'mihkel.putrinsh@gmail.com' THEN '_owner'
+            WHEN 'argoroots@gmail.com' THEN '_owner'
+            WHEN 'mihkel.putrinsh@gmail.com' THEN '_owner'
             ELSE '_viewer'
         END AS property_definition,
         'reference' AS property_type,
@@ -812,7 +815,8 @@ FROM (
     UNION SELECT
         'menu_conf_entity' AS entity_id,
         CASE TRIM(users.user)
-            WHEN 'argoroots@gmail.com' OR 'mihkel.putrinsh@gmail.com' THEN '_owner'
+            WHEN 'argoroots@gmail.com' THEN '_owner'
+            WHEN 'mihkel.putrinsh@gmail.com' THEN '_owner'
             ELSE '_viewer'
         END AS property_definition,
         'reference' AS property_type,
@@ -837,7 +841,8 @@ FROM (
     UNION SELECT
         'menu_conf_menu' AS entity_id,
         CASE TRIM(users.user)
-            WHEN 'argoroots@gmail.com' OR 'mihkel.putrinsh@gmail.com' THEN '_owner'
+            WHEN 'argoroots@gmail.com' THEN '_owner'
+            WHEN 'mihkel.putrinsh@gmail.com' THEN '_owner'
             ELSE '_viewer'
         END AS property_definition,
         'reference' AS property_type,
