@@ -997,6 +997,32 @@ FROM (
         'entity' AS value_text,
         NULL AS value_integer,
         NULL AS value_reference
+    UNION SELECT
+        'entity' AS entity_id,
+        CASE TRIM(users.user)
+            WHEN 'argoroots@gmail.com' THEN '_owner'
+            WHEN 'mihkel.putrinsh@gmail.com' THEN '_owner'
+            ELSE '_viewer'
+        END AS property_definition,
+        'reference' AS property_type,
+        NULL AS property_language,
+        NULL AS value_text,
+        NULL AS value_integer,
+        users.id AS value_reference
+    FROM (
+        SELECT
+            entity.id,
+            property.value_string AS user
+        FROM
+            property,
+            entity,
+            property_definition
+        WHERE entity.id = property.entity_id
+        AND property_definition.keyname = property_definition_keyname
+        AND property.is_deleted = 0
+        AND entity.is_deleted = 0
+        AND property_definition.dataproperty = 'entu-user'
+    ) AS users
 
     /* property_definition */
     UNION SELECT
@@ -1023,6 +1049,32 @@ FROM (
         'property' AS value_text,
         NULL AS value_integer,
         NULL AS value_reference
+    UNION SELECT
+        'property' AS entity_id,
+        CASE TRIM(users.user)
+            WHEN 'argoroots@gmail.com' THEN '_owner'
+            WHEN 'mihkel.putrinsh@gmail.com' THEN '_owner'
+            ELSE '_viewer'
+        END AS property_definition,
+        'reference' AS property_type,
+        NULL AS property_language,
+        NULL AS value_text,
+        NULL AS value_integer,
+        users.id AS value_reference
+    FROM (
+        SELECT
+            entity.id,
+            property.value_string AS user
+        FROM
+            property,
+            entity,
+            property_definition
+        WHERE entity.id = property.entity_id
+        AND property_definition.keyname = property_definition_keyname
+        AND property.is_deleted = 0
+        AND entity.is_deleted = 0
+        AND property_definition.dataproperty = 'entu-user'
+    ) AS users
 
 ) AS x
 WHERE NULLIF(TRIM(entity_id), '') IS NOT NULL
