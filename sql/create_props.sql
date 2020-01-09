@@ -984,6 +984,14 @@ FROM (
         NULL AS value_text,
         NULL AS value_integer,
         'entity' AS value_reference
+    UNION SELECT
+        'entity' AS entity_id,
+        'name' AS property_definition,
+        'string' AS property_type,
+        NULL AS property_language,
+        'entity' AS value_text,
+        NULL AS value_integer,
+        NULL AS value_reference
 
     /* property_definition */
     UNION SELECT
@@ -1002,6 +1010,14 @@ FROM (
         NULL AS value_text,
         NULL AS value_integer,
         'property' AS value_reference
+    UNION SELECT
+        'property' AS entity_id,
+        'name' AS property_definition,
+        'string' AS property_type,
+        NULL AS property_language,
+        'property' AS value_text,
+        NULL AS value_integer,
+        NULL AS value_reference
 
 ) AS x
 WHERE NULLIF(TRIM(entity_id), '') IS NOT NULL
