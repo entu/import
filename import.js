@@ -277,7 +277,10 @@ const importProps = (mysqlDb, callback) => {
           ContentBasedDeduplication: 'true'
         }
       }, function (err, data) {
-        if (err) { return callback(err) }
+        if (err) {
+          console.error(err)
+          return callback(null)
+        }
 
         queueUrl = data.QueueUrl
 
@@ -285,13 +288,23 @@ const importProps = (mysqlDb, callback) => {
           QueueUrl: queueUrl,
           AttributeNames: ['QueueArn']
         }, function (err, data) {
-          if (err) { return callback(err) }
+          if (err) {
+            console.error(err)
+            return callback(null)
+          }
 
           lambda.createEventSourceMapping({
             EventSourceArn: data.Attributes.QueueArn,
             FunctionName: 'entu-api-entity-aggregate',
             BatchSize: '1'
-          }, callback)
+          }, function (err, data) {
+            if (err) {
+              console.error(err)
+              return callback(null)
+            }
+
+            callback(null)
+          })
         })
       })
     },
