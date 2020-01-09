@@ -965,6 +965,44 @@ FROM (
         NULL AS value_text,
         1000 AS value_integer,
         NULL AS value_reference
+
+
+    /* entity_definition */
+    UNION SELECT
+        'entity' AS entity_id,
+        '_mid' AS property_definition,
+        'string' AS property_type,
+        NULL property_language,
+        'entity' AS value_text,
+        NULL AS value_integer,
+        NULL AS value_reference
+    UNION SELECT
+        'entity' AS entity_id,
+        '_type' AS property_definition,
+        'reference' AS property_type,
+        NULL AS property_language,
+        NULL AS value_text,
+        NULL AS value_integer,
+        'entity' AS value_reference
+
+    /* property_definition */
+    UNION SELECT
+        'property' AS entity_id,
+        '_mid' AS property_definition,
+        'string' AS property_type,
+        NULL property_language,
+        'property' AS value_text,
+        NULL AS value_integer,
+        NULL AS value_reference
+    UNION SELECT
+        'property' AS entity_id,
+        '_type' AS property_definition,
+        'reference' AS property_type,
+        NULL AS property_language,
+        NULL AS value_text,
+        NULL AS value_integer,
+        'property' AS value_reference
+
 ) AS x
 WHERE NULLIF(TRIM(entity_id), '') IS NOT NULL
 ORDER BY
