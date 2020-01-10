@@ -1110,7 +1110,7 @@ FROM (
         NULL AS property_language,
         NULL AS value_text,
         NULL AS value_integer,
-        'menu' AS value_reference
+        'entity' AS value_reference
     UNION SELECT
         'menu' AS entity_id,
         'name' AS property_definition,
