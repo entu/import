@@ -1058,8 +1058,70 @@ FROM (
         'property' AS value_text,
         NULL AS value_integer,
         NULL AS value_reference
+
     UNION SELECT
         'property' AS entity_id,
+        CASE TRIM(users.user)
+            WHEN 'argoroots@gmail.com' THEN '_owner'
+            WHEN 'mihkel.putrinsh@gmail.com' THEN '_owner'
+            ELSE '_viewer'
+        END AS property_definition,
+        'reference' AS property_type,
+        NULL AS property_language,
+        NULL AS value_text,
+        NULL AS value_integer,
+        users.id AS value_reference
+    FROM (
+        SELECT
+            entity.id,
+            property.value_string AS user
+        FROM
+            property,
+            entity,
+            property_definition
+        WHERE entity.id = property.entity_id
+        AND property_definition.keyname = property_definition_keyname
+        AND property.is_deleted = 0
+        AND entity.is_deleted = 0
+        AND property_definition.dataproperty = 'entu-user'
+    ) AS users
+
+    /* menu_definition */
+    UNION SELECT
+        'menu' AS entity_id,
+        '_mid' AS property_definition,
+        'string' AS property_type,
+        NULL property_language,
+        'menu' AS value_text,
+        NULL AS value_integer,
+        NULL AS value_reference
+    UNION SELECT
+        'menu' AS entity_id,
+        '_type' AS property_definition,
+        'reference' AS property_type,
+        NULL AS property_language,
+        NULL AS value_text,
+        NULL AS value_integer,
+        'menu' AS value_reference
+    UNION SELECT
+        'menu' AS entity_id,
+        'name' AS property_definition,
+        'string' AS property_type,
+        NULL AS property_language,
+        'menu' AS value_text,
+        NULL AS value_integer,
+        NULL AS value_reference
+    UNION SELECT
+        'menu' AS entity_id,
+        'add_from_menu' AS property_definition,
+        'reference' AS property_type,
+        NULL AS property_language,
+        NULL AS value_text,
+        NULL AS value_integer,
+        'menu_conf_menu' AS value_reference
+
+    UNION SELECT
+        'menu' AS entity_id,
         CASE TRIM(users.user)
             WHEN 'argoroots@gmail.com' THEN '_owner'
             WHEN 'mihkel.putrinsh@gmail.com' THEN '_owner'
