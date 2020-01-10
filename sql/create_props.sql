@@ -1013,6 +1013,14 @@ FROM (
         NULL AS value_text,
         NULL AS value_integer,
         'menu_conf_entity' AS value_reference
+    UNION SELECT
+        'entity' AS entity_id,
+        'optional_parent' AS property_definition,
+        'reference' AS property_type,
+        NULL AS property_language,
+        NULL AS value_text,
+        NULL AS value_integer,
+        (SELECT CONVERT(MIN(id), CHAR) FROM entity WHERE is_deleted = 0) AS value_reference
 
     UNION SELECT
         'entity' AS entity_id,
@@ -1127,6 +1135,14 @@ FROM (
         NULL AS value_text,
         NULL AS value_integer,
         'menu_conf_menu' AS value_reference
+    UNION SELECT
+        'menu' AS entity_id,
+        'optional_parent' AS property_definition,
+        'reference' AS property_type,
+        NULL AS property_language,
+        NULL AS value_text,
+        NULL AS value_integer,
+        (SELECT CONVERT(MIN(id), CHAR) FROM entity WHERE is_deleted = 0) AS value_reference
 
     UNION SELECT
         'menu' AS entity_id,
