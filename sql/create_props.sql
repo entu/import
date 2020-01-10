@@ -1005,6 +1005,14 @@ FROM (
         NULL AS value_text,
         NULL AS value_integer,
         'property' AS value_reference
+    UNION SELECT
+        'entity' AS entity_id,
+        'add_from_menu' AS property_definition,
+        'reference' AS property_type,
+        NULL AS property_language,
+        NULL AS value_text,
+        NULL AS value_integer,
+        'menu_conf_entity' AS value_reference
 
     UNION SELECT
         'entity' AS entity_id,
