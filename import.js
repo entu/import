@@ -61,8 +61,20 @@ const importProps = (mysqlDb, callback) => {
     (callback) => {
       if (mysqlDb === 'repis') { return callback(null) }
 
-      log('create props table')
-      sqlCon.query(require('./sql/create_props.sql'), callback)
+      const sqls = [
+        'create_props_table.sql',
+        'create_entities.sql',
+        'create_properties.sql',
+        'create_definitions.sql',
+        'create_menu.sql'
+        'create_conf.sql'
+      ]
+
+      async.eachSeries(sqls, (sql, callback) => {
+        log('create props table - ' + sql)
+
+        sqlCon.query(require('./sql/' + sql), callback)
+      }, callback)
     },
 
     (callback) => {
