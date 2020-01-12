@@ -66,7 +66,7 @@ const importProps = (mysqlDb, callback) => {
         'create_entities.sql',
         'create_properties.sql',
         'create_definitions.sql',
-        'create_menu.sql'
+        'create_menu.sql',
         'create_conf.sql'
       ]
 
