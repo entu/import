@@ -290,7 +290,7 @@ const importProps = (mysqlDb, callback) => {
         }
       }, function (err, data) {
         if (err) {
-          console.error(err)
+          console.error(err.message || err)
           return callback(null)
         }
 
@@ -301,7 +301,7 @@ const importProps = (mysqlDb, callback) => {
           AttributeNames: ['QueueArn']
         }, function (err, data) {
           if (err) {
-            console.error(err)
+            console.error(err.message || err)
             return callback(null)
           }
 
@@ -311,7 +311,7 @@ const importProps = (mysqlDb, callback) => {
             BatchSize: '1'
           }, function (err, data) {
             if (err) {
-              console.error(err)
+              console.error(err.message || err)
               return callback(null)
             }
 
