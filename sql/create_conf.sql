@@ -17,13 +17,13 @@ INSERT INTO props (
     ('entity_name', '_type', 'reference', NULL, 'property'),
     ('entity_name', '_parent', 'reference', NULL, 'entity'),
     ('entity_name', 'name', 'string', 'name', NULL),
-    ('entity_name', 'type', 'string', 'type', NULL),
+    ('entity_name', 'type', 'string', 'string', NULL),
 
     ('entity_label', '_mid', 'string', 'entity_label', NULL),
     ('entity_label', '_type', 'reference', NULL, 'property'),
     ('entity_label', '_parent', 'reference', NULL, 'entity'),
     ('entity_label', 'name', 'string', 'label', NULL),
-    ('entity_label', 'type', 'string', 'type', NULL),
+    ('entity_label', 'type', 'string', 'string', NULL),
 
     ('entity_add_from_menu', '_mid', 'string', 'entity_add_from_menu', NULL),
     ('entity_add_from_menu', '_type', 'reference', NULL, 'property'),
@@ -39,13 +39,13 @@ INSERT INTO props (
     ('property_name', '_type', 'reference', NULL, 'property'),
     ('property_name', '_parent', 'reference', NULL, 'property'),
     ('property_name', 'name', 'string', 'name', NULL),
-    ('property_name', 'type', 'string', 'type', NULL),
+    ('property_name', 'type', 'string', 'string', NULL),
 
     ('property_label', '_mid', 'string', 'property_label', NULL),
     ('property_label', '_type', 'reference', NULL, 'property'),
     ('property_label', '_parent', 'reference', NULL, 'property'),
     ('property_label', 'name', 'string', 'label', NULL),
-    ('property_label', 'type', 'string', 'type', NULL),
+    ('property_label', 'type', 'string', 'string', NULL),
 
     ('menu', '_mid', 'string', 'menu', NULL),
     ('menu', '_type', 'reference', NULL, 'entity'),
