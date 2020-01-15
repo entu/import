@@ -128,7 +128,7 @@ INSERT INTO props (
     REPLACE(TRIM(value), '@title@', '@name@')
 FROM translation
 WHERE entity_definition_keyname NOT LIKE 'conf-%'
-AND field NOT IN ('public', 'menu', 'displayname')
+AND field IN ('label', 'label_plural', 'description')
 AND entity_definition_keyname IS NOT NULL;
 
 
@@ -494,4 +494,5 @@ WHERE pd.keyname = t.property_definition_keyname
 AND t.property_definition_keyname NOT IN ('entu-changed-at', 'entu-changed-by', 'entu-created-at', 'entu-created-by')
 AND pd.entity_definition_keyname NOT LIKE 'conf-%'
 AND pd.entity_definition_keyname IN (SELECT keyname FROM entity_definition)
+AND t.field IN ('label', 'label_plural', 'description', 'fieldset')
 AND t.property_definition_keyname IS NOT NULL;
