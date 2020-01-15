@@ -70,7 +70,7 @@ INSERT INTO props (
 
     ('entity_open_after_add', '_mid', 'string', 'entity_open_after_add', NULL, NULL),
     ('entity_open_after_add', '_type', 'reference', NULL, NULL, 'property'),
-    ('entity_open_after_add', '_parent', 'reference', NULL, NULL, 'property'),
+    ('entity_open_after_add', '_parent', 'reference', NULL, NULL, 'entity'),
     ('entity_open_after_add', 'name', 'string', 'public', NULL, NULL),
     ('entity_open_after_add', 'label', 'string', 'Open after add', NULL, NULL),
     ('entity_open_after_add', 'type', 'string', 'boolean', NULL, NULL),
@@ -240,19 +240,28 @@ FROM (
     UNION SELECT 'entity_name'
     UNION SELECT 'entity_label'
     UNION SELECT 'entity_label_plural'
+    UNION SELECT 'entity_allowed_child'
     UNION SELECT 'entity_add_from_menu'
     UNION SELECT 'entity_optional_parent'
-    UNION SELECT 'entity_allowed_child'
+    UNION SELECT 'entity_open_after_add'
     UNION SELECT 'property'
     UNION SELECT 'property_name'
     UNION SELECT 'property_label'
     UNION SELECT 'property_label_plural'
+    UNION SELECT 'property_fieldset'
+    UNION SELECT 'property_type'
     UNION SELECT 'property_ordinal'
     UNION SELECT 'property_list'
     UNION SELECT 'property_multilingual'
+    UNION SELECT 'property_mandatory'
     UNION SELECT 'property_public'
+    UNION SELECT 'property_search'
     UNION SELECT 'property_classifier'
     UNION SELECT 'menu'
+    UNION SELECT 'menu_name'
+    UNION SELECT 'menu_group'
+    UNION SELECT 'menu_query'
+    UNION SELECT 'menu_text'
 ) AS entities,
 (
     SELECT
