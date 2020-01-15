@@ -25,11 +25,29 @@ INSERT INTO props (
     ('entity_label', 'name', 'string', 'label', NULL),
     ('entity_label', 'type', 'string', 'string', NULL),
 
+    ('entity_label_plural', '_mid', 'string', 'entity_label_plural', NULL),
+    ('entity_label_plural', '_type', 'reference', NULL, 'property'),
+    ('entity_label_plural', '_parent', 'reference', NULL, 'entity'),
+    ('entity_label_plural', 'name', 'string', 'label_plural', NULL),
+    ('entity_label_plural', 'type', 'string', 'string', NULL),
+
     ('entity_add_from_menu', '_mid', 'string', 'entity_add_from_menu', NULL),
     ('entity_add_from_menu', '_type', 'reference', NULL, 'property'),
     ('entity_add_from_menu', '_parent', 'reference', NULL, 'entity'),
     ('entity_add_from_menu', 'name', 'string', 'add_from_menu', NULL),
     ('entity_add_from_menu', 'type', 'string', 'reference', NULL),
+
+    ('entity_optional_parent', '_mid', 'string', 'entity_optional_parent', NULL),
+    ('entity_optional_parent', '_type', 'reference', NULL, 'property'),
+    ('entity_optional_parent', '_parent', 'reference', NULL, 'entity'),
+    ('entity_optional_parent', 'name', 'string', 'optional_parent', NULL),
+    ('entity_optional_parent', 'type', 'string', 'reference', NULL),
+
+    ('entity_allowed_child', '_mid', 'string', 'entity_allowed_child', NULL),
+    ('entity_allowed_child', '_type', 'reference', NULL, 'property'),
+    ('entity_allowed_child', '_parent', 'reference', NULL, 'entity'),
+    ('entity_allowed_child', 'name', 'string', 'allowed_child', NULL),
+    ('entity_allowed_child', 'type', 'string', 'reference', NULL),
 
     ('property', '_mid', 'string', 'property', NULL),
     ('property', '_type', 'reference', NULL, 'property'),
@@ -46,6 +64,36 @@ INSERT INTO props (
     ('property_label', '_parent', 'reference', NULL, 'property'),
     ('property_label', 'name', 'string', 'label', NULL),
     ('property_label', 'type', 'string', 'string', NULL),
+
+    ('property_label_plural', '_mid', 'string', 'property_label_plural', NULL),
+    ('property_label_plural', '_type', 'reference', NULL, 'property'),
+    ('property_label_plural', '_parent', 'reference', NULL, 'property'),
+    ('property_label_plural', 'name', 'string', 'label_plural', NULL),
+    ('property_label_plural', 'type', 'string', 'string', NULL),
+
+    ('property_ordinal', '_mid', 'string', 'property_ordinal', NULL),
+    ('property_ordinal', '_type', 'reference', NULL, 'property'),
+    ('property_ordinal', '_parent', 'reference', NULL, 'property'),
+    ('property_ordinal', 'name', 'string', 'ordinal', NULL),
+    ('property_ordinal', 'type', 'string', 'integer', NULL),
+
+    ('property_list', '_mid', 'string', 'property_list', NULL),
+    ('property_list', '_type', 'reference', NULL, 'property'),
+    ('property_list', '_parent', 'reference', NULL, 'property'),
+    ('property_list', 'name', 'string', 'list', NULL),
+    ('property_list', 'type', 'string', 'boolean', NULL),
+
+    ('property_multilingual', '_mid', 'string', 'property_multilingual', NULL),
+    ('property_multilingual', '_type', 'reference', NULL, 'property'),
+    ('property_multilingual', '_parent', 'reference', NULL, 'property'),
+    ('property_multilingual', 'name', 'string', 'multilingual', NULL),
+    ('property_multilingual', 'type', 'string', 'boolean', NULL),
+
+    ('property_public', '_mid', 'string', 'property_public', NULL),
+    ('property_public', '_type', 'reference', NULL, 'property'),
+    ('property_public', '_parent', 'reference', NULL, 'property'),
+    ('property_public', 'name', 'string', 'public', NULL),
+    ('property_public', 'type', 'string', 'boolean', NULL),
 
     ('menu', '_mid', 'string', 'menu', NULL),
     ('menu', '_type', 'reference', NULL, 'entity'),
