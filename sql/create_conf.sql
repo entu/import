@@ -262,8 +262,8 @@ INSERT INTO props (
     ('conf_menu_text', 'label', 'en', 'string', 'Text', NULL, NULL),
     ('conf_menu_text', 'label', 'et', 'string', 'Text', NULL, NULL),
     ('conf_menu_text', 'type', NULL, 'string', 'text', NULL, NULL),
-    ('conf_menu_text', 'ordinal', NULL, 'integer', NULL, 5, NULL);
-    ('conf_menu_text', 'multilingual', NULL, 'boolean', NULL, 1, NULL),
+    ('conf_menu_text', 'ordinal', NULL, 'integer', NULL, 5, NULL),
+    ('conf_menu_text', 'multilingual', NULL, 'boolean', NULL, 1, NULL);
 
 
 /* conf rights */
