@@ -71,7 +71,7 @@ INSERT INTO props (
     ('entity_open_after_add', '_mid', 'string', 'entity_open_after_add', NULL, NULL),
     ('entity_open_after_add', '_type', 'reference', NULL, NULL, 'property'),
     ('entity_open_after_add', '_parent', 'reference', NULL, NULL, 'entity'),
-    ('entity_open_after_add', 'name', 'string', 'public', NULL, NULL),
+    ('entity_open_after_add', 'name', 'string', 'open_after_add', NULL, NULL),
     ('entity_open_after_add', 'label', 'string', 'Open after add', NULL, NULL),
     ('entity_open_after_add', 'type', 'string', 'boolean', NULL, NULL),
     ('entity_open_after_add', 'ordinal', 'integer', NULL, 7, NULL),
@@ -216,7 +216,7 @@ INSERT INTO props (
     ('menu_text', '_parent', 'reference', NULL, NULL, 'menu'),
     ('menu_text', 'name', 'string', 'text', NULL, NULL),
     ('menu_text', 'label', 'string', 'Text', NULL, NULL),
-    ('menu_text', 'type', 'string', 'string', NULL, NULL),
+    ('menu_text', 'type', 'string', 'text', NULL, NULL),
     ('menu_text', 'ordinal', 'integer', NULL, 4, NULL);
 
 
