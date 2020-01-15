@@ -211,13 +211,21 @@ INSERT INTO props (
     ('menu_query', 'type', 'string', 'string', NULL, NULL),
     ('menu_query', 'ordinal', 'integer', NULL, 3, NULL),
 
+    ('menu_ordinal', '_mid', 'string', 'menu_ordinal', NULL, NULL),
+    ('menu_ordinal', '_type', 'reference', NULL, NULL, 'property'),
+    ('menu_ordinal', '_parent', 'reference', NULL, NULL, 'menu'),
+    ('menu_ordinal', 'name', 'string', 'ordinal', NULL, NULL),
+    ('menu_ordinal', 'label', 'string', 'Ordinal', NULL, NULL),
+    ('menu_ordinal', 'type', 'string', 'integer', NULL, NULL),
+    ('menu_ordinal', 'ordinal', 'integer', NULL, 4, NULL),
+
     ('menu_text', '_mid', 'string', 'menu_text', NULL, NULL),
     ('menu_text', '_type', 'reference', NULL, NULL, 'property'),
     ('menu_text', '_parent', 'reference', NULL, NULL, 'menu'),
     ('menu_text', 'name', 'string', 'text', NULL, NULL),
     ('menu_text', 'label', 'string', 'Text', NULL, NULL),
     ('menu_text', 'type', 'string', 'text', NULL, NULL),
-    ('menu_text', 'ordinal', 'integer', NULL, 4, NULL);
+    ('menu_text', 'ordinal', 'integer', NULL, 5, NULL);
 
 
 /* conf rights */
