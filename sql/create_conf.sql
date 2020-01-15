@@ -95,6 +95,12 @@ INSERT INTO props (
     ('property_public', 'name', 'string', 'public', NULL),
     ('property_public', 'type', 'string', 'boolean', NULL),
 
+    ('property_classifier', '_mid', 'string', 'property_classifier', NULL),
+    ('property_classifier', '_type', 'reference', NULL, 'property'),
+    ('property_classifier', '_parent', 'reference', NULL, 'property'),
+    ('property_classifier', 'name', 'string', 'classifier', NULL),
+    ('property_classifier', 'type', 'string', 'reference', NULL),
+
     ('menu', '_mid', 'string', 'menu', NULL),
     ('menu', '_type', 'reference', NULL, 'entity'),
     ('menu', 'name', 'string', 'menu', NULL),
@@ -133,6 +139,7 @@ FROM (
     UNION SELECT 'property_list'
     UNION SELECT 'property_multilingual'
     UNION SELECT 'property_public'
+    UNION SELECT 'property_classifier'
     UNION SELECT 'menu'
 ) AS entities,
 (
