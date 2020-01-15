@@ -121,10 +121,18 @@ FROM (
     SELECT 'entity' AS entity
     UNION SELECT 'entity_name'
     UNION SELECT 'entity_label'
+    UNION SELECT 'entity_label_plural'
     UNION SELECT 'entity_add_from_menu'
+    UNION SELECT 'entity_optional_parent'
+    UNION SELECT 'entity_allowed_child'
     UNION SELECT 'property'
     UNION SELECT 'property_name'
     UNION SELECT 'property_label'
+    UNION SELECT 'property_label_plural'
+    UNION SELECT 'property_ordinal'
+    UNION SELECT 'property_list'
+    UNION SELECT 'property_multilingual'
+    UNION SELECT 'property_public'
     UNION SELECT 'menu'
 ) AS entities,
 (
