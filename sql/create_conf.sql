@@ -13,16 +13,45 @@ INSERT INTO props (
     ('entity', 'add_from_menu', 'reference', NULL, 'menu_conf_entity'),
     ('entity', 'optional_parent', 'reference', NULL, (SELECT CONVERT(MIN(id), CHAR) FROM entity WHERE is_deleted = 0)),
 
+    ('entity_name', '_mid', 'string', 'entity_name', NULL),
+    ('entity_name', '_type', 'reference', NULL, 'property'),
+    ('entity_name', '_parent', 'reference', NULL, 'entity'),
+    ('entity_name', 'name', 'string', 'name', NULL),
+    ('entity_name', 'type', 'string', 'type', NULL),
+
+    ('entity_label', '_mid', 'string', 'entity_label', NULL),
+    ('entity_label', '_type', 'reference', NULL, 'property'),
+    ('entity_label', '_parent', 'reference', NULL, 'entity'),
+    ('entity_label', 'name', 'string', 'label', NULL),
+    ('entity_label', 'type', 'string', 'type', NULL),
+
+    ('entity_add_from_menu', '_mid', 'string', 'entity_add_from_menu', NULL),
+    ('entity_add_from_menu', '_type', 'reference', NULL, 'property'),
+    ('entity_add_from_menu', '_parent', 'reference', NULL, 'entity'),
+    ('entity_add_from_menu', 'name', 'string', 'add_from_menu', NULL),
+    ('entity_add_from_menu', 'type', 'string', 'reference', NULL),
+
     ('property', '_mid', 'string', 'property', NULL),
     ('property', '_type', 'reference', NULL, 'property'),
     ('property', 'name', 'string', 'property', NULL),
+
+    ('property_name', '_mid', 'string', 'property_name', NULL),
+    ('property_name', '_type', 'reference', NULL, 'property'),
+    ('property_name', '_parent', 'reference', NULL, 'property'),
+    ('property_name', 'name', 'string', 'name', NULL),
+    ('property_name', 'type', 'string', 'type', NULL),
+
+    ('property_label', '_mid', 'string', 'property_label', NULL),
+    ('property_label', '_type', 'reference', NULL, 'property'),
+    ('property_label', '_parent', 'reference', NULL, 'property'),
+    ('property_label', 'name', 'string', 'label', NULL),
+    ('property_label', 'type', 'string', 'type', NULL),
 
     ('menu', '_mid', 'string', 'menu', NULL),
     ('menu', '_type', 'reference', NULL, 'entity'),
     ('menu', 'name', 'string', 'menu', NULL),
     ('menu', 'add_from_menu', 'reference', NULL, 'menu_conf_menu'),
     ('menu', 'optional_parent', 'reference', NULL, (SELECT CONVERT(MIN(id), CHAR) FROM entity WHERE is_deleted = 0));
-
 
 /* conf rights */
 INSERT INTO props (
