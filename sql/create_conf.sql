@@ -185,7 +185,7 @@ INSERT INTO props (
     ('menu', 'label', 'string', 'Menu', NULL, NULL),
     ('menu', 'label_plural', 'string', 'Menus', NULL, NULL),
     ('menu', 'add_from_menu', 'reference', NULL, NULL, 'menu_conf_menu'),
-    ('menu', 'optional_parent', 'reference', NULL, NULL, (SELECT CONVERT(MIN(id), CHAR) FROM entity WHERE is_deleted = 0));
+    ('menu', 'optional_parent', 'reference', NULL, NULL, (SELECT CONVERT(MIN(id), CHAR) FROM entity WHERE is_deleted = 0)),
 
     ('menu_name', '_mid', 'string', 'menu_name', NULL, NULL),
     ('menu_name', '_type', 'reference', NULL, NULL, 'property'),
@@ -217,7 +217,7 @@ INSERT INTO props (
     ('menu_text', 'name', 'string', 'text', NULL, NULL),
     ('menu_text', 'label', 'string', 'Text', NULL, NULL),
     ('menu_text', 'type', 'string', 'string', NULL, NULL),
-    ('menu_text', 'ordinal', 'integer', NULL, 4, NULL),
+    ('menu_text', 'ordinal', 'integer', NULL, 4, NULL);
 
 
 /* conf rights */
