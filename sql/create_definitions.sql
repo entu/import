@@ -93,22 +93,6 @@ WHERE keyname NOT LIKE 'conf-%'
 AND open_after_add = 1;
 
 
-/* add-action properties */
-INSERT INTO props (
-    entity,
-    type,
-    datatype,
-    value_text
-) SELECT DISTINCT
-    NULLIF(LOWER(TRIM(REPLACE(keyname, '-', '_'))), ''),
-    'add_action',
-    'string',
-    actions_add
-FROM entity_definition
-WHERE keyname NOT LIKE 'conf-%'
-AND actions_add IS NOT NULL;
-
-
 /* translation (label, label_plural, ...) fields */
 INSERT INTO props (
     entity,
