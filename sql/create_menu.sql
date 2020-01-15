@@ -71,7 +71,7 @@ INSERT INTO props (
     CONCAT('menu_', LOWER(TRIM(REPLACE(entity_definition_keyname, '-', '_')))),
     'query',
     'string',
-    CONCAT('_type.string=', LOWER(TRIM(REPLACE(entity_definition_keyname, '-', '_'))))
+    CONCAT('_type.string=', LOWER(TRIM(REPLACE(entity_definition_keyname, '-', '_'))), '&sort=name.string')
 FROM translation
 WHERE field = 'menu'
 AND entity_definition_keyname NOT LIKE 'conf-%'
