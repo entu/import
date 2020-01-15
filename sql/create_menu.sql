@@ -129,7 +129,7 @@ INSERT INTO props (
     ('menu_conf_menu', 'name', 'en', 'string', 'Menu', NULL, NULL),
     ('menu_conf_menu', 'group', 'et', 'string', 'Seaded', NULL, NULL),
     ('menu_conf_menu', 'group', 'en', 'string', 'Configuration', NULL, NULL),
-    ('menu_conf_menu', 'query', NULL, 'string', '_type.string=menu', NULL, NULL),
+    ('menu_conf_menu', 'query', NULL, 'string', '_type.string=menu&sort=name.string', NULL, NULL),
     ('menu_conf_menu', 'ordinal', NULL, 'integer', NULL, 1000, NULL),
 
     ('menu_conf_entity', '_type', NULL, 'reference', NULL, NULL, 'menu'),
@@ -137,7 +137,7 @@ INSERT INTO props (
     ('menu_conf_entity', 'name', 'en', 'string', 'Entities', NULL, NULL),
     ('menu_conf_entity', 'group', 'et', 'string', 'Seaded', NULL, NULL),
     ('menu_conf_entity', 'group', 'en', 'string', 'Configuration', NULL, NULL),
-    ('menu_conf_entity', 'query', NULL, 'string', '_type.string=entity', NULL, NULL),
+    ('menu_conf_entity', 'query', NULL, 'string', '_type.string=entity&sort=name.string', NULL, NULL),
     ('menu_conf_entity', 'ordinal', NULL, 'integer', NULL, 1000, NULL);
 
 
