@@ -187,6 +187,38 @@ INSERT INTO props (
     ('menu', 'add_from_menu', 'reference', NULL, NULL, 'menu_conf_menu'),
     ('menu', 'optional_parent', 'reference', NULL, NULL, (SELECT CONVERT(MIN(id), CHAR) FROM entity WHERE is_deleted = 0));
 
+    ('menu_name', '_mid', 'string', 'menu_name', NULL, NULL),
+    ('menu_name', '_type', 'reference', NULL, NULL, 'property'),
+    ('menu_name', '_parent', 'reference', NULL, NULL, 'menu'),
+    ('menu_name', 'name', 'string', 'name', NULL, NULL),
+    ('menu_name', 'label', 'string', 'Name', NULL, NULL),
+    ('menu_name', 'type', 'string', 'string', NULL, NULL),
+    ('menu_name', 'ordinal', 'integer', NULL, 1, NULL),
+
+    ('menu_group', '_mid', 'string', 'menu_group', NULL, NULL),
+    ('menu_group', '_type', 'reference', NULL, NULL, 'property'),
+    ('menu_group', '_parent', 'reference', NULL, NULL, 'menu'),
+    ('menu_group', 'name', 'string', 'group', NULL, NULL),
+    ('menu_group', 'label', 'string', 'Group', NULL, NULL),
+    ('menu_group', 'type', 'string', 'string', NULL, NULL),
+    ('menu_group', 'ordinal', 'integer', NULL, 2, NULL),
+
+    ('menu_query', '_mid', 'string', 'menu_query', NULL, NULL),
+    ('menu_query', '_type', 'reference', NULL, NULL, 'property'),
+    ('menu_query', '_parent', 'reference', NULL, NULL, 'menu'),
+    ('menu_query', 'name', 'string', 'query', NULL, NULL),
+    ('menu_query', 'label', 'string', 'Query', NULL, NULL),
+    ('menu_query', 'type', 'string', 'string', NULL, NULL),
+    ('menu_query', 'ordinal', 'integer', NULL, 3, NULL),
+
+    ('menu_text', '_mid', 'string', 'menu_text', NULL, NULL),
+    ('menu_text', '_type', 'reference', NULL, NULL, 'property'),
+    ('menu_text', '_parent', 'reference', NULL, NULL, 'menu'),
+    ('menu_text', 'name', 'string', 'text', NULL, NULL),
+    ('menu_text', 'label', 'string', 'Text', NULL, NULL),
+    ('menu_text', 'type', 'string', 'string', NULL, NULL),
+    ('menu_text', 'ordinal', 'integer', NULL, 4, NULL),
+
 
 /* conf rights */
 INSERT INTO props (
