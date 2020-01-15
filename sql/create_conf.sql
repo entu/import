@@ -53,6 +53,7 @@ INSERT INTO props (
     ('menu', 'add_from_menu', 'reference', NULL, 'menu_conf_menu'),
     ('menu', 'optional_parent', 'reference', NULL, (SELECT CONVERT(MIN(id), CHAR) FROM entity WHERE is_deleted = 0));
 
+
 /* conf rights */
 INSERT INTO props (
     entity,
@@ -60,7 +61,7 @@ INSERT INTO props (
     datatype,
     value_reference
 ) SELECT DISTINCT
-    'entity',
+    entities.entity,
     CASE TRIM(users.user)
         WHEN 'argoroots@gmail.com' THEN '_owner'
         WHEN 'mihkel.putrinsh@gmail.com' THEN '_owner'
@@ -69,64 +70,16 @@ INSERT INTO props (
     'reference',
     users.id
 FROM (
-    SELECT
-        entity.id,
-        property.value_string AS user
-    FROM
-        property,
-        entity,
-        property_definition
-    WHERE entity.id = property.entity_id
-    AND property_definition.keyname = property_definition_keyname
-    AND property.is_deleted = 0
-    AND entity.is_deleted = 0
-    AND property_definition.dataproperty = 'entu-user'
-) AS users;
-
-INSERT INTO props (
-    entity,
-    type,
-    datatype,
-    value_reference
-) SELECT DISTINCT
-    'property',
-    CASE TRIM(users.user)
-        WHEN 'argoroots@gmail.com' THEN '_owner'
-        WHEN 'mihkel.putrinsh@gmail.com' THEN '_owner'
-        ELSE '_viewer'
-    END,
-    'reference',
-    users.id
-FROM (
-    SELECT
-        entity.id,
-        property.value_string AS user
-    FROM
-        property,
-        entity,
-        property_definition
-    WHERE entity.id = property.entity_id
-    AND property_definition.keyname = property_definition_keyname
-    AND property.is_deleted = 0
-    AND entity.is_deleted = 0
-    AND property_definition.dataproperty = 'entu-user'
-) AS users;
-
-INSERT INTO props (
-    entity,
-    type,
-    datatype,
-    value_reference
-) SELECT DISTINCT
-    'menu',
-    CASE TRIM(users.user)
-        WHEN 'argoroots@gmail.com' THEN '_owner'
-        WHEN 'mihkel.putrinsh@gmail.com' THEN '_owner'
-        ELSE '_viewer'
-    END,
-    'reference',
-    users.id
-FROM (
+    SELECT 'entity' AS entity
+    UNION SELECT 'entity_name'
+    UNION SELECT 'entity_label'
+    UNION SELECT 'entity_add_from_menu'
+    UNION SELECT 'property'
+    UNION SELECT 'property_name'
+    UNION SELECT 'property_label'
+    UNION SELECT 'menu'
+) AS entities,
+(
     SELECT
         entity.id,
         property.value_string AS user

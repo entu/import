@@ -148,7 +148,7 @@ INSERT INTO props (
     datatype,
     value_reference
 ) SELECT DISTINCT
-    'menu_conf_entity',
+    entities.entity,
     CASE TRIM(users.user)
         WHEN 'argoroots@gmail.com' THEN '_owner'
         WHEN 'mihkel.putrinsh@gmail.com' THEN '_owner'
@@ -157,35 +157,10 @@ INSERT INTO props (
     'reference',
     users.id
 FROM (
-    SELECT
-        entity.id,
-        property.value_string AS user
-    FROM
-        property,
-        entity,
-        property_definition
-    WHERE entity.id = property.entity_id
-    AND property_definition.keyname = property_definition_keyname
-    AND property.is_deleted = 0
-    AND entity.is_deleted = 0
-    AND property_definition.dataproperty = 'entu-user'
-) AS users;
-
-INSERT INTO props (
-    entity,
-    type,
-    datatype,
-    value_reference
-) SELECT DISTINCT
-    'menu_conf_menu',
-    CASE TRIM(users.user)
-        WHEN 'argoroots@gmail.com' THEN '_owner'
-        WHEN 'mihkel.putrinsh@gmail.com' THEN '_owner'
-        ELSE '_viewer'
-    END,
-    'reference',
-    users.id
-FROM (
+    SELECT 'menu_conf_menu' AS entity
+    UNION SELECT 'menu_conf_entity'
+) AS entities,
+(
     SELECT
         entity.id,
         property.value_string AS user
