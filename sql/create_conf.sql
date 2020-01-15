@@ -37,6 +37,7 @@ INSERT INTO props (
     ('conf_entity_label', 'label', 'et', 'string', 'Label', NULL, NULL),
     ('conf_entity_label', 'type', NULL, 'string', 'string', NULL, NULL),
     ('conf_entity_label', 'ordinal', NULL, 'integer', NULL, 2, NULL),
+    ('conf_entity_label', 'multilingual', NULL, 'boolean', NULL, 1, NULL),
 
     ('conf_entity_label_plural', '_mid', NULL, 'string', 'entity_label_plural', NULL, NULL),
     ('conf_entity_label_plural', '_type', NULL, 'reference', NULL, NULL, 'property'),
@@ -46,6 +47,7 @@ INSERT INTO props (
     ('conf_entity_label_plural', 'label', 'et', 'string', 'Label (plural)', NULL, NULL),
     ('conf_entity_label_plural', 'type', NULL, 'string', 'string', NULL, NULL),
     ('conf_entity_label_plural', 'ordinal', NULL, 'integer', NULL, 3, NULL),
+    ('conf_entity_label_plural', 'multilingual', NULL, 'boolean', NULL, 1, NULL),
 
     ('conf_entity_allowed_child', '_mid', NULL, 'string', 'entity_allowed_child', NULL, NULL),
     ('conf_entity_allowed_child', '_type', NULL, 'reference', NULL, NULL, 'property'),
@@ -111,6 +113,7 @@ INSERT INTO props (
     ('conf_property_label', 'label', 'et', 'string', 'Label', NULL, NULL),
     ('conf_property_label', 'type', NULL, 'string', 'string', NULL, NULL),
     ('conf_property_label', 'ordinal', NULL, 'integer', NULL, 2, NULL),
+    ('conf_property_label', 'multilingual', NULL, 'boolean', NULL, 1, NULL),
 
     ('conf_property_label_plural', '_mid', NULL, 'string', 'property_label_plural', NULL, NULL),
     ('conf_property_label_plural', '_type', NULL, 'reference', NULL, NULL, 'property'),
@@ -120,6 +123,7 @@ INSERT INTO props (
     ('conf_property_label_plural', 'label', 'et', 'string', 'Label (plural)', NULL, NULL),
     ('conf_property_label_plural', 'type', NULL, 'string', 'string', NULL, NULL),
     ('conf_property_label_plural', 'ordinal', NULL, 'integer', NULL, 3, NULL),
+    ('conf_property_label_plural', 'multilingual', NULL, 'boolean', NULL, 1, NULL),
 
     ('conf_property_fieldset', '_mid', NULL, 'string', 'property_fieldset', NULL, NULL),
     ('conf_property_fieldset', '_type', NULL, 'reference', NULL, NULL, 'property'),
@@ -129,6 +133,7 @@ INSERT INTO props (
     ('conf_property_fieldset', 'label', 'et', 'string', 'Fieldset', NULL, NULL),
     ('conf_property_fieldset', 'type', NULL, 'string', 'string', NULL, NULL),
     ('conf_property_fieldset', 'ordinal', NULL, 'integer', NULL, 4, NULL),
+    ('conf_property_fieldset', 'multilingual', NULL, 'boolean', NULL, 1, NULL),
 
     ('conf_property_type', '_mid', NULL, 'string', 'property_type', NULL, NULL),
     ('conf_property_type', '_type', NULL, 'reference', NULL, NULL, 'property'),
@@ -220,6 +225,7 @@ INSERT INTO props (
     ('conf_menu_name', 'label', 'et', 'string', 'Name', NULL, NULL),
     ('conf_menu_name', 'type', NULL, 'string', 'string', NULL, NULL),
     ('conf_menu_name', 'ordinal', NULL, 'integer', NULL, 1, NULL),
+    ('conf_menu_name', 'multilingual', NULL, 'boolean', NULL, 1, NULL),
 
     ('conf_menu_group', '_mid', NULL, 'string', 'menu_group', NULL, NULL),
     ('conf_menu_group', '_type', NULL, 'reference', NULL, NULL, 'property'),
@@ -229,6 +235,7 @@ INSERT INTO props (
     ('conf_menu_group', 'label', 'et', 'string', 'Group', NULL, NULL),
     ('conf_menu_group', 'type', NULL, 'string', 'string', NULL, NULL),
     ('conf_menu_group', 'ordinal', NULL, 'integer', NULL, 2, NULL),
+    ('conf_menu_group', 'multilingual', NULL, 'boolean', NULL, 1, NULL),
 
     ('conf_menu_query', '_mid', NULL, 'string', 'menu_query', NULL, NULL),
     ('conf_menu_query', '_type', NULL, 'reference', NULL, NULL, 'property'),
@@ -256,6 +263,7 @@ INSERT INTO props (
     ('conf_menu_text', 'label', 'et', 'string', 'Text', NULL, NULL),
     ('conf_menu_text', 'type', NULL, 'string', 'text', NULL, NULL),
     ('conf_menu_text', 'ordinal', NULL, 'integer', NULL, 5, NULL);
+    ('conf_menu_text', 'multilingual', NULL, 'boolean', NULL, 1, NULL),
 
 
 /* conf rights */
@@ -274,32 +282,10 @@ INSERT INTO props (
     'reference',
     users.id
 FROM (
-    SELECT 'entity' AS entity
-    UNION SELECT 'entity_name'
-    UNION SELECT 'entity_label'
-    UNION SELECT 'entity_label_plural'
-    UNION SELECT 'entity_allowed_child'
-    UNION SELECT 'entity_add_from_menu'
-    UNION SELECT 'entity_optional_parent'
-    UNION SELECT 'entity_open_after_add'
-    UNION SELECT 'property'
-    UNION SELECT 'property_name'
-    UNION SELECT 'property_label'
-    UNION SELECT 'property_label_plural'
-    UNION SELECT 'property_fieldset'
-    UNION SELECT 'property_type'
-    UNION SELECT 'property_ordinal'
-    UNION SELECT 'property_list'
-    UNION SELECT 'property_multilingual'
-    UNION SELECT 'property_mandatory'
-    UNION SELECT 'property_public'
-    UNION SELECT 'property_search'
-    UNION SELECT 'property_classifier'
-    UNION SELECT 'menu'
-    UNION SELECT 'menu_name'
-    UNION SELECT 'menu_group'
-    UNION SELECT 'menu_query'
-    UNION SELECT 'menu_text'
+    SELECT DISTINCT
+        entity
+    FROM props
+    WHERE entity LIKE 'conf_%'
 ) AS entities,
 (
     SELECT
