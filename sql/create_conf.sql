@@ -22,7 +22,7 @@ INSERT INTO props (
 
     ('entity_name', '_mid', NULL, 'string', 'entity_name', NULL, NULL, 1),
     ('entity_name', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
-    ('entity_name', '_parent', NULL, 'reference', NULL, NULL, 'conf_entity', 1),
+    ('entity_name', '_parent', NULL, 'reference', NULL, NULL, 'entity', 1),
     ('entity_name', 'name', NULL, 'string', 'name', NULL, NULL, 1),
     ('entity_name', 'label', 'en', 'string', 'Name', NULL, NULL, 1),
     ('entity_name', 'label', 'et', 'string', 'Name', NULL, NULL, 1),
@@ -31,7 +31,7 @@ INSERT INTO props (
 
     ('entity_label', '_mid', NULL, 'string', 'entity_label', NULL, NULL, 1),
     ('entity_label', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
-    ('entity_label', '_parent', NULL, 'reference', NULL, NULL, 'conf_entity', 1),
+    ('entity_label', '_parent', NULL, 'reference', NULL, NULL, 'entity', 1),
     ('entity_label', 'name', NULL, 'string', 'label', 'en', NULL, 1),
     ('entity_label', 'name', NULL, 'string', 'label', 'et', NULL, 1),
     ('entity_label', 'label', 'en', 'string', 'Label', NULL, NULL, 1),
@@ -42,7 +42,7 @@ INSERT INTO props (
 
     ('entity_label_plural', '_mid', NULL, 'string', 'entity_label_plural', NULL, NULL, 1),
     ('entity_label_plural', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
-    ('entity_label_plural', '_parent', NULL, 'reference', NULL, NULL, 'conf_entity', 1),
+    ('entity_label_plural', '_parent', NULL, 'reference', NULL, NULL, 'entity', 1),
     ('entity_label_plural', 'name', NULL, 'string', 'label_plural', 'en', NULL, 1),
     ('entity_label_plural', 'label', 'en', 'string', 'Label (plural)', NULL, NULL, 1),
     ('entity_label_plural', 'label', 'et', 'string', 'Label (plural)', NULL, NULL, 1),
@@ -52,7 +52,7 @@ INSERT INTO props (
 
     ('entity_allowed_child', '_mid', NULL, 'string', 'entity_allowed_child', NULL, NULL, 1),
     ('entity_allowed_child', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
-    ('entity_allowed_child', '_parent', NULL, 'reference', NULL, NULL, 'conf_entity', 1),
+    ('entity_allowed_child', '_parent', NULL, 'reference', NULL, NULL, 'entity', 1),
     ('entity_allowed_child', 'name', NULL, 'string', 'allowed_child', NULL, NULL, 1),
     ('entity_allowed_child', 'label', 'en', 'string', 'Allowed child', NULL, NULL, 1),
     ('entity_allowed_child', 'label', 'et', 'string', 'Allowed child', NULL, NULL, 1),
@@ -62,7 +62,7 @@ INSERT INTO props (
 
     ('entity_add_from_menu', '_mid', NULL, 'string', 'entity_add_from_menu', NULL, NULL, 1),
     ('entity_add_from_menu', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
-    ('entity_add_from_menu', '_parent', NULL, 'reference', NULL, NULL, 'conf_entity', 1),
+    ('entity_add_from_menu', '_parent', NULL, 'reference', NULL, NULL, 'entity', 1),
     ('entity_add_from_menu', 'name', NULL, 'string', 'add_from_menu', NULL, NULL, 1),
     ('entity_add_from_menu', 'label', 'en', 'string', 'Add from menu', NULL, NULL, 1),
     ('entity_add_from_menu', 'label', 'et', 'string', 'Add from menu', NULL, NULL, 1),
@@ -72,7 +72,7 @@ INSERT INTO props (
 
     ('entity_optional_parent', '_mid', NULL, 'string', 'entity_optional_parent', NULL, NULL, 1),
     ('entity_optional_parent', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
-    ('entity_optional_parent', '_parent', NULL, 'reference', NULL, NULL, 'conf_entity', 1),
+    ('entity_optional_parent', '_parent', NULL, 'reference', NULL, NULL, 'entity', 1),
     ('entity_optional_parent', 'name', NULL, 'string', 'optional_parent', NULL, NULL, 1),
     ('entity_optional_parent', 'label', 'en', 'string', 'Optional parent', NULL, NULL, 1),
     ('entity_optional_parent', 'label', 'et', 'string', 'Optional parent', NULL, NULL, 1),
@@ -82,7 +82,7 @@ INSERT INTO props (
 
     ('entity_open_after_add', '_mid', NULL, 'string', 'entity_open_after_add', NULL, NULL, 1),
     ('entity_open_after_add', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
-    ('entity_open_after_add', '_parent', NULL, 'reference', NULL, NULL, 'conf_entity', 1),
+    ('entity_open_after_add', '_parent', NULL, 'reference', NULL, NULL, 'entity', 1),
     ('entity_open_after_add', 'name', NULL, 'string', 'open_after_add', NULL, NULL, 1),
     ('entity_open_after_add', 'label', 'en', 'string', 'Open after add', NULL, NULL, 1),
     ('entity_open_after_add', 'label', 'et', 'string', 'Open after add', NULL, NULL, 1),
@@ -98,7 +98,7 @@ INSERT INTO props (
 
     ('property_name', '_mid', NULL, 'string', 'property_name', NULL, NULL, 1),
     ('property_name', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
-    ('property_name', '_parent', NULL, 'reference', NULL, NULL, 'conf_property', 1),
+    ('property_name', '_parent', NULL, 'reference', NULL, NULL, 'property', 1),
     ('property_name', 'name', NULL, 'string', 'name', NULL, NULL, 1),
     ('property_name', 'label', 'en', 'string', 'Name', NULL, NULL, 1),
     ('property_name', 'label', 'et', 'string', 'Name', NULL, NULL, 1),
@@ -107,7 +107,7 @@ INSERT INTO props (
 
     ('property_label', '_mid', NULL, 'string', 'property_label', NULL, NULL, 1),
     ('property_label', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
-    ('property_label', '_parent', NULL, 'reference', NULL, NULL, 'conf_property', 1),
+    ('property_label', '_parent', NULL, 'reference', NULL, NULL, 'property', 1),
     ('property_label', 'name', NULL, 'string', 'label', 'en', NULL, 1),
     ('property_label', 'name', NULL, 'string', 'label', 'et', NULL, 1),
     ('property_label', 'label', 'en', 'string', 'Label', NULL, NULL, 1),
@@ -118,7 +118,7 @@ INSERT INTO props (
 
     ('property_label_plural', '_mid', NULL, 'string', 'property_label_plural', NULL, NULL, 1),
     ('property_label_plural', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
-    ('property_label_plural', '_parent', NULL, 'reference', NULL, NULL, 'conf_property', 1),
+    ('property_label_plural', '_parent', NULL, 'reference', NULL, NULL, 'property', 1),
     ('property_label_plural', 'name', NULL, 'string', 'label_plural', 'en', NULL, 1),
     ('property_label_plural', 'label', 'en', 'string', 'Label (plural)', NULL, NULL, 1),
     ('property_label_plural', 'label', 'et', 'string', 'Label (plural)', NULL, NULL, 1),
@@ -128,7 +128,7 @@ INSERT INTO props (
 
     ('property_fieldset', '_mid', NULL, 'string', 'property_fieldset', NULL, NULL, 1),
     ('property_fieldset', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
-    ('property_fieldset', '_parent', NULL, 'reference', NULL, NULL, 'conf_property', 1),
+    ('property_fieldset', '_parent', NULL, 'reference', NULL, NULL, 'property', 1),
     ('property_fieldset', 'name', NULL, 'string', 'fieldset', NULL, NULL, 1),
     ('property_fieldset', 'label', 'en', 'string', 'Fieldset', NULL, NULL, 1),
     ('property_fieldset', 'label', 'et', 'string', 'Fieldset', NULL, NULL, 1),
@@ -138,7 +138,7 @@ INSERT INTO props (
 
     ('property_type', '_mid', NULL, 'string', 'property_type', NULL, NULL, 1),
     ('property_type', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
-    ('property_type', '_parent', NULL, 'reference', NULL, NULL, 'conf_property', 1),
+    ('property_type', '_parent', NULL, 'reference', NULL, NULL, 'property', 1),
     ('property_type', 'name', NULL, 'string', 'type', NULL, NULL, 1),
     ('property_type', 'label', 'en', 'string', 'Type', NULL, NULL, 1),
     ('property_type', 'label', 'et', 'string', 'Type', NULL, NULL, 1),
@@ -147,7 +147,7 @@ INSERT INTO props (
 
     ('property_ordinal', '_mid', NULL, 'string', 'property_ordinal', NULL, NULL, 1),
     ('property_ordinal', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
-    ('property_ordinal', '_parent', NULL, 'reference', NULL, NULL, 'conf_property', 1),
+    ('property_ordinal', '_parent', NULL, 'reference', NULL, NULL, 'property', 1),
     ('property_ordinal', 'name', NULL, 'string', 'ordinal', NULL, NULL, 1),
     ('property_ordinal', 'label', 'en', 'string', 'Ordinal', NULL, NULL, 1),
     ('property_ordinal', 'label', 'et', 'string', 'Ordinal', NULL, NULL, 1),
@@ -156,7 +156,7 @@ INSERT INTO props (
 
     ('property_list', '_mid', NULL, 'string', 'property_list', NULL, NULL, 1),
     ('property_list', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
-    ('property_list', '_parent', NULL, 'reference', NULL, NULL, 'conf_property', 1),
+    ('property_list', '_parent', NULL, 'reference', NULL, NULL, 'property', 1),
     ('property_list', 'name', NULL, 'string', 'list', NULL, NULL, 1),
     ('property_list', 'label', 'en', 'string', 'Is list', NULL, NULL, 1),
     ('property_list', 'label', 'et', 'string', 'Is list', NULL, NULL, 1),
@@ -165,7 +165,7 @@ INSERT INTO props (
 
     ('property_multilingual', '_mid', NULL, 'string', 'property_multilingual', NULL, NULL, 1),
     ('property_multilingual', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
-    ('property_multilingual', '_parent', NULL, 'reference', NULL, NULL, 'conf_property', 1),
+    ('property_multilingual', '_parent', NULL, 'reference', NULL, NULL, 'property', 1),
     ('property_multilingual', 'name', NULL, 'string', 'multilingual', NULL, NULL, 1),
     ('property_multilingual', 'label', 'en', 'string', 'Is multilingual', NULL, NULL, 1),
     ('property_multilingual', 'label', 'et', 'string', 'Is multilingual', NULL, NULL, 1),
@@ -174,7 +174,7 @@ INSERT INTO props (
 
     ('property_mandatory', '_mid', NULL, 'string', 'property_mandatory', NULL, NULL, 1),
     ('property_mandatory', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
-    ('property_mandatory', '_parent', NULL, 'reference', NULL, NULL, 'conf_property', 1),
+    ('property_mandatory', '_parent', NULL, 'reference', NULL, NULL, 'property', 1),
     ('property_mandatory', 'name', NULL, 'string', 'mandatory', NULL, NULL, 1),
     ('property_mandatory', 'label', 'en', 'string', 'Is mandatory', NULL, NULL, 1),
     ('property_mandatory', 'label', 'et', 'string', 'Is mandatory', NULL, NULL, 1),
@@ -183,7 +183,7 @@ INSERT INTO props (
 
     ('property_public', '_mid', NULL, 'string', 'property_public', NULL, NULL, 1),
     ('property_public', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
-    ('property_public', '_parent', NULL, 'reference', NULL, NULL, 'conf_property', 1),
+    ('property_public', '_parent', NULL, 'reference', NULL, NULL, 'property', 1),
     ('property_public', 'name', NULL, 'string', 'public', NULL, NULL, 1),
     ('property_public', 'label', 'en', 'string', 'Is public', NULL, NULL, 1),
     ('property_public', 'label', 'et', 'string', 'Is public', NULL, NULL, 1),
@@ -192,7 +192,7 @@ INSERT INTO props (
 
     ('property_search', '_mid', NULL, 'string', 'property_search', NULL, NULL, 1),
     ('property_search', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
-    ('property_search', '_parent', NULL, 'reference', NULL, NULL, 'conf_property', 1),
+    ('property_search', '_parent', NULL, 'reference', NULL, NULL, 'property', 1),
     ('property_search', 'name', NULL, 'string', 'search', NULL, NULL, 1),
     ('property_search', 'label', 'en', 'string', 'Is searchable', NULL, NULL, 1),
     ('property_search', 'label', 'et', 'string', 'Is searchable', NULL, NULL, 1),
@@ -201,7 +201,7 @@ INSERT INTO props (
 
     ('property_classifier', '_mid', NULL, 'string', 'property_classifier', NULL, NULL, 1),
     ('property_classifier', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
-    ('property_classifier', '_parent', NULL, 'reference', NULL, NULL, 'conf_property', 1),
+    ('property_classifier', '_parent', NULL, 'reference', NULL, NULL, 'property', 1),
     ('property_classifier', 'name', NULL, 'string', 'classifier', NULL, NULL, 1),
     ('property_classifier', 'label', 'en', 'string', 'Classifier', NULL, NULL, 1),
     ('property_classifier', 'label', 'et', 'string', 'Classifier', NULL, NULL, 1),
@@ -220,7 +220,7 @@ INSERT INTO props (
 
     ('menu_name', '_mid', NULL, 'string', 'menu_name', NULL, NULL, 1),
     ('menu_name', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
-    ('menu_name', '_parent', NULL, 'reference', NULL, NULL, 'conf_menu', 1),
+    ('menu_name', '_parent', NULL, 'reference', NULL, NULL, 'menu', 1),
     ('menu_name', 'name', NULL, 'string', 'name', NULL, NULL, 1),
     ('menu_name', 'label', 'en', 'string', 'Name', NULL, NULL, 1),
     ('menu_name', 'label', 'et', 'string', 'Name', NULL, NULL, 1),
@@ -230,7 +230,7 @@ INSERT INTO props (
 
     ('menu_group', '_mid', NULL, 'string', 'menu_group', NULL, NULL, 1),
     ('menu_group', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
-    ('menu_group', '_parent', NULL, 'reference', NULL, NULL, 'conf_menu', 1),
+    ('menu_group', '_parent', NULL, 'reference', NULL, NULL, 'menu', 1),
     ('menu_group', 'name', NULL, 'string', 'group', NULL, NULL, 1),
     ('menu_group', 'label', 'en', 'string', 'Group', NULL, NULL, 1),
     ('menu_group', 'label', 'et', 'string', 'Group', NULL, NULL, 1),
@@ -240,7 +240,7 @@ INSERT INTO props (
 
     ('menu_query', '_mid', NULL, 'string', 'menu_query', NULL, NULL, 1),
     ('menu_query', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
-    ('menu_query', '_parent', NULL, 'reference', NULL, NULL, 'conf_menu', 1),
+    ('menu_query', '_parent', NULL, 'reference', NULL, NULL, 'menu', 1),
     ('menu_query', 'name', NULL, 'string', 'query', NULL, NULL, 1),
     ('menu_query', 'label', 'en', 'string', 'Query', NULL, NULL, 1),
     ('menu_query', 'label', 'et', 'string', 'Query', NULL, NULL, 1),
@@ -249,7 +249,7 @@ INSERT INTO props (
 
     ('menu_ordinal', '_mid', NULL, 'string', 'menu_ordinal', NULL, NULL, 1),
     ('menu_ordinal', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
-    ('menu_ordinal', '_parent', NULL, 'reference', NULL, NULL, 'conf_menu', 1),
+    ('menu_ordinal', '_parent', NULL, 'reference', NULL, NULL, 'menu', 1),
     ('menu_ordinal', 'name', NULL, 'string', 'ordinal', NULL, NULL, 1),
     ('menu_ordinal', 'label', 'en', 'string', 'Ordinal', NULL, NULL, 1),
     ('menu_ordinal', 'label', 'et', 'string', 'Ordinal', NULL, NULL, 1),
@@ -258,7 +258,7 @@ INSERT INTO props (
 
     ('menu_text', '_mid', NULL, 'string', 'menu_text', NULL, NULL, 1),
     ('menu_text', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
-    ('menu_text', '_parent', NULL, 'reference', NULL, NULL, 'conf_menu', 1),
+    ('menu_text', '_parent', NULL, 'reference', NULL, NULL, 'menu', 1),
     ('menu_text', 'name', NULL, 'string', 'text', NULL, NULL, 1),
     ('menu_text', 'label', 'en', 'string', 'Text', NULL, NULL, 1),
     ('menu_text', 'label', 'et', 'string', 'Text', NULL, NULL, 1),
