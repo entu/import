@@ -15,7 +15,7 @@
     new: CONCAT('[', registry_number, ']')
 -
     old: '{COUNT(self.child.copy.id)}'
-    new: COUNT(child.copy.id)
+    new: COUNT(child.copy._id)
 -
     old: '{COUNT(self.files)}'
     new: COUNT(files)
@@ -27,7 +27,7 @@
     new: COUNT(public_files)
 -
     old: '{COUNT(self.referrer.asset.id)}'
-    new: COUNT(referrer.asset.id)
+    new: COUNT(referrer.asset._id)
 -
     old: '{COUNT(self.referrer.eksemplar.asukoht)}'
     new: COUNT(referrer.eksemplar.asukoht)
@@ -603,7 +603,7 @@
     new: "CONCAT(hours, ':', minutes)"
 -
     old: '@id@'
-    new: id
+    new: _id
 -
     old: '@info@'
     new: info
@@ -945,10 +945,10 @@
     new: year
 -
     old: 'http://inventuur.entu.eu/#/eka/{self.id}/asset/asset-inventeerimisakt/{self.id}/vara-inventeerimisakt'
-    new: CONCAT('http://inventuur.entu.eu/#/eka/', id, '/asset/asset-inventeerimisakt/', id, '/vara-inventeerimisakt')
+    new: CONCAT('http://inventuur.entu.eu/#/eka/', _id, '/asset/asset-inventeerimisakt/', _id, '/vara-inventeerimisakt')
 -
     old: 'http://inventuur.entu.eu/#/eka/{self.id}/asset/asset-mahakandmisakt/{self.id}/vara-mahakandmisakt'
-    new: CONCAT('http://inventuur.entu.eu/#/eka/', id, '/asset/asset-mahakandmisakt/', id, '/vara-mahakandmisakt')
+    new: CONCAT('http://inventuur.entu.eu/#/eka/', _id, '/asset/asset-mahakandmisakt/', _id, '/vara-mahakandmisakt')
 -
     old: 'http://www.piletilevi.ee/mobile/est/#view=concert&concert={self.pl-id}'
     new: CONCAT('http://www.piletilevi.ee/mobile/est/#view=concert&concert=', pl_id)
@@ -957,13 +957,13 @@
     new: CONCAT('https://', domain)
 -
     old: 'https://inventuur.entu.eu/#/okupatsioon/{self.id}/eksponaat/eksponaat-cl-asukoht/*/cl-asukoht'
-    new: CONCAT('https://inventuur.entu.eu/#/okupatsioon/', id, '/eksponaat/eksponaat-cl-asukoht/*/cl-asukoht')
+    new: CONCAT('https://inventuur.entu.eu/#/okupatsioon/', _id, '/eksponaat/eksponaat-cl-asukoht/*/cl-asukoht')
 -
     old: 'https://inventuur.entu.eu/#/okupatsioon/{self.id}/eksponaat/eksponaat-represseeritu-t/*/represseeritu'
-    new: CONCAT('https://inventuur.entu.eu/#/okupatsioon/', id, '/eksponaat/eksponaat-represseeritu_t/*/represseeritu')
+    new: CONCAT('https://inventuur.entu.eu/#/okupatsioon/', _id, '/eksponaat/eksponaat-represseeritu_t/*/represseeritu')
 -
     old: 'https://inventuur.entu.eu/#/okupatsioon/{self.id}/eksponaat/eksponaat-sari/*/sari'
-    new: CONCAT('https://inventuur.entu.eu/#/okupatsioon/', id, '/eksponaat/eksponaat-sari/*/sari')
+    new: CONCAT('https://inventuur.entu.eu/#/okupatsioon/', _id, '/eksponaat/eksponaat-sari/*/sari')
 -
     old: 'Museaale: @eksponaate@<br/>Teavikuid: @eksemplare@'
     new: "CONCAT('Museaale: ', eksponaate, '<br/>Teavikuid: ', eksemplare)"
