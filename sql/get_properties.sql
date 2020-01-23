@@ -3,7 +3,6 @@ SELECT
     type,
     language,
     datatype,
-    search,
     value_text AS `string`,
     value_integer AS `integer`,
     value_decimal AS `decimal`,

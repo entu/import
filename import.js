@@ -168,11 +168,6 @@ const importProps = (mysqlDb, callback) => {
                   _.set(x, 'type', decamelize(camelize(x.type), '_'))
                 }
               }
-              if (x.search === 1) {
-                _.set(x, 'search', true)
-              } else {
-                _.unset(x, 'search')
-              }
               if (x.created_by) {
                 _.set(x, 'created.by', x.created_by)
                 _.unset(x, 'created_by')

@@ -3,7 +3,6 @@ INSERT INTO props (
     type,
     datatype,
     language,
-    search,
     value_text,
     value_integer,
     value_decimal,
@@ -26,7 +25,6 @@ INSERT INTO props (
         WHEN 'english' THEN 'en'
         ELSE NULL
     END,
-    pd.search,
     CASE pd.datatype
         WHEN 'string' THEN TRIM(p.value_string)
         WHEN 'text' THEN TRIM(p.value_text)
