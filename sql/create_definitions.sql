@@ -480,3 +480,99 @@ AND pd.entity_definition_keyname NOT LIKE 'conf-%'
 AND pd.entity_definition_keyname IN (SELECT keyname FROM entity_definition)
 AND t.field IN ('label', 'label_plural', 'description', 'fieldset')
 AND t.property_definition_keyname IS NOT NULL;
+
+
+/* name (formula) properties if no name */
+INSERT INTO props (
+    entity,
+    type,
+    datatype,
+    value_text
+) SELECT DISTINCT
+    CONCAT(entity.entity_definition_keyname, '_name'),
+    'label',
+    'string',
+    'Name'
+FROM translation
+LEFT JOIN entity ON entity.entity_definition_keyname = translation.entity_definition_keyname
+WHERE translation.entity_definition_keyname NOT LIKE 'conf-%'
+AND translation.entity_definition_keyname NOT IN (
+    SELECT entity_definition_keyname
+    FROM property_definition
+    WHERE TRIM(LOWER(dataproperty)) IN ('name', 'title')
+)
+AND field = 'displayname'
+AND translation.entity_definition_keyname IS NOT NULL
+AND entity.id IS NOT NULL;
+
+INSERT INTO props (
+    entity,
+    type,
+    datatype,
+    value_text
+) SELECT DISTINCT
+    CONCAT(entity.entity_definition_keyname, '_name'),
+    'type',
+    'string',
+    'string'
+FROM translation
+LEFT JOIN entity ON entity.entity_definition_keyname = translation.entity_definition_keyname
+WHERE translation.entity_definition_keyname NOT LIKE 'conf-%'
+AND translation.entity_definition_keyname NOT IN (
+    SELECT entity_definition_keyname
+    FROM property_definition
+    WHERE TRIM(LOWER(dataproperty)) IN ('name', 'title')
+)
+AND field = 'displayname'
+AND translation.entity_definition_keyname IS NOT NULL
+AND entity.id IS NOT NULL;
+
+INSERT INTO props (
+    entity,
+    type,
+    datatype,
+    value_text
+) SELECT DISTINCT
+    CONCAT(entity.entity_definition_keyname, '_name'),
+    'name',
+    'string',
+    'name'
+FROM translation
+LEFT JOIN entity ON entity.entity_definition_keyname = translation.entity_definition_keyname
+WHERE translation.entity_definition_keyname NOT LIKE 'conf-%'
+AND translation.entity_definition_keyname NOT IN (
+    SELECT entity_definition_keyname
+    FROM property_definition
+    WHERE TRIM(LOWER(dataproperty)) IN ('name', 'title')
+)
+AND field = 'displayname'
+AND translation.entity_definition_keyname IS NOT NULL
+AND entity.id IS NOT NULL;
+
+INSERT INTO props (
+    entity,
+    type,
+    datatype,
+    language,
+    value_text
+) SELECT DISTINCT
+    CONCAT(entity.entity_definition_keyname, '_name'),
+    'formula',
+    'string',
+    CASE language
+        WHEN 'estonian' THEN 'et'
+        WHEN 'english' THEN 'en'
+        ELSE NULL
+    END AS property_language,
+    REPLACE(TRIM(value), '@title@', '@name@')
+FROM translation
+LEFT JOIN entity ON entity.entity_definition_keyname = translation.entity_definition_keyname
+WHERE translation.entity_definition_keyname NOT LIKE 'conf-%'
+AND translation.entity_definition_keyname NOT IN (
+    SELECT entity_definition_keyname
+    FROM property_definition
+    WHERE TRIM(LOWER(dataproperty)) IN ('name', 'title')
+)
+AND field = 'displayname'
+AND translation.entity_definition_keyname IS NOT NULL
+AND entity.id IS NOT NULL;
