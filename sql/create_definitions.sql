@@ -534,7 +534,7 @@ INSERT INTO props (
     datatype,
     value_reference
 ) SELECT DISTINCT
-    LOWER(TRIM(REPLACE(entities.entity_definition_keyname, '-', '_'))),
+    CONCAT(LOWER(TRIM(REPLACE(t.entity_definition_keyname, '-', '_'))), '_name'),
     CASE TRIM(users.user)
         WHEN 'argoroots@gmail.com' THEN '_owner'
         WHEN 'mihkel.putrinsh@gmail.com' THEN '_owner'
