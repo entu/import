@@ -48,10 +48,10 @@
     new: _contract.number
 -
     old: '{self.author} {self.title} {self.journal} {self.pages} {self.year}'
-    new: CONCAT(author, ' ', title, ' ', journal, ' ', pages, ' ', year)
+    new: CONCAT(author, ' ', name, ' ', journal, ' ', pages, ' ', year)
 -
     old: '{self.author}, "{self.title}", {self.journal}, {self.volume}, {self.issue}, {self.page}, {self.date}'
-    new: CONCAT(author, ', "', title, '", ', journal, ', ', volume, ', ', issue, ', ', page, ', ', date)
+    new: CONCAT(author, ', "', name, '", ', journal, ', ', volume, ', ', issue, ', ', page, ', ', date)
 -
     old: '{self.child.copy.barcode}'
     new: child.copy.barcode
@@ -93,13 +93,13 @@
     new: parent.*.publishing_date
 -
     old: '{self.parent..title}'
-    new: parent.*.title
+    new: parent.*.name
 -
     old: '{self.parent.*.color}'
     new: parent.*.color
 -
     old: '{self.parent.*.parent} / {self.parent.*.title}'
-    new: CONCAT(parent.*.parent, ' / ', parent.*.title)
+    new: CONCAT(parent.*.parent, ' / ', parent.*.name)
 -
     old: '{self.parent.*.tag}'
     new: parent.*.tag
@@ -180,7 +180,7 @@
     new: CONCAT(parent.region.full_name, '/', name)
 -
     old: '{self.parent.story.title}'
-    new: parent.story.title
+    new: parent.story.name
 -
     old: '{self.parent.tag.fullName-en}/{self.name-en}'
     new: CONCAT(parent.tag.full_name_en, '/', name_en)
@@ -357,7 +357,7 @@
     new: asukoht
 -
     old: '@author@ - @title@'
-    new: CONCAT(author, ' - ', title)
+    new: CONCAT(author, ' - ', name)
 -
     old: '@author@ @date@'
     new: CONCAT(author, ' ', date)
@@ -381,7 +381,7 @@
     new: CONCAT(barcode, ' ', number, ' (', publishing_date, ') ', author)
 -
     old: '@barcode@ @title@'
-    new: CONCAT(barcode, ' ', title)
+    new: CONCAT(barcode, ' ', name)
 -
     old: '@beer-name@'
     new: beer_name
@@ -474,7 +474,7 @@
     new: CONCAT(date, ' ', number)
 -
     old: '@date@ @title@'
-    new: CONCAT(date, ' ', title)
+    new: CONCAT(date, ' ', name)
 -
     old: '@date@ @total@; @liige@'
     new: CONCAT(date, ' ', total, '; ', liige)
@@ -609,16 +609,16 @@
     new: info
 -
     old: '@inventory-number@ - @title@'
-    new: CONCAT(inventory_number, ' - ', title)
+    new: CONCAT(inventory_number, ' - ', name)
 -
     old: '@inventory-number@ @barcode@ @title@'
-    new: CONCAT(inventory_number, ' ', barcode, ' ', title)
+    new: CONCAT(inventory_number, ' ', barcode, ' ', name)
 -
     old: '@inventory-number@ @title@ @number@'
-    new: CONCAT(inventory_number, ' ', title, ' ', number)
+    new: CONCAT(inventory_number, ' ', name, ' ', number)
 -
     old: '@inventory-number@ @title@'
-    new: CONCAT(inventory_number, ' ', title)
+    new: CONCAT(inventory_number, ' ', name)
 -
     old: '@issued-date@ … @due-date@'
     new: CONCAT(issued_date, ' … ', due_date)
@@ -771,7 +771,7 @@
     new: CONCAT(performance, ' ', en_subtitle, ' ', resident)
 -
     old: '@performer@: @title@'
-    new: "CONCAT(performer, ': ', title)"
+    new: "CONCAT(performer, ': ', name)"
 -
     old: '@period@ @parentperson@/@childperson@'
     new: CONCAT(period, ' ', parentperson, '/', childperson)
@@ -801,7 +801,7 @@
     new: CONCAT(prefix, '#n', suffix)
 -
     old: '@pretitle@ @title@'
-    new: CONCAT(pretitle, ' ', title)
+    new: CONCAT(pretitle, ' ', name)
 -
     old: '@project@'
     new: project
@@ -834,7 +834,7 @@
     new: region
 -
     old: '@registry-number@ : @title@'
-    new: "CONCAT(registry_number, ' : ', title)"
+    new: "CONCAT(registry_number, ' : ', name)"
 -
     old: '@registry-number@ (@date@)'
     new: CONCAT(registry_number, ' (', date, ')')
@@ -912,10 +912,10 @@
     new: title_et
 -
     old: '@title@ @subtitle@ @notes@ @description@'
-    new: CONCAT(title, ' ', subtitle, ' ', notes, ' ', description)
+    new: CONCAT(name, ' ', subtitle, ' ', notes, ' ', description)
 -
     old: '@title@'
-    new: title
+    new: name
 -
     old: '@tootegrupp@ @suurus@ @nimetus@'
     new: CONCAT(tootegrupp, ' ', suurus, ' ', nimetus)
