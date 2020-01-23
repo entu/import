@@ -207,7 +207,7 @@ const importProps = (mysqlDb, callback) => {
                 let formula = formulas.find(f => f.old === x.string)
 
                 if (formula) {
-                  x.string = , formula.new
+                  x.string = formula.new
                 } else {
                   console.log('MISSING FORMULA: ' + x.string)
                 }
