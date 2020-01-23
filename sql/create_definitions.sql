@@ -462,7 +462,7 @@ INSERT INTO props (
     datatype,
     value_text
 ) SELECT DISTINCT
-    CONCAT(pd.entity_definition_keyname, '_', pd.dataproperty),
+    NULLIF(CONCAT(LOWER(TRIM(REPLACE(pd.entity_definition_keyname, '-', '_'))), '_', LOWER(TRIM(REPLACE(pd.dataproperty, '-', '_')))), '_'),
     TRIM(t.field),
     CASE t.language
         WHEN 'estonian' THEN 'et'
