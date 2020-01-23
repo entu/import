@@ -33,6 +33,11 @@ INSERT INTO props (
     LEFT(CONCAT(GROUP_CONCAT(TRIM(value) ORDER BY field DESC SEPARATOR '#@#'),'#@#'), LOCATE('#@#', CONCAT(GROUP_CONCAT(TRIM(value) ORDER BY field DESC SEPARATOR '#@#'),'#@#')) - 1)
 FROM translation
 WHERE field IN ('label', 'label_plural')
+AND entity_definition_keyname IN (
+    SELECT entity_definition_keyname
+    FROM translation
+    WHERE field = 'menu'
+)
 AND entity_definition_keyname NOT LIKE 'conf-%'
 GROUP BY
     entity_definition_keyname,
