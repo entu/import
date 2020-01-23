@@ -4,8 +4,7 @@ SELECT
     language,
     datatype,
     search,
-    IF(datatype = 'formula', value_text, NULL) AS formula,
-    IF(datatype != 'formula', value_text, NULL) AS `string`,
+    value_text AS `string`,
     value_integer AS `integer`,
     value_decimal AS `decimal`,
     CASE type

@@ -20,40 +20,32 @@ INSERT INTO props (
         'name',
         NULLIF(LOWER(TRIM(REPLACE(pd.dataproperty, '-', '_'))), '')
     ),
-    IF(
-        pd.formula = 1,
-        'formula',
-        NULLIF(LOWER(TRIM(REPLACE(pd.datatype, '-', '_'))), '')
-    ),
+    NULLIF(LOWER(TRIM(REPLACE(pd.datatype, '-', '_'))), ''),
     CASE IF(pd.multilingual = 1, TRIM(p.language), NULL)
         WHEN 'estonian' THEN 'et'
         WHEN 'english' THEN 'en'
         ELSE NULL
     END,
     pd.search,
-    IF(
-        pd.formula = 1,
-        pd.defaultvalue,
-        CASE pd.datatype
-            WHEN 'string' THEN TRIM(p.value_string)
-            WHEN 'text' THEN TRIM(p.value_text)
-            WHEN 'file' THEN (
-                SELECT TRIM(CONCAT(
-                    'A:',
-                    IFNULL(TRIM(filename), ''),
-                    '\nB:',
-                    IFNULL(TRIM(md5), ''),
-                    '\nC:',
-                    IFNULL(TRIM(s3_key), ''),
-                    '\nD:',
-                    IFNULL(TRIM(url), ''),
-                    '\nE:',
-                    IFNULL(filesize, '')
-                )) FROM file WHERE id = p.value_file LIMIT 1
-            )
-            ELSE NULL
-        END
-    ),
+    CASE pd.datatype
+        WHEN 'string' THEN TRIM(p.value_string)
+        WHEN 'text' THEN TRIM(p.value_text)
+        WHEN 'file' THEN (
+            SELECT TRIM(CONCAT(
+                'A:',
+                IFNULL(TRIM(filename), ''),
+                '\nB:',
+                IFNULL(TRIM(md5), ''),
+                '\nC:',
+                IFNULL(TRIM(s3_key), ''),
+                '\nD:',
+                IFNULL(TRIM(url), ''),
+                '\nE:',
+                IFNULL(filesize, '')
+            )) FROM file WHERE id = p.value_file LIMIT 1
+        )
+        ELSE NULL
+    END,
     CASE pd.datatype
         WHEN 'integer' THEN p.value_integer
         WHEN 'boolean' THEN p.value_boolean
@@ -82,6 +74,7 @@ FROM
     entity AS e
 WHERE pd.keyname = p.property_definition_keyname
 AND e.id = p.entity_id
+AND NULLIF(formula < 1, 1) IS NULL
 AND pd.dataproperty NOT IN (
     'entu-changed-at',
     'entu-changed-by',

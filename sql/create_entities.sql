@@ -32,38 +32,6 @@ FROM entity
 WHERE entity_definition_keyname NOT LIKE 'conf-%';
 
 
-/* name formula */
-INSERT INTO props (
-    entity,
-    type,
-    datatype,
-    search,
-    language,
-    value_text
-) SELECT DISTINCT
-    entity.id AS entity_id,
-    'name' AS property_definition,
-    'formula' AS property_type,
-    1 AS search,
-    CASE language
-        WHEN 'estonian' THEN 'et'
-        WHEN 'english' THEN 'en'
-        ELSE NULL
-    END AS property_language,
-    REPLACE(TRIM(value), '@title@', '@name@') AS value_text
-FROM translation
-LEFT JOIN entity ON entity.entity_definition_keyname = translation.entity_definition_keyname
-WHERE translation.entity_definition_keyname NOT LIKE 'conf-%'
-AND translation.entity_definition_keyname NOT IN (
-    SELECT entity_definition_keyname
-    FROM property_definition
-    WHERE TRIM(LOWER(dataproperty)) IN ('name', 'title')
-)
-AND field = 'displayname'
-AND translation.entity_definition_keyname IS NOT NULL
-AND entity.id IS NOT NULL;
-
-
 /* created at/by */
 INSERT INTO props (
     entity,

@@ -208,13 +208,13 @@ const importProps = (mysqlDb, callback) => {
 
                 _.unset(x, 'string')
               }
-              if (x.datatype === 'formula' && x.formula) {
-                let formula = formulas.filter(f => f.old === x.formula)
+              if (x.type === 'formula' && x.string) {
+                let formula = formulas.find(f => f.old === x.string)
 
-                if (formula.length > 0) {
-                  _.set(x, 'formula', formula[0].new)
+                if (formula) {
+                  x.string = , formula.new
                 } else {
-                  console.log('MISSING FORMULA: ' + x.formula)
+                  console.log('MISSING FORMULA: ' + x.string)
                 }
               }
               if (x.type === 'entu_api_key') {
