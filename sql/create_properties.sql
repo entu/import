@@ -3,7 +3,6 @@ INSERT INTO props (
     type,
     datatype,
     language,
-    public,
     search,
     value_text,
     value_integer,
@@ -31,7 +30,6 @@ INSERT INTO props (
         WHEN 'english' THEN 'en'
         ELSE NULL
     END,
-    pd.public,
     pd.search,
     IF(
         pd.formula = 1,

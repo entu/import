@@ -20,7 +20,6 @@ CREATE TABLE `props` (
     `type` varchar(32) DEFAULT NULL,
     `language` varchar(2) DEFAULT NULL,
     `datatype` varchar(16) DEFAULT NULL,
-    `public` int(1) DEFAULT NULL,
     `search` int(1) DEFAULT NULL,
     `value_text` text DEFAULT NULL,
     `value_integer` int(11) DEFAULT NULL,

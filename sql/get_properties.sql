@@ -3,7 +3,6 @@ SELECT
     type,
     language,
     datatype,
-    public,
     search,
     IF(datatype = 'formula', value_text, NULL) AS formula,
     IF(datatype != 'formula', value_text, NULL) AS `string`,
