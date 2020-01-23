@@ -91,6 +91,7 @@ FROM
     relationship AS r,
     entity AS e
 WHERE e.id = r.related_entity_id
+AND e.entity_definition_keyname NOT LIKE 'conf-%'
 AND r.relationship_definition_keyname = 'child';
 
 
@@ -117,6 +118,7 @@ FROM
     relationship AS r,
     entity AS e
 WHERE e.id = r.entity_id
+AND e.entity_definition_keyname NOT LIKE 'conf-%'
 AND r.relationship_definition_keyname IN ('editor', 'expander', 'owner', 'viewer');
 
 
