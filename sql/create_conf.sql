@@ -172,6 +172,15 @@ INSERT INTO props (
     ('property_multilingual', 'type', NULL, 'string', 'boolean', NULL, NULL, 1),
     ('property_multilingual', 'ordinal', NULL, 'integer', NULL, 8, NULL, 1),
 
+    ('property_readonly', '_mid', NULL, 'string', 'property_readonly', NULL, NULL, 1),
+    ('property_readonly', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
+    ('property_readonly', '_parent', NULL, 'reference', NULL, NULL, 'property', 1),
+    ('property_readonly', 'name', NULL, 'string', 'readonly', NULL, NULL, 1),
+    ('property_readonly', 'label', 'en', 'string', 'Is read-only', NULL, NULL, 1),
+    ('property_readonly', 'label', 'et', 'string', 'Is read-only', NULL, NULL, 1),
+    ('property_readonly', 'type', NULL, 'string', 'boolean', NULL, NULL, 1),
+    ('property_readonly', 'ordinal', NULL, 'integer', NULL, 9, NULL, 1),
+
     ('property_mandatory', '_mid', NULL, 'string', 'property_mandatory', NULL, NULL, 1),
     ('property_mandatory', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
     ('property_mandatory', '_parent', NULL, 'reference', NULL, NULL, 'property', 1),
@@ -208,6 +217,15 @@ INSERT INTO props (
     ('property_classifier', 'label_plural', 'en', 'string', 'Classifierss', NULL, NULL, 1),
     ('property_classifier', 'type', NULL, 'string', 'reference', NULL, NULL, 1),
     ('property_classifier', 'ordinal', NULL, 'integer', NULL, 11, NULL, 1),
+
+    ('property_formula', '_mid', NULL, 'string', 'property_formula', NULL, NULL, 1),
+    ('property_formula', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
+    ('property_formula', '_parent', NULL, 'reference', NULL, NULL, 'property', 1),
+    ('property_formula', 'name', NULL, 'string', 'formula', NULL, NULL, 1),
+    ('property_formula', 'label', 'en', 'string', 'Formula', NULL, NULL, 1),
+    ('property_formula', 'label', 'et', 'string', 'Formula', NULL, NULL, 1),
+    ('property_formula', 'type', NULL, 'string', 'string', NULL, NULL, 1),
+    ('property_formula', 'ordinal', NULL, 'integer', NULL, 5, NULL, 1),
 
     ('menu', '_mid', NULL, 'string', 'menu', NULL, NULL, 1),
     ('menu', '_type', NULL, 'reference', NULL, NULL, 'entity', 1),
