@@ -15,7 +15,7 @@
     new: CONCAT('[', registry_number, ']')
 -
     old: '{COUNT(self.child.copy.id)}'
-    new: COUNT(child.copy._id)
+    new: COUNT(_child.copy._id)
 -
     old: '{COUNT(self.files)}'
     new: COUNT(files)
@@ -54,10 +54,10 @@
     new: CONCAT(author, ', "', name, '", ', journal, ', ', volume, ', ', issue, ', ', page, ', ', date)
 -
     old: '{self.child.copy.barcode}'
-    new: child.copy.barcode
+    new: _child.copy.barcode
 -
     old: '{self.child.laenutuse-rida.barcode}'
-    new: child.laenutuse_rida.barcode
+    new: _child.laenutuse_rida.barcode
 -
     old: '{self.childperson.group}'
     new: childperson.group
@@ -72,136 +72,136 @@
     new: inventeerimisakt.date
 -
     old: '{self.parent..author}'
-    new: parent.*.author
+    new: _parent.*.author
 -
     old: '{self.parent..name} / {self.name}'
-    new: CONCAT(parent.*.name, ' / ', name)
+    new: CONCAT(_parent.*.name, ' / ', name)
 -
     old: '{self.parent..name}'
-    new: parent.*.name
+    new: _parent.*.name
 -
     old: '{self.parent..path} / {self.name}'
-    new: CONCAT(parent.*.path, ' / ', name)
+    new: CONCAT(_parent.*.path, ' / ', name)
 -
     old: '{self.parent..path}/{self.name}'
-    new: CONCAT(parent.*.path, '/', name)
+    new: CONCAT(_parent.*.path, '/', name)
 -
     old: '{self.parent..publisher}'
-    new: parent.*.publisher
+    new: _parent.*.publisher
 -
     old: '{self.parent..publishing-date}'
-    new: parent.*.publishing_date
+    new: _parent.*.publishing_date
 -
     old: '{self.parent..title}'
-    new: parent.*.name
+    new: _parent.*.name
 -
     old: '{self.parent.*.color}'
-    new: parent.*.color
+    new: _parent.*.color
 -
     old: '{self.parent.*.parent} / {self.parent.*.title}'
-    new: CONCAT(parent.*.parent, ' / ', parent.*.name)
+    new: CONCAT(_parent.*.parent, ' / ', _parent.*.name)
 -
     old: '{self.parent.*.tag}'
-    new: parent.*.tag
+    new: _parent.*.tag
 -
     old: '{self.parent.category.path}/{self.et-name}({self.en-name})'
-    new: CONCAT(parent.category.path, '/', et_name, '(', en_name, ')')
+    new: CONCAT(_parent.category.path, '/', et_name, '(', en_name, ')')
 -
     old: '{self.parent.chemical.name}'
-    new: parent.chemical.name
+    new: _parent.chemical.name
 -
     old: '{self.parent.cl-asukoht.path}/{self.name}'
-    new: CONCAT(parent.cl_asukoht.path, '/', name)
+    new: CONCAT(_parent.cl_asukoht.path, '/', name)
 -
     old: '{self.parent.cl-tag.fullname}/{self.name}'
-    new: CONCAT(parent.cl_tag.fullname, '/', name)
+    new: CONCAT(_parent.cl_tag.fullname, '/', name)
 -
     old: '{self.parent.class.number}{self.parent.class.letter}'
-    new: CONCAT(parent.class.number, parent.class.letter)
+    new: CONCAT(_parent.class.number, _parent.class.letter)
 -
     old: '{self.parent.customer.name}'
-    new: parent.customer.name
+    new: _parent.customer.name
 -
     old: '{self.parent.department.name}'
-    new: parent.department.name
+    new: _parent.department.name
 -
     old: '{self.parent.floor.address}'
-    new: parent.floor.address
+    new: _parent.floor.address
 -
     old: '{self.parent.floor.code}'
-    new: parent.floor.code
+    new: _parent.floor.code
 -
     old: '{self.parent.folder.description}'
-    new: parent.folder.description
+    new: _parent.folder.description
 -
     old: '{self.parent.folder.path}{self.parent.partner.name} / {self.name}'
-    new: CONCAT(parent.folder.path, parent.partner.name, ' / ', name)
+    new: CONCAT(_parent.folder.path, _parent.partner.name, ' / ', name)
 -
     old: '{self.parent.group.name}'
-    new: parent.group.name
+    new: _parent.group.name
 -
     old: '{self.parent.homepage-menu.path}{self.parent.homepage-item.path}/{self.name}'
-    new: CONCAT(parent.homepage_menu.path, parent.homepage_item.path, '/', name)
+    new: CONCAT(_parent.homepage_menu.path, _parent.homepage_item.path, '/', name)
 -
     old: '{self.parent.homepage-menu.path}/{self.name}'
-    new: CONCAT(parent.homepage_menu.path, '/', name)
+    new: CONCAT(_parent.homepage_menu.path, '/', name)
 -
     old: '{self.parent.institution.name}{self.parent..path} / {self.name}'
-    new: CONCAT(parent.institution.name, parent.*.path, ' / ', name)
+    new: CONCAT(_parent.institution.name, _parent.*.path, ' / ', name)
 -
     old: '{self.parent.inventory.name}, inventeerimisakt seisuga {self.date}.'
-    new: CONCAT(parent.inventory.name, ', inventeerimisakt seisuga ', date, '.')
+    new: CONCAT(_parent.inventory.name, ', inventeerimisakt seisuga ', date, '.')
 -
     old: '{self.parent.inventory.name}, mahakandmisakt seisuga {self.date}.'
-    new: CONCAT(parent.inventory.name, ', mahakandmisakt seisuga ', date, '.')
+    new: CONCAT(_parent.inventory.name, ', mahakandmisakt seisuga ', date, '.')
 -
     old: '{self.parent.inventory.name}, üleandmisakt seisuga {self.date}.'
-    new: CONCAT(parent.inventory.name, ', üleandmisakt seisuga ', date, '.')
+    new: CONCAT(_parent.inventory.name, ', üleandmisakt seisuga ', date, '.')
 -
     old: '{self.parent.location.address}'
-    new: parent.location.address
+    new: _parent.location.address
 -
     old: '{self.parent.location.code}'
-    new: parent.location.code
+    new: _parent.location.code
 -
     old: '{self.parent.location.path} / {self.name}'
-    new: CONCAT(parent.location.path, ' / ', name)
+    new: CONCAT(_parent.location.path, ' / ', name)
 -
     old: '{self.parent.person.forename} {self.parent.person.surname}'
-    new: CONCAT(parent.person.forename, ' ', parent.person.surname)
+    new: CONCAT(_parent.person.forename, ' ', _parent.person.surname)
 -
     old: '{self.parent.project.name}'
-    new: parent.project.name
+    new: _parent.project.name
 -
     old: '{self.parent.project.path}/{self.name}'
-    new: CONCAT(parent.project.path, '/', name)
+    new: CONCAT(_parent.project.path, '/', name)
 -
     old: '{self.parent.region.fullName}/{self.name}'
-    new: CONCAT(parent.region.full_name, '/', name)
+    new: CONCAT(_parent.region.full_name, '/', name)
 -
     old: '{self.parent.story.title}'
-    new: parent.story.name
+    new: _parent.story.name
 -
     old: '{self.parent.tag.fullName-en}/{self.name-en}'
-    new: CONCAT(parent.tag.full_name_en, '/', name_en)
+    new: CONCAT(_parent.tag.full_name_en, '/', name_en)
 -
     old: '{self.parent.tag.fullName-et}/{self.name-et}'
-    new: CONCAT(parent.tag.full_name_et, '/', name_et)
+    new: CONCAT(_parent.tag.full_name_et, '/', name_et)
 -
     old: '{self.parent.tag.fullName-ru}/{self.name-ru}'
-    new: CONCAT(parent.tag.full_name_ru, '/', name_ru)
+    new: CONCAT(_parent.tag.full_name_ru, '/', name_ru)
 -
     old: '{self.parent.tag.path}/{self.name}'
-    new: CONCAT(parent.tag.path, '/', name)
+    new: CONCAT(_parent.tag.path, '/', name)
 -
     old: '{self.parent.vastuv6tuakt.donator}'
-    new: parent.vastuv6tuakt.donator
+    new: _parent.vastuv6tuakt.donator
 -
     old: '{self.parent.vastuv6tuakt.registry-number}'
-    new: parent.vastuv6tuakt.registry_number
+    new: _parent.vastuv6tuakt.registry_number
 -
     old: '{self.parent.vastuv6tuakt.yleandmistingimus}'
-    new: parent.vastuv6tuakt.yleandmistingimus
+    new: _parent.vastuv6tuakt.yleandmistingimus
 -
     old: '{self.parentperson.email}'
     new: parentperson.email
@@ -270,49 +270,49 @@
     new: tag.full_name_ru
 -
     old: '{SUM(self.child.*.budget-hp)}'
-    new: SUM(child.*.budget_hp)
+    new: SUM(_child.*.budget_hp)
 -
     old: '{SUM(self.child.*.budget)}'
-    new: SUM(child.*.budget)
+    new: SUM(_child.*.budget)
 -
     old: '{SUM(self.child.*.expenses-hp)}'
-    new: SUM(child.*.expenses_hp)
+    new: SUM(_child.*.expenses_hp)
 -
     old: '{SUM(self.child.*.expenses)}'
-    new: SUM(child.*.expenses)
+    new: SUM(_child.*.expenses)
 -
     old: '{SUM(self.child.*.funding-hp)}'
-    new: SUM(child.*.funding_hp)
+    new: SUM(_child.*.funding_hp)
 -
     old: '{SUM(self.child.*.funding)}'
-    new: SUM(child.*.funding)
+    new: SUM(_child.*.funding)
 -
     old: '{SUM(self.child.budget.expenses-hp)}'
-    new: SUM(child.budget.expenses_hp)
+    new: SUM(_child.budget.expenses_hp)
 -
     old: '{SUM(self.child.budget.expenses)}'
-    new: SUM(child.budget.expenses)
+    new: SUM(_child.budget.expenses)
 -
     old: '{SUM(self.child.budget.sum-hp)}'
-    new: SUM(child.budget.sum_hp)
+    new: SUM(_child.budget.sum_hp)
 -
     old: '{SUM(self.child.budget.sum)}'
-    new: SUM(child.budget.sum)
+    new: SUM(_child.budget.sum)
 -
     old: '{SUM(self.child.copy.price)}'
-    new: SUM(child.copy.price)
+    new: SUM(_child.copy.price)
 -
     old: '{SUM(self.child.expense.sum-hp)}'
-    new: SUM(child.expense.sum_hp)
+    new: SUM(_child.expense.sum_hp)
 -
     old: '{SUM(self.child.expense.sum)}'
-    new: SUM(child.expense.sum)
+    new: SUM(_child.expense.sum)
 -
     old: '{SUM(self.child.funding-hp.actual-sum)}'
-    new: SUM(child.funding_hp.actual_sum)
+    new: SUM(_child.funding_hp.actual_sum)
 -
     old: '{SUM(self.child.funding.actual-sum)+SUM(self.child.funding-hp.actual-sum)}'
-    new: SUM(child.funding.actual_sum, child.funding_hp.actual_sum)
+    new: SUM(_child.funding.actual_sum, _child.funding_hp.actual_sum)
 -
     old: '{SUM(self.referrer.asset.value)}'
     new: SUM(referrer.asset.value)
