@@ -208,6 +208,7 @@ const importProps = (mysqlDb, callback) => {
 
                 if (formula) {
                   x.string = formula.new
+                  x.datatype = formula.type || 'string'
                 } else {
                   console.log('MISSING FORMULA: ' + x.string)
                 }

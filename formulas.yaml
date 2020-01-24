@@ -1,978 +1,1303 @@
 -
     old: ';{self.varustus.triipkood};{self.varustus.invnr};'
     new: CONCAT(';', varustus.triipkood, ';', varustus.invnr, ';')
+    type: string
 -
     old: '(@inkmd@) @description@'
     new: CONCAT('(', inkmd, ') ', description)
+    type: string
 -
     old: '(@kuup2ev@) @maksja@'
     new: CONCAT('(', kuup2ev, ') ', maksja)
+    type: string
 -
     old: '(@outkmd@) @description@'
     new: CONCAT('(', outkmd, ') ', description)
+    type: string
 -
     old: '[{self.registry-number}]'
     new: CONCAT('[', registry_number, ']')
+    type: string
 -
     old: '{COUNT(self.child.copy.id)}'
     new: COUNT(_child.copy._id)
+    type: integer
 -
     old: '{COUNT(self.files)}'
     new: COUNT(files)
+    type: integer
 -
     old: '{COUNT(self.public-file)}'
     new: COUNT(public_file)
+    type: integer
 -
     old: '{COUNT(self.public-files)}'
     new: COUNT(public_files)
+    type: integer
 -
     old: '{COUNT(self.referrer.asset.id)}'
     new: COUNT(referrer.asset._id)
+    type: integer
 -
     old: '{COUNT(self.referrer.eksemplar.asukoht)}'
     new: COUNT(referrer.eksemplar.asukoht)
+    type: integer
 -
     old: '{COUNT(self.referrer.eksponaat.asukoht)}'
     new: COUNT(referrer.eksponaat.asukoht)
+    type: integer
 -
     old: '{self._created}'
     new: _created
+    type: string
 -
     old: '{self.-contract.date}'
     new: _contract.date
+    type: date
 -
     old: '{self.-contract.enddate}'
     new: _contract.enddate
+    type: date
 -
     old: '{self.-contract.number}'
     new: _contract.number
+    type: string
 -
     old: '{self.author} {self.title} {self.journal} {self.pages} {self.year}'
     new: CONCAT(author, ' ', name, ' ', journal, ' ', pages, ' ', year)
+    type: string
 -
     old: '{self.author}, "{self.title}", {self.journal}, {self.volume}, {self.issue}, {self.page}, {self.date}'
     new: CONCAT(author, ', "', name, '", ', journal, ', ', volume, ', ', issue, ', ', page, ', ', date)
+    type: string
 -
     old: '{self.child.copy.barcode}'
     new: _child.copy.barcode
+    type: string
 -
     old: '{self.child.laenutuse-rida.barcode}'
     new: _child.laenutuse_rida.barcode
+    type: string
 -
     old: '{self.childperson.group}'
     new: childperson.group
+    type: string
 -
     old: '{self.funding - self.expenses}'
     new: SUBTRACT(funding, expenses)
+    type: decimal
 -
     old: '{self.funding-hp - self.expenses-hp}'
     new: SUBTRACT(funding_hp, expenses_hp)
+    type: decimal
 -
     old: '{self.inventeerimisakt.date}'
     new: inventeerimisakt.date
+    type: date
 -
     old: '{self.parent..author}'
     new: _parent.*.author
+    type: string
 -
     old: '{self.parent..name} / {self.name}'
     new: CONCAT(_parent.*.name, ' / ', name)
+    type: string
 -
     old: '{self.parent..name}'
     new: _parent.*.name
+    type: string
 -
     old: '{self.parent..path} / {self.name}'
     new: CONCAT(_parent.*.path, ' / ', name)
+    type: string
 -
     old: '{self.parent..path}/{self.name}'
     new: CONCAT(_parent.*.path, '/', name)
+    type: string
 -
     old: '{self.parent..publisher}'
     new: _parent.*.publisher
+    type: string
 -
     old: '{self.parent..publishing-date}'
     new: _parent.*.publishing_date
+    type: date
 -
     old: '{self.parent..title}'
     new: _parent.*.name
+    type: string
 -
     old: '{self.parent.*.color}'
     new: _parent.*.color
+    type: string
 -
     old: '{self.parent.*.parent} / {self.parent.*.title}'
     new: CONCAT(_parent.*.parent, ' / ', _parent.*.name)
+    type: string
 -
     old: '{self.parent.*.tag}'
     new: _parent.*.tag
+    type: string
 -
     old: '{self.parent.category.path}/{self.et-name}({self.en-name})'
     new: CONCAT(_parent.category.path, '/', et_name, '(', en_name, ')')
+    type: string
 -
     old: '{self.parent.chemical.name}'
     new: _parent.chemical.name
+    type: string
 -
     old: '{self.parent.cl-asukoht.path}/{self.name}'
     new: CONCAT(_parent.cl_asukoht.path, '/', name)
+    type: string
 -
     old: '{self.parent.cl-tag.fullname}/{self.name}'
     new: CONCAT(_parent.cl_tag.fullname, '/', name)
+    type: string
 -
     old: '{self.parent.class.number}{self.parent.class.letter}'
     new: CONCAT(_parent.class.number, _parent.class.letter)
+    type: string
 -
     old: '{self.parent.customer.name}'
     new: _parent.customer.name
+    type: string
 -
     old: '{self.parent.department.name}'
     new: _parent.department.name
+    type: string
 -
     old: '{self.parent.floor.address}'
     new: _parent.floor.address
+    type: string
 -
     old: '{self.parent.floor.code}'
     new: _parent.floor.code
+    type: string
 -
     old: '{self.parent.folder.description}'
     new: _parent.folder.description
+    type: string
 -
     old: '{self.parent.folder.path}{self.parent.partner.name} / {self.name}'
     new: CONCAT(_parent.folder.path, _parent.partner.name, ' / ', name)
+    type: string
 -
     old: '{self.parent.group.name}'
     new: _parent.group.name
+    type: string
 -
     old: '{self.parent.homepage-menu.path}{self.parent.homepage-item.path}/{self.name}'
     new: CONCAT(_parent.homepage_menu.path, _parent.homepage_item.path, '/', name)
+    type: string
 -
     old: '{self.parent.homepage-menu.path}/{self.name}'
     new: CONCAT(_parent.homepage_menu.path, '/', name)
+    type: string
 -
     old: '{self.parent.institution.name}{self.parent..path} / {self.name}'
     new: CONCAT(_parent.institution.name, _parent.*.path, ' / ', name)
+    type: string
 -
     old: '{self.parent.inventory.name}, inventeerimisakt seisuga {self.date}.'
     new: CONCAT(_parent.inventory.name, ', inventeerimisakt seisuga ', date, '.')
+    type: string
 -
     old: '{self.parent.inventory.name}, mahakandmisakt seisuga {self.date}.'
     new: CONCAT(_parent.inventory.name, ', mahakandmisakt seisuga ', date, '.')
+    type: string
 -
     old: '{self.parent.inventory.name}, üleandmisakt seisuga {self.date}.'
     new: CONCAT(_parent.inventory.name, ', üleandmisakt seisuga ', date, '.')
+    type: string
 -
     old: '{self.parent.location.address}'
     new: _parent.location.address
+    type: string
 -
     old: '{self.parent.location.code}'
     new: _parent.location.code
+    type: string
 -
     old: '{self.parent.location.path} / {self.name}'
     new: CONCAT(_parent.location.path, ' / ', name)
+    type: string
 -
     old: '{self.parent.person.forename} {self.parent.person.surname}'
     new: CONCAT(_parent.person.forename, ' ', _parent.person.surname)
+    type: string
 -
     old: '{self.parent.project.name}'
     new: _parent.project.name
+    type: string
 -
     old: '{self.parent.project.path}/{self.name}'
     new: CONCAT(_parent.project.path, '/', name)
+    type: string
 -
     old: '{self.parent.region.fullName}/{self.name}'
     new: CONCAT(_parent.region.full_name, '/', name)
+    type: string
 -
     old: '{self.parent.story.title}'
     new: _parent.story.name
+    type: string
 -
     old: '{self.parent.tag.fullName-en}/{self.name-en}'
     new: CONCAT(_parent.tag.full_name_en, '/', name_en)
+    type: string
 -
     old: '{self.parent.tag.fullName-et}/{self.name-et}'
     new: CONCAT(_parent.tag.full_name_et, '/', name_et)
+    type: string
 -
     old: '{self.parent.tag.fullName-ru}/{self.name-ru}'
     new: CONCAT(_parent.tag.full_name_ru, '/', name_ru)
+    type: string
 -
     old: '{self.parent.tag.path}/{self.name}'
     new: CONCAT(_parent.tag.path, '/', name)
+    type: string
 -
     old: '{self.parent.vastuv6tuakt.donator}'
     new: _parent.vastuv6tuakt.donator
+    type: string
 -
     old: '{self.parent.vastuv6tuakt.registry-number}'
     new: _parent.vastuv6tuakt.registry_number
+    type: string
 -
     old: '{self.parent.vastuv6tuakt.yleandmistingimus}'
     new: _parent.vastuv6tuakt.yleandmistingimus
+    type: string
 -
     old: '{self.parentperson.email}'
     new: parentperson.email
+    type: string
 -
     old: '{self.parentperson.idcode}'
     new: parentperson.idcode
+    type: string
 -
     old: '{self.parentperson.phone}'
     new: parentperson.phone
+    type: string
 -
     old: '{self.person.name}'
     new: person.name
+    type: string
 -
     old: '{self.premiere.start-time}'
     new: premiere.start_time
+    type: string
 -
     old: '{self.referrer.contract.childperson}'
     new: referrer.contract.childperson
+    type: string
 -
     old: '{self.referrer.flavor.molecul-name}'
     new: referrer.flavor.molecul_name
+    type: string
 -
     old: '{self.region.fullName}'
     new: region.full_name
+    type: string
 -
     old: '{self.represseeritu-t.lisainfo}'
     new: represseeritu_t.lisainfo
+    type: string
 -
     old: '{self.represseeritu-t.memento}'
     new: represseeritu_t.memento
+    type: string
 -
     old: '{self.represseeritu-t.mitteavalikLisainfo}'
     new: represseeritu_t.mitteavalikLisainfo
+    type: string
 -
     old: '{self.represseeritu-t.syydistus}'
     new: represseeritu_t.syydistus
+    type: string
 -
     old: '{self.screen-group.published}'
     new: screen_group.published
+    type: string
 -
     old: '{self.storyteller.birthYear}'
     new: storyteller.birthYear
+    type: string
 -
     old: '{self.subject.fullName-en}'
     new: subject.full_name_en
+    type: string
 -
     old: '{self.subject.fullName-et}'
     new: subject.full_name_et
+    type: string
 -
     old: '{self.subject.fullName-ru}'
     new: subject.full_name_ru
+    type: string
 -
     old: '{self.sum - self.expenses}'
     new: SUBTRACT(sum, expenses)
+    type: decimal
 -
     old: '{self.sum-hp - self.expenses-hp}'
     new: SUBTRACT(sum_hp, expenses_hp)
+    type: decimal
 -
     old: '{self.tag.fullName-en}'
     new: tag.full_name_en
+    type: string
 -
     old: '{self.tag.fullName-et}'
     new: tag.full_name_et
+    type: string
 -
     old: '{self.tag.fullName-ru}'
     new: tag.full_name_ru
+    type: string
 -
     old: '{SUM(self.child.*.budget-hp)}'
     new: SUM(_child.*.budget_hp)
+    type: decimal
 -
     old: '{SUM(self.child.*.budget)}'
     new: SUM(_child.*.budget)
+    type: decimal
 -
     old: '{SUM(self.child.*.expenses-hp)}'
     new: SUM(_child.*.expenses_hp)
+    type: decimal
 -
     old: '{SUM(self.child.*.expenses)}'
     new: SUM(_child.*.expenses)
+    type: decimal
 -
     old: '{SUM(self.child.*.funding-hp)}'
     new: SUM(_child.*.funding_hp)
+    type: decimal
 -
     old: '{SUM(self.child.*.funding)}'
     new: SUM(_child.*.funding)
+    type: decimal
 -
     old: '{SUM(self.child.budget.expenses-hp)}'
     new: SUM(_child.budget.expenses_hp)
+    type: decimal
 -
     old: '{SUM(self.child.budget.expenses)}'
     new: SUM(_child.budget.expenses)
+    type: decimal
 -
     old: '{SUM(self.child.budget.sum-hp)}'
     new: SUM(_child.budget.sum_hp)
+    type: decimal
 -
     old: '{SUM(self.child.budget.sum)}'
     new: SUM(_child.budget.sum)
+    type: decimal
 -
     old: '{SUM(self.child.copy.price)}'
     new: SUM(_child.copy.price)
+    type: decimal
 -
     old: '{SUM(self.child.expense.sum-hp)}'
     new: SUM(_child.expense.sum_hp)
+    type: decimal
 -
     old: '{SUM(self.child.expense.sum)}'
     new: SUM(_child.expense.sum)
+    type: decimal
 -
     old: '{SUM(self.child.funding-hp.actual-sum)}'
     new: SUM(_child.funding_hp.actual_sum)
+    type: decimal
 -
     old: '{SUM(self.child.funding.actual-sum)+SUM(self.child.funding-hp.actual-sum)}'
     new: SUM(_child.funding.actual_sum, _child.funding_hp.actual_sum)
+    type: decimal
 -
     old: '{SUM(self.referrer.asset.value)}'
     new: SUM(referrer.asset.value)
+    type: decimal
 -
     old: '{SUM(self.referrer.invoice-in.total)}'
     new: SUM(referrer.invoice_in.total)
+    type: decimal
 -
     old: '{SUM(self.referrer.invoice-in.vat)}'
     new: SUM(referrer.invoice_in.vat)
+    type: decimal
 -
     old: '{SUM(self.referrer.invoice-out.total)}'
     new: SUM(referrer.invoice_out.total)
+    type: decimal
 -
     old: '{SUM(self.referrer.invoice-out.vat)}'
     new: SUM(referrer.invoice_out.vat)
+    type: decimal
 -
     old: '@@'
     new:
 -
     old: '@aasta@ @kuu@'
     new: CONCAT(aasta, ' ', kuu)
+    type: string
 -
     old: '@address@'
     new: address
+    type: string
 -
     old: '@algus@ - @kestvus@'
     new: CONCAT(algus, ' - ', kestvus)
+    type: string
 -
     old: '@algus@+@tunde@. @coach@'
     new: CONCAT(algus, '+', tunde, '. ', coach)
+    type: string
 -
     old: '@applicant-name@'
     new: applicant_name
+    type: string
 -
     old: '@assignee@'
     new: assignee
+    type: string
 -
     old: '@asukoht@ @description@'
     new: CONCAT(asukoht, ' ', description)
+    type: string
 -
     old: '@asukoht@'
     new: asukoht
+    type: string
 -
     old: '@author@ - @title@'
     new: CONCAT(author, ' - ', name)
+    type: string
 -
     old: '@author@ @date@'
     new: CONCAT(author, ' ', date)
+    type: string
 -
     old: '@author@ @publishing-date@'
     new: CONCAT(author, ' ', publishing_date)
+    type: string
 -
     old: '@author@. @year@. @journal@'
     new: CONCAT(author, '. ', year, '. ', journal)
+    type: string
 -
     old: '@author@'
     new: author
+    type: string
 -
     old: '@barcode@ (@publishing-date@) @author@'
     new: CONCAT(barcode, ' (', publishing_date, ') ', author)
+    type: string
 -
     old: '@barcode@ @location@ (@publishing-date@) @author@'
     new: CONCAT(barcode, ' ', location, ' (', publishing_date, ') ', author)
+    type: string
 -
     old: '@barcode@ @number@ (@publishing-date@) @author@'
     new: CONCAT(barcode, ' ', number, ' (', publishing_date, ') ', author)
+    type: string
 -
     old: '@barcode@ @title@'
     new: CONCAT(barcode, ' ', name)
+    type: string
 -
     old: '@beer-name@'
     new: beer_name
+    type: string
 -
     old: '@begin@/@end@'
     new: CONCAT(begin, '/', end)
+    type: string
 -
     old: '@birthYear@'
     new: birthYear
+    type: string
 -
     old: '@bronnialgus@-@bronnil6pp@|@algus@-@l6pp@'
     new: CONCAT(bronnialgus, '-', bronnil6pp, '|', algus, '-', l6pp)
+    type: string
 -
     old: '@caption@'
     new: caption
+    type: string
 -
     old: '@cas-number@'
     new: cas_number
+    type: string
 -
     old: '@checkin@ (@start@)'
     new: CONCAT(checkin, ' (', start, ')')
+    type: string
 -
     old: '@chemical@'
     new: chemical
+    type: string
 -
     old: '@citation@'
     new: citation
+    type: string
 -
     old: '@city@ / @name@'
     new: CONCAT(city, ' / ', name)
+    type: string
 -
     old: '@class@'
     new: class
+    type: string
 -
     old: '@code@ @tag@'
     new: CONCAT(code, ' ', tag)
+    type: string
 -
     old: '@code@-@name@'
     new: CONCAT(code, '-', name)
+    type: string
 -
     old: '@color@'
     new: color
+    type: string
 -
     old: '@comment@'
     new: comment
+    type: string
 -
     old: '@company@ @department@ @forename@ @surname@'
     new: CONCAT(company, ' ', department, ' ', forename, ' ', surname)
+    type: string
 -
     old: '@company@ @forename@ @surname@'
     new: CONCAT(company, ' ', forename, ' ', surname)
+    type: string
 -
     old: '@company@'
     new: company
+    type: string
 -
     old: '@company@<br/>Reg.Nr. @regnr@<br/>Aadress @address@'
     new: CONCAT(company, '<br/>Reg.Nr. ', regnr, '<br/>Aadress ', address)
+    type: string
 -
     old: '@conference@, @year@'
     new: CONCAT(conference, ', ', year)
+    type: string
 -
     old: '@conv-direction@ : @related-person@ : @conv-other-party@ : @conv-opdepartment@'
     new: "CONCAT(conv_direction, ' : ', related_person, ' : ', conv_other_party, ' : ', conv_opdepartment)"
+    type: string
 -
     old: '@customer@'
     new: customer
+    type: string
 -
     old: '@cv-organisation@'
     new: cv_organisation
+    type: string
 -
     old: '@cv-start@ - @cv-to@'
     new: CONCAT(cv_start, ' - ', cv_to)
+    type: string
 -
     old: '@data-type@'
     new: data_type
+    type: string
 -
     old: '@date@ (@object@) @value@'
     new:  CONCAT(date, ' (', object, ') ', value)
+    type: string
 -
     old: '@date@ @author@'
     new: CONCAT(date, ' ', author)
+    type: string
 -
     old: '@date@ @esimees@; @liige@'
     new: CONCAT(date, ' ', esimees, '; ', liige)
+    type: string
 -
     old: '@date@ @liige@'
     new: CONCAT(date, ' ', liige)
+    type: string
 -
     old: '@date@ @number@'
     new: CONCAT(date, ' ', number)
+    type: string
 -
     old: '@date@ @title@'
     new: CONCAT(date, ' ', name)
+    type: string
 -
     old: '@date@ @total@; @liige@'
     new: CONCAT(date, ' ', total, '; ', liige)
+    type: string
 -
     old: '@date@ @vendor@'
     new: CONCAT(date, ' ', vendor)
+    type: string
 -
     old: '@date@'
     new: date
+    type: date
 -
     old: '@description@ (@equivalent@)'
     new: CONCAT(description, ' (', equivalent, ')')
+    type: string
 -
     old: '@description@'
     new: description
+    type: string
 -
     old: '@developed@'
     new: developed
+    type: string
 -
     old: '@domain@'
     new: domain
+    type: string
 -
     old: '@donator@ @date@'
     new: CONCAT(donator, ' ', date)
+    type: string
 -
     old: '@done@ @due-date@ @assignee@'
     new: CONCAT(done, ' ', due_date, ' ', assignee)
+    type: string
 -
     old: '@eesmark@'
     new: eesmark
+    type: string
 -
     old: '@email@ - @x-type@ - @confirmed@ @has-been-subsidised@'
     new: CONCAT(email, ' - ', x_type, ' - ', confirmed, ' ', has_been_subsidised)
+    type: string
 -
     old: '@email@ - @x-type@'
     new: CONCAT(email, ' - ', x_type)
+    type: string
 -
     old: '@email@ @phone@'
     new: CONCAT(email, ' ', phone)
+    type: string
 -
     old: '@email@'
     new: email
+    type: string
 -
     old: '@en-title@'
     new: en_title
+    type: string
 -
     old: '@entu-user@ @notes@'
     new: CONCAT(entu_user, ' ', notes)
+    type: string
 -
     old: '@entu-user@'
     new: entu_user
+    type: string
 -
     old: '@equipment@'
     new: equipment
+    type: string
 -
     old: '@esitaja@ arve nr. @number@'
     new: CONCAT(esitaja, ' arve nr. ', number)
+    type: string
 -
     old: '@et-name@ @performance@ @et-subtitle@ @resident@'
     new: CONCAT(et_name, ' ', performance, ' ', et_subtitle, ' ', resident)
+    type: string
 -
     old: '@et-name@(@en-name@)'
     new: CONCAT(et_name, '(', en_name, ')')
+    type: string
 -
     old: '@et-name@/@en-name@'
     new: CONCAT(et_name, '/', en_name)
+    type: string
 -
     old: '@et-supertitle@ / @artist@ / @et-name@ / @et-subtitle@'
     new: CONCAT(et_supertitle, ' / ', artist, ' / ', et_name, ' / ', et_subtitle)
+    type: string
 -
     old: '@et-title@'
     new: et_title
+    type: string
 -
     old: '@featured@'
     new: featured
+    type: string
 -
     old: '@file@'
     new: file
+    type: string
 -
     old: '@filename@'
     new: filename
+    type: string
 -
     old: '@filter@'
     new: filter
+    type: string
 -
     old: '@flavor@ / @product@'
     new: CONCAT(flavor, ' / ', product)
+    type: string
 -
     old: '@forename@ @surname@'
     new: CONCAT(forename, ' ', surname)
+    type: string
 -
     old: '@from@-@to@'
     new: CONCAT(from, '-', to)
+    type: string
 -
     old: '@fullName-et@'
     new: full_name_et
+    type: string
 -
     old: '@fullName@'
     new: full_name
+    type: string
 -
     old: '@fw-name@ @rv-name@'
     new: CONCAT(fw_name, ' ', rv_name)
+    type: string
 -
     old: '@geo@'
     new: geo
+    type: string
 -
     old: '@grade@ @ordinal@'
     new: CONCAT(grade, ' ', ordinal)
+    type: string
 -
     old: '@grade@'
     new: grade
+    type: string
 -
     old: '@group@ - @name@'
     new: CONCAT(group, ' - ', name)
+    type: string
 -
     old: '@group@ @name@'
     new: CONCAT(group, ' ', name)
+    type: string
 -
     old: '@group@'
     new: group
+    type: string
 -
     old: '@health@'
     new: health
+    type: string
 -
     old: '@hours@:@minutes@'
     new: "CONCAT(hours, ':', minutes)"
+    type: string
 -
     old: '@id@'
     new: _id
+    type: string
 -
     old: '@info@'
     new: info
+    type: string
 -
     old: '@inventory-number@ - @title@'
     new: CONCAT(inventory_number, ' - ', name)
+    type: string
 -
     old: '@inventory-number@ @barcode@ @title@'
     new: CONCAT(inventory_number, ' ', barcode, ' ', name)
+    type: string
 -
     old: '@inventory-number@ @title@ @number@'
     new: CONCAT(inventory_number, ' ', name, ' ', number)
+    type: string
 -
     old: '@inventory-number@ @title@'
     new: CONCAT(inventory_number, ' ', name)
+    type: string
 -
     old: '@issued-date@ … @due-date@'
     new: CONCAT(issued_date, ' … ', due_date)
+    type: string
 -
     old: '@kuup2ev@<br/>@kirjeldus@'
     new: CONCAT(kuup2ev, '<br/>', kirjeldus)
+    type: string
 -
     old: '@label-et@'
     new: label_et
+    type: string
 -
     old: '@label@(@dataproperty@)'
     new: CONCAT(label, '(', dataproperty, ')')
+    type: string
 -
     old: '@label@(@keyname@)'
     new: CONCAT(label, '(', keyname, ')')
+    type: string
 -
     old: '@laenutaja@ @erply@'
     new: CONCAT(laenutaja, ' ', erply)
+    type: string
 -
     old: '@lending-date@ - @returning-date@ - @returned-date@'
     new: CONCAT(lending_date, ' - ', returning_date, ' - ', returned_date)
+    type: string
 -
     old: '@lending-date@, @laenutaja@'
     new: CONCAT(lending_date, ', ', laenutaja)
+    type: string
 -
     old: '@lending-date@..@returning-date@<br/>@returned-date@'
     new: CONCAT(lending_date, ' - ', returning_date, ' - ', returned_date)
+    type: string
 -
     old: '@library-name@ @publishing-date@'
     new: CONCAT(library_name, ' ', publishing_date)
+    type: string
 -
     old: '@link@'
     new: link
+    type: string
 -
     old: '@location@, @year@'
     new: CONCAT(location, ', ', year)
+    type: string
 -
     old: '@media@'
     new: media
+    type: string
 -
     old: '@molecul-name@'
     new: molecul_name
+    type: string
 -
     old: '@name-et@'
     new: name_et
+    type: string
 -
     old: '@name@ - @description@'
     new: CONCAT(name, ' - ', description)
+    type: string
 -
     old: '@name@ (@author-lyrics@/@author-music@)'
     new: CONCAT(name, ' (', author_lyrics, '/', author_music, ')')
+    type: string
 -
     old: '@name@ (@code@)'
     new: CONCAT(name, ' (', code, ')')
+    type: string
 -
     old: '@name@ @customer@'
     new: CONCAT(name, ' ', customer)
+    type: string
 -
     old: '@name@ @equipment@ @eluent@ @column@ @detector@ @sample@ @created@'
     new: CONCAT(name, ' ', equipment, ' ', eluent, ' ', column, ' ', detector, ' ', sample, ' ', created)
+    type: string
 -
     old: '@name@: @ingredient@'
     new: "CONCAT(name, ': ', ingredient)"
+    type: string
 -
     old: '@name@'
     new: name
+    type: string
 -
     old: '@name@<br/>@contact-name@<br/>Aadress @address@'
     new: CONCAT(name, '<br/>', contact_name, '<br/>Aadress ', address)
+    type: string
 -
     old: '@name@|@manufacturer@|@purity@'
     new: CONCAT(name, '|', manufacturer, '|', purity)
+    type: string
 -
     old: '@nimetus@ @date@'
     new: CONCAT(nimetus, ' ', date)
+    type: string
 -
     old: '@nimetus@'
     new: nimetus
+    type: string
 -
     old: '@nimi@'
     new: nimi
+    type: string
 -
     old: '@notes@'
     new: notes
+    type: string
 -
     old: '@number@ - @customerr@ @customer@'
     new: CONCAT(number, ' - ', customerr, ' ', customer)
+    type: string
 -
     old: '@number@ - @date@'
     new: CONCAT(number, ' - ', date)
+    type: string
 -
     old: '@number@ - @issued-date@ … @due-date@ - @customer@'
     new: CONCAT(number, ' - ', issued_date, ' … ', due_date, ' - ', customer)
+    type: string
 -
     old: '@number@ - @issued-date@ … @due-date@'
     new: CONCAT(number, ' - ', issued_date, ' … ', due_date,)
+    type: string
 -
     old: '@number@ @company@'
     new: CONCAT(number, ' ', company)
+    type: string
 -
     old: '@number@ @date@'
     new: CONCAT(number, ' ', date)
+    type: string
 -
     old: '@number@ @issuer@'
     new: CONCAT(number, ' ', issuer)
+    type: string
 -
     old: '@number@ @letter@'
     new: CONCAT(number, ' ', letter)
+    type: string
 -
     old: '@number@ @name@'
     new: CONCAT(number, ' ', name)
+    type: string
 -
     old: '@number@ @pealkiri@'
     new: CONCAT(number, ' ', pealkiri)
+    type: string
 -
     old: '@number@-@letter@'
     new: CONCAT(number, '-', letter)
+    type: string
 -
     old: '@number@'
     new: number
+    type: string
 -
     old: '@number@@letter@'
     new: CONCAT(number, letter)
+    type: string
 -
     old: '@ordinal@ @entu-user@'
     new: CONCAT(ordinal, ' ', entu_user)
+    type: string
 -
     old: '@ordinal@. @name@ (@data-property@)'
     new: CONCAT(ordinal, '. ', name, ' (', data_property, ')')
+    type: string
 -
     old: '@ordinal@'
     new: ordinal
+    type: string
 -
     old: '@osakond@'
     new: osakond
+    type: string
 -
     old: '@paragraph@'
     new: paragraph
+    type: string
 -
     old: '@parent@'
     new: parent
+    type: string
 -
     old: '@path@'
     new: path
+    type: string
 -
     old: '@path@<br/>Eksponaate: @eksponaate@'
     new: "CONCAT(path, '<br/>Eksponaate: ', eksponaate)"
+    type: string
 -
     old: '@performance@ @en-subtitle@ @resident@'
     new: CONCAT(performance, ' ', en_subtitle, ' ', resident)
+    type: string
 -
     old: '@performer@: @title@'
     new: "CONCAT(performer, ': ', name)"
+    type: string
 -
     old: '@period@ @parentperson@/@childperson@'
     new: CONCAT(period, ' ', parentperson, '/', childperson)
+    type: string
 -
     old: '@person@ - @bubble@'
     new: CONCAT(person, ' - ', bubble)
+    type: string
 -
     old: '@person@ - @copy@'
     new: CONCAT(person, ' - ', copy)
+    type: string
 -
     old: '@person@ - @eksponaat@'
     new: CONCAT(person, ' - ', eksponaat)
+    type: string
 -
     old: '@person@'
     new: person
+    type: string
 -
     old: '@phone@ @address@'
     new: CONCAT(phone, ' ', address)
+    type: string
 -
     old: '@playlist@'
     new: playlist
+    type: string
 -
     old: '@prefix@'
     new: prefix
+    type: string
 -
     old: '@prefix@#n@suffix@'
     new: CONCAT(prefix, '#n', suffix)
+    type: string
 -
     old: '@pretitle@ @title@'
     new: CONCAT(pretitle, ' ', name)
+    type: string
 -
     old: '@project@'
     new: project
+    type: string
 -
     old: '@public@'
     new: public
+    type: string
 -
     old: '@published@ @responsible@'
     new: CONCAT(published, ' ', responsible)
+    type: string
 -
     old: '@publishing-date@'
     new: publishing_date
+    type: date
 -
     old: '@question@'
     new: question
+    type: string
 -
     old: '@reason@'
     new: reason
+    type: string
 -
     old: '@reg-time@<br/>@conv-direction@ : @related-person@ : @conv-other-party@ : @conv-opdepartment@'
     new: "CONCAT(reg_time, '<br/>', conv_direction, ' : ', related_person, ' : ', conv_other_party, ' : ', conv_opdepartment)"
+    type: string
 -
     old: '@reg-time@<br/>@related-person@, @start-datetime@ - @end-datetime@'
     new: CONCAT(reg_time, '<br/>', related_person, ', ', start_datetime, ' - ', end_datetime)
+    type: string
 -
     old: '@reg-time@<br/>@related-person@; @document-kind@; @document-issuer@'
     new: CONCAT(reg_time, '<br/>', related_person, '; ', document_kind, '; ', document_issuer)
+    type: string
 -
     old: '@region@'
     new: region
+    type: string
 -
     old: '@registry-number@ : @title@'
     new: "CONCAT(registry_number, ' : ', name)"
+    type: string
 -
     old: '@registry-number@ (@date@)'
     new: CONCAT(registry_number, ' (', date, ')')
+    type: string
 -
     old: '@relation-type@'
     new: relation_type
+    type: string
 -
     old: '@repressioonid@'
     new: repressioonid
+    type: string
 -
     old: '@returning-date@ - @returned-date@'
     new: CONCAT(returning_date, ' - ', returned_date)
+    type: string
 -
     old: '@room@ - @person@'
     new: CONCAT(room, ' - ', person)
+    type: string
 -
     old: '@saaja@: @eesmark@'
     new: "CONCAT(saaja, ': ', eesmark)"
+    type: string
 -
     old: '@school@'
     new: school
+    type: string
 -
     old: '@seisukord@'
     new: seisukord
+    type: string
 -
     old: '@series@@prefix@'
     new: CONCAT(series, prefix)
+    type: string
 -
     old: '@source@ @url@'
     new: CONCAT(source, ' ', url)
+    type: string
 -
     old: '@start-datetime@ - @end-datetime@'
     new: CONCAT(start_datetime, ' - ', end_datetime)
+    type: string
 -
     old: '@start-time@ @et-name@'
     new: CONCAT(start_time, ' ', et_name)
+    type: string
 -
     old: '@start@-@end@'
     new: CONCAT(start, '-', end)
+    type: string
 -
     old: '@start@..@end@ @type@:@ordinal@'
     new: "CONCAT(start, '..', end, ' ', type, ':', ordinal)"
+    type: string
 -
     old: '@storyteller@'
     new: storyteller
+    type: string
 -
     old: '@strain@'
     new: strain
+    type: string
 -
     old: '@subtitle@'
     new: subtitle
+    type: string
 -
     old: '@surname@, @forename@'
     new: CONCAT(surname, ', ', forename)
+    type: string
 -
     old: '@syydistus@'
     new: syydistus
+    type: string
 -
     old: '@tag@ @caption@'
     new: CONCAT(tag, ' ', caption)
+    type: string
 -
     old: '@tag@'
     new: tag
+    type: string
 -
     old: '@target-region-name@'
     new: target_region_name
+    type: string
 -
     old: '@teenus@'
     new: teenus
+    type: string
 -
     old: '@time@'
     new: time
+    type: string
 -
     old: '@title-et@'
     new: title_et
+    type: string
 -
     old: '@title@ @subtitle@ @notes@ @description@'
     new: CONCAT(name, ' ', subtitle, ' ', notes, ' ', description)
+    type: string
 -
     old: '@title@'
     new: name
+    type: string
 -
     old: '@tootegrupp@ @suurus@ @nimetus@'
     new: CONCAT(tootegrupp, ' ', suurus, ' ', nimetus)
+    type: string
 -
     old: '@type@ @value@'
     new: CONCAT(type, ' ', value)
+    type: string
 -
     old: '@type@ for @definition@'
     new: CONCAT(type, ' for ', definition)
+    type: string
 -
     old: '@url@'
     new: url
+    type: string
 -
     old: '@valid-from@...@valid-to@'
     new: CONCAT(valid_from, '…', valid_to)
+    type: string
 -
     old: '@varustus@'
     new: varustus
+    type: string
 -
     old: '@width@x@height@'
     new: CONCAT(width, 'x', height)
+    type: string
 -
     old: '@year@ @author@'
     new: CONCAT(year, ' ', author)
+    type: string
 -
     old: '@year@'
     new: year
+    type: string
 -
     old: 'http://inventuur.entu.eu/#/eka/{self.id}/asset/asset-inventeerimisakt/{self.id}/vara-inventeerimisakt'
     new: CONCAT('http://inventuur.entu.eu/#/eka/', _id, '/asset/asset-inventeerimisakt/', _id, '/vara-inventeerimisakt')
+    type: string
 -
     old: 'http://inventuur.entu.eu/#/eka/{self.id}/asset/asset-mahakandmisakt/{self.id}/vara-mahakandmisakt'
     new: CONCAT('http://inventuur.entu.eu/#/eka/', _id, '/asset/asset-mahakandmisakt/', _id, '/vara-mahakandmisakt')
+    type: string
 -
     old: 'http://www.piletilevi.ee/mobile/est/#view=concert&concert={self.pl-id}'
     new: CONCAT('http://www.piletilevi.ee/mobile/est/#view=concert&concert=', pl_id)
+    type: string
 -
     old: 'https://{self.domain}'
     new: CONCAT('https://', domain)
+    type: string
 -
     old: 'https://inventuur.entu.eu/#/okupatsioon/{self.id}/eksponaat/eksponaat-cl-asukoht/*/cl-asukoht'
     new: CONCAT('https://inventuur.entu.eu/#/okupatsioon/', _id, '/eksponaat/eksponaat-cl-asukoht/*/cl-asukoht')
+    type: string
 -
     old: 'https://inventuur.entu.eu/#/okupatsioon/{self.id}/eksponaat/eksponaat-represseeritu-t/*/represseeritu'
     new: CONCAT('https://inventuur.entu.eu/#/okupatsioon/', _id, '/eksponaat/eksponaat-represseeritu_t/*/represseeritu')
+    type: string
 -
     old: 'https://inventuur.entu.eu/#/okupatsioon/{self.id}/eksponaat/eksponaat-sari/*/sari'
     new: CONCAT('https://inventuur.entu.eu/#/okupatsioon/', _id, '/eksponaat/eksponaat-sari/*/sari')
+    type: string
 -
     old: 'Museaale: @eksponaate@<br/>Teavikuid: @eksemplare@'
     new: "CONCAT('Museaale: ', eksponaate, '<br/>Teavikuid: ', eksemplare)"
+    type: string
 -
     old: 'Schedule: @layout@'
     new: "CONCAT('Schedule: ', layout)"
+    type: string
 -
     old: '@eesnimi@ @perenimi@'
     new: CONCAT(eesnimi, ' ', perenimi)
+    type: string
 -
     old: '@kirjekood@'
     new: kirjekood
+    type: string
