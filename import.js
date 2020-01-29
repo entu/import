@@ -128,7 +128,7 @@ const importProps = (mysqlDb, callback) => {
         { key: { type: 1 } },
         { key: { deleted: 1 } },
         { key: { reference: 1 } },
-        { key: { size: 1 } },
+        { key: { filesize: 1 } },
         { key: { 'created.by': 1 } },
         { key: { 'deleted.by': 1 } }
       ], callback)
@@ -199,7 +199,7 @@ const importProps = (mysqlDb, callback) => {
                 if (fileArray[1].substr(0, 2) === 'B:' && fileArray[1].substr(2)) { _.set(x, 'md5', fileArray[1].substr(2)) }
                 if (fileArray[2].substr(0, 2) === 'C:' && fileArray[2].substr(2)) { _.set(x, 's3', fileArray[2].substr(2)) }
                 if (fileArray[3].substr(0, 2) === 'D:' && fileArray[3].substr(2)) { _.set(x, 'url', fileArray[3].substr(2)) }
-                if (fileArray[4].substr(0, 2) === 'E:' && fileArray[4].substr(2)) { _.set(x, 'size', parseInt(fileArray[4].substr(2), 10)) }
+                if (fileArray[4].substr(0, 2) === 'E:' && fileArray[4].substr(2)) { _.set(x, 'filesize', parseInt(fileArray[4].substr(2), 10)) }
 
                 _.unset(x, 'string')
               }
@@ -406,10 +406,10 @@ const importFiles = (mysqlDb, callback) => {
           }
 
           const md5 = crypto.createHash('md5').update(data.Body).digest('hex')
-          const size = data.Body.length
+          const filesize = data.Body.length
 
           if (file.md5 && file.md5 !== md5) { log(`${file.id} - md5 not same ${md5}`) }
-          if (file.filesize !== size) { log(`${file.id} - size not same ${size}`) }
+          if (file.filesize !== filesize) { log(`${file.id} - size not same ${filesize}`) }
 
           if (!fs.existsSync(process.env.FILES_PATH)) {
             fs.mkdirSync(process.env.FILES_PATH)
@@ -422,7 +422,7 @@ const importFiles = (mysqlDb, callback) => {
           }
           fs.writeFileSync(path.join(process.env.FILES_PATH, mysqlDb, md5.substr(0, 1), md5), data.Body)
 
-          sqlCon.query(require('./sql/update_files.sql'), [md5, size, 'S3', file.id], callback)
+          sqlCon.query(require('./sql/update_files.sql'), [md5, filesize, 'S3', file.id], callback)
         })
       }
     }, (err) => {
