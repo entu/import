@@ -976,3 +976,12 @@
 -
     old: '@kirjekood@'
     new: kirjekood
+-
+    old: '@strain@ @antibiotics@'
+    new: CONCAT(strain, ' ', antibiotics)
+-
+    old: '@date@ @method@'
+    new: CONCAT(date, ' ', method)
+-
+    old: '@isolate@'
+    new: isolate
