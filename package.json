@@ -13,16 +13,17 @@
         "url": "https://github.com/entu/import/issues"
     },
     "scripts": {
-        "start": "node ./src/master.js"
+        "start": "node ./import.js"
     },
     "dependencies": {
-        "async": "3.2.0",
-        "aws-sdk": "2.805.0",
+        "async": "3.2.1",
+        "aws-sdk": "2.979.0",
         "camelcase": "6.2.0",
-        "decamelize": "4.0.0",
-        "js-yaml": "3.14.1",
-        "lodash": "4.17.20",
-        "mongodb": "3.6.3",
+        "decamelize": "5.0.0",
+        "dotenv": "10.0.0",
+        "js-yaml": "4.1.0",
+        "lodash": "4.17.21",
+        "mongodb": "3.6.12",
         "mysql": "2.18.1"
     }
 }
