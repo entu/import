@@ -1,3 +1,5 @@
+-- UPDATE file SET changed = NULL, changed_by = NULL;
+
 SELECT
     id,
     md5,
@@ -5,7 +7,8 @@ SELECT
     url,
     filesize
 FROM file
-WHERE url IS NULL
-AND changed IS NULL
-AND filesize <= 2147483647
+WHERE s3_key IS NOT NULL
+AND s3_key != ''
+AND changed_by IS NULL
+-- AND filesize <= 2147483647
 ORDER BY filesize;

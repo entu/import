@@ -26,12 +26,15 @@ const MYSQL_PASSWORD = process.env.MYSQL_PASSWORD
 
 const MONGODB = process.env.MONGODB
 
-const FILES_PATH = process.env.FILES_PATH
-
 const S3_ENDPOINT = process.env.S3_ENDPOINT
 const S3_KEY = process.env.S3_KEY
 const S3_SECRET = process.env.S3_SECRET
 const S3_BUCKET = process.env.S3_BUCKET
+
+const DO_ENDPOINT = process.env.DO_ENDPOINT
+const DO_KEY = process.env.DO_KEY
+const DO_SECRET = process.env.DO_SECRET
+const DO_BUCKET = process.env.DO_BUCKET
 
 const formulas = yaml.load(fs.readFileSync(path.resolve(__dirname, 'formulas.yaml'), 'utf8'))
 
@@ -364,46 +367,65 @@ const importFiles = (mysqlDb, callback) => {
       secretAccessKey: S3_SECRET
     })
 
+    const d3 = new aws.S3({
+      endpoint: new aws.Endpoint(DO_ENDPOINT),
+      accessKeyId: DO_KEY,
+      secretAccessKey: DO_SECRET
+    })
+
     async.eachSeries(files, (file, callback) => {
-      if (!file.s3_key) {
-        if (file.md5) {
-          sqlCon.query(require('./sql/update_files_error.sql'), ['No local file', file.id], (err) => {
-            if (err) { return callback(err) }
-            return callback(null)
-          })
-        } else {
-          sqlCon.query(require('./sql/update_files_error.sql'), ['No file', file.id], (err) => {
-            if (err) { return callback(err) }
-            return callback(null)
-          })
+      s3.getObject({ Bucket: S3_BUCKET, Key: file.s3_key }, (err, s3Data) => {
+        if (err) {
+          sqlCon.query(require('./sql/update_files_error.sql'), [err.toString(), file.id], callback)
+          return
         }
-      } else {
-        s3.getObject({ Bucket: S3_BUCKET, Key: file.s3_key }, (err, data) => {
-          if (err) {
+
+        const s3Md5 = crypto.createHash('md5').update(s3Data.Body).digest('hex')
+        const s3Filesize = s3Data.Body.length
+        const doKey = `${mysqlDb}/${s3Md5.substr(0, 1)}/${s3Md5}`
+
+        if (file.md5 && file.md5 !== s3Md5) { log(`${file.id} - Db/S3 md5 error ${file.md5} vs ${s3Md5}`) }
+        if (file.filesize !== s3Filesize) { log(`${file.id} - Db/S3 size error ${file.filesize} vs ${s3Filesize}`) }
+
+        d3.getObject({ Bucket: DO_BUCKET, Key: doKey }, (err, doData) => {
+          if (err && err.code !== 'NoSuchKey') {
+            console.log(err)
             sqlCon.query(require('./sql/update_files_error.sql'), [err.toString(), file.id], callback)
             return
           }
 
-          const md5 = crypto.createHash('md5').update(data.Body).digest('hex')
-          const filesize = data.Body.length
+          if (err && err.code === 'NoSuchKey') {
+            d3.upload({
+              ACL: 'private',
+              ContentType: s3Data.ContentType,
+              Bucket: DO_BUCKET,
+              Key: doKey,
+              Body: s3Data.Body
+            }, (err, doData) => {
+              if (err) {
+                console.log(err)
+                sqlCon.query(require('./sql/update_files_error.sql'), [err.toString(), file.id], callback)
+                return
+              }
 
-          if (file.md5 && file.md5 !== md5) { log(`${file.id} - md5 not same ${md5}`) }
-          if (file.filesize !== filesize) { log(`${file.id} - size not same ${filesize}`) }
+              log(`${file.id} - File uploaded to ${doKey}`)
+              callback()
+            })
+          } else {
+            const doMd5 = crypto.createHash('md5').update(doData.Body).digest('hex')
+            const doFilesize = doData.Body.length
 
-          if (!fs.existsSync(FILES_PATH)) {
-            fs.mkdirSync(FILES_PATH)
-          }
-          if (!fs.existsSync(path.join(FILES_PATH, mysqlDb))) {
-            fs.mkdirSync(path.join(FILES_PATH, mysqlDb))
-          }
-          if (!fs.existsSync(path.join(FILES_PATH, mysqlDb, md5.substr(0, 1)))) {
-            fs.mkdirSync(path.join(FILES_PATH, mysqlDb, md5.substr(0, 1)))
-          }
-          fs.writeFileSync(path.join(FILES_PATH, mysqlDb, md5.substr(0, 1), md5), data.Body)
+            if (s3Md5 !== doMd5) { log(`${file.id} - S3/DO md5 error ${s3Md5} vs ${doMd5}`) }
+            if (s3Filesize !== doFilesize) { log(`${file.id} - S3/DO size error ${s3Filesize} vs ${doFilesize}`) }
 
-          sqlCon.query(require('./sql/update_files.sql'), [md5, filesize, 'S3', file.id], callback)
+            if(s3Md5 === doMd5 && s3Filesize === doFilesize) {
+              sqlCon.query(require('./sql/update_files.sql'), [doMd5, doFilesize, 'DO', file.id], callback)
+            } else {
+              callback()
+            }
+          }
         })
-      }
+      })
     }, (err) => {
       if (err) { return callback(err) }
 
