@@ -373,6 +373,8 @@ const importFiles = (mysqlDb, callback) => {
       secretAccessKey: DO_SECRET
     })
 
+    const d3Folder = mysqlDb.replace('vabamu', 'okupatsioon').replace('hoimurahvad', 'fennougria')
+
     async.eachSeries(files, (file, callback) => {
       s3.getObject({ Bucket: S3_BUCKET, Key: file.s3_key }, (err, s3Data) => {
         if (err) {
@@ -382,7 +384,7 @@ const importFiles = (mysqlDb, callback) => {
 
         const s3Md5 = crypto.createHash('md5').update(s3Data.Body).digest('hex')
         const s3Filesize = s3Data.Body.length
-        const doKey = `${mysqlDb}/${s3Md5.substr(0, 1)}/${s3Md5}`
+        const doKey = `${d3Folder}/${s3Md5.substr(0, 1)}/${s3Md5}`
 
         if (file.md5 && file.md5 !== s3Md5) { log(`${file.id} - Db/S3 md5 error ${file.md5} vs ${s3Md5}`) }
         if (file.filesize !== s3Filesize) { log(`${file.id} - Db/S3 size error ${file.filesize} vs ${s3Filesize}`) }
