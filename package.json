@@ -10,7 +10,6 @@
         "import:entities": "node ./import/entities.js"
     },
     "dependencies": {
-        "async": "3.2.3",
         "aws-sdk": "2.1148.0",
         "camelcase": "6.3.0",
         "decamelize": "6.0.0",
