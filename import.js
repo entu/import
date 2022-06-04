@@ -376,7 +376,10 @@ const importFiles = (mysqlDb, callback) => {
     const d3Folder = mysqlDb.replace('vabamu', 'okupatsioon').replace('hoimurahvad', 'fennougria')
 
     async.eachSeries(files, (file, callback) => {
+      log(`${file.id} - ${file.s3_key} - ${Math.round(file.filesize/100000000)/10}GB`)
+
       s3.getObject({ Bucket: S3_BUCKET, Key: file.s3_key }, (err, s3Data) => {
+      // s3.getObject({ Bucket: S3_BUCKET, Key: file.s3_key.replace(mysqlDb + '_2/', mysqlDb + '/') }, (err, s3Data) => {
         if (err) {
           sqlCon.query(require('./sql/update_files_error.sql'), [err.toString(), file.id], callback)
           return
@@ -386,8 +389,18 @@ const importFiles = (mysqlDb, callback) => {
         const s3Filesize = s3Data.Body.length
         const doKey = `${d3Folder}/${s3Md5.substr(0, 1)}/${s3Md5}`
 
-        if (file.md5 && file.md5 !== s3Md5) { log(`${file.id} - Db/S3 md5 error ${file.md5} vs ${s3Md5}`) }
-        if (file.filesize !== s3Filesize) { log(`${file.id} - Db/S3 size error ${file.filesize} vs ${s3Filesize}`) }
+        log(`${file.id} - ${file.s3_key} - ${Math.round(s3Filesize/100000000)/10}GB downloaded`)
+
+        if (file.md5 && file.md5 !== s3Md5) {
+          log(`${file.id} - Db/S3 md5 error ${file.md5} vs ${s3Md5}`)
+          callback()
+          return
+        }
+        if (file.filesize !== s3Filesize) {
+          log(`${file.id} - Db/S3 size error ${file.filesize} vs ${s3Filesize}`)
+          callback()
+          return
+        }
 
         d3.getObject({ Bucket: DO_BUCKET, Key: doKey }, (err, doData) => {
           if (err && err.code !== 'NoSuchKey') {
@@ -437,6 +450,106 @@ const importFiles = (mysqlDb, callback) => {
   })
 }
 
+const importFilesS3 = async (mysqlDb, callback) => {
+  log(`start ${mysqlDb} files import`)
+
+  var sqlCon = mysql.createConnection({
+    host: MYSQL_HOST,
+    port: MYSQL_PORT,
+    user: MYSQL_USER,
+    password: MYSQL_PASSWORD,
+    database: mysqlDb
+  })
+
+  const s3 = new aws.S3({
+    endpoint: new aws.Endpoint(S3_ENDPOINT),
+    accessKeyId: S3_KEY,
+    secretAccessKey: S3_SECRET
+  })
+
+  const prefix = mysqlDb.replace('vabamu', 'okupatsioon').replace('hoimurahvad', 'fennougria')
+  let s3Files = []
+  let moreResults = true
+  let NextContinuationToken
+
+  while (moreResults) {
+    const d3Response = await s3.listObjectsV2({ Bucket: S3_BUCKET, Prefix: prefix, ContinuationToken: NextContinuationToken }).promise()
+
+    moreResults = d3Response.IsTruncated
+    NextContinuationToken = d3Response.NextContinuationToken
+
+    s3Files = [...s3Files, ...d3Response.Contents]
+  }
+
+  console.log(s3Files.length);
+
+  async.eachSeries(s3Files, (file, callback) => {
+    sqlCon.query(require('./sql/update_s3.sql'), [
+      file.Key,
+      file.LastModified,
+      file.ETag.replace('"', '').replace('"', ''),
+      file.Size,
+      file.StorageClass
+    ], callback)
+
+  }, (err) => {
+    if (err) { return callback(err) }
+
+    log(`end ${mysqlDb} files import`)
+    return callback(null)
+  })
+}
+
+const importFilesDO = async (mysqlDb, callback) => {
+  log(`start ${mysqlDb} files import`)
+
+  var sqlCon = mysql.createConnection({
+    host: MYSQL_HOST,
+    port: MYSQL_PORT,
+    user: MYSQL_USER,
+    password: MYSQL_PASSWORD,
+    database: mysqlDb
+  })
+
+  const d3 = new aws.S3({
+    endpoint: new aws.Endpoint(DO_ENDPOINT),
+    accessKeyId: DO_KEY,
+    secretAccessKey: DO_SECRET
+  })
+
+  const prefix = mysqlDb.replace('vabamu', 'okupatsioon').replace('hoimurahvad', 'fennougria')
+  let s3Files = []
+  let moreResults = true
+  let NextContinuationToken
+
+  while (moreResults) {
+    const d3Response = await d3.listObjectsV2({ Bucket: S3_BUCKET, Prefix: prefix, ContinuationToken: NextContinuationToken }).promise()
+
+    moreResults = d3Response.IsTruncated
+    NextContinuationToken = d3Response.NextContinuationToken
+
+    s3Files = [...s3Files, ...d3Response.Contents]
+  }
+
+  console.log(s3Files.length);
+
+  async.eachSeries(s3Files, (file, callback) => {
+    sqlCon.query(require('./sql/update_do.sql'), [
+      file.Key,
+      file.LastModified,
+      file.ETag.replace('"', '').replace('"', ''),
+      file.Size,
+      file.StorageClass
+    ], callback)
+
+  }, (err) => {
+    if (err) { return callback(err) }
+
+    log(`end ${mysqlDb} files import`)
+    return callback(null)
+  })
+}
+
 const connection = mysql.createConnection({
   host: MYSQL_HOST,
   port: MYSQL_PORT,
@@ -453,7 +566,9 @@ connection.query(require('./sql/get_databases.sql'), (err, rows) => {
   connection.end()
 
   async.eachSeries(rows, (row, callback) => {
-    importFiles(row.db, callback)
+    importFilesS3(row.db, callback)
+    // importFilesDO(row.db, callback)
+    // importFiles(row.db, callback)
     // importProps(row.db, callback)
   }, (err) => {
     if (err) {
