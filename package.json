@@ -3,27 +3,26 @@
     "version": "3.0.0",
     "private": true,
     "description": "Entu MySQL to MongoDb import script",
-    "homepage": "https://github.com/entu/import",
     "author": "Argo Roots <argo@roots.ee>",
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/entu/import.git"
-    },
-    "bugs": {
-        "url": "https://github.com/entu/import/issues"
-    },
     "scripts": {
         "start": "node ./import.js"
     },
     "dependencies": {
-        "async": "3.2.1",
-        "aws-sdk": "2.979.0",
-        "camelcase": "6.2.0",
-        "decamelize": "5.0.0",
-        "dotenv": "10.0.0",
+        "async": "3.2.3",
+        "aws-sdk": "2.1148.0",
+        "camelcase": "6.3.0",
+        "decamelize": "6.0.0",
+        "dotenv": "16.0.1",
         "js-yaml": "4.1.0",
         "lodash": "4.17.21",
-        "mongodb": "3.6.12",
+        "mongodb": "4.6.0",
         "mysql": "2.18.1"
+    },
+    "devDependencies": {
+        "eslint": "8.16.0",
+        "eslint-config-standard": "17.0.0",
+        "eslint-plugin-import": "2.26.0",
+        "eslint-plugin-n": "15.2.0",
+        "eslint-plugin-promise": "6.0.0"
     }
 }
