@@ -136,7 +136,7 @@ async function replaceIds (database) {
     await mongo.db(database).collection('property').updateMany({ 'deleted.by': entity.oid }, { $set: { 'deleted.by': entity._id } })
 
     entityCount--
-    if (entityCount % 10 === 0 && entityCount > 0) {
+    if (entityCount % 100 === 0 && entityCount > 0) {
       log(`${entityCount} entities to go`)
     }
   }
