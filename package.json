@@ -4,6 +4,7 @@
     "private": true,
     "description": "Entu MySQL to MongoDb import script",
     "author": "Argo Roots <argo@roots.ee>",
+    "type": "module",
     "scripts": {
         "start": "node ./import.js"
     },
@@ -16,7 +17,7 @@
         "js-yaml": "4.1.0",
         "lodash": "4.17.21",
         "mongodb": "4.6.0",
-        "mysql": "2.18.1"
+        "mysql2": "2.3.3"
     },
     "devDependencies": {
         "eslint": "8.16.0",
