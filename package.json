@@ -6,7 +6,8 @@
     "author": "Argo Roots <argo@roots.ee>",
     "type": "module",
     "scripts": {
-        "start": "node ./import.js"
+        "lint": "eslint ./ --fix --ignore-path .gitignore --ext .js",
+        "import:entities": "node ./import/entities.js"
     },
     "dependencies": {
         "async": "3.2.3",

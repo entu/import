@@ -49,9 +49,9 @@ const cleanupArrayToStr = (a) => {
 const importProps = (mysqlDb, callback) => {
   log(`start database ${mysqlDb} import`)
 
-  var mongoCon
-  var queueUrl
-  var sqlCon = mysql.createConnection({
+  let mongoCon
+  let queueUrl
+  const sqlCon = mysql.createConnection({
     host: MYSQL_HOST,
     port: MYSQL_PORT,
     user: MYSQL_USER,
@@ -149,9 +149,9 @@ const importProps = (mysqlDb, callback) => {
     (callback) => {
       log('insert props to mongodb')
 
-      var limit = 10000
-      var count = limit
-      var offset = 0
+      const limit = 10000
+      let count = limit
+      let offset = 0
 
       async.whilst(
         (cb) => { cb(null, count === limit) },
@@ -162,8 +162,8 @@ const importProps = (mysqlDb, callback) => {
             count = props.length
             offset = offset + count
 
-            let cleanProps = _.map(props, x => _.pickBy(x, (value, key) => { return value === 0 || value === false || !!value }))
-            let correctedProps = _.map(cleanProps, x => {
+            const cleanProps = _.map(props, x => _.pickBy(x, (value, key) => { return value === 0 || value === false || !!value }))
+            const correctedProps = _.map(cleanProps, x => {
               if (x.type) {
                 if (x.type.substr(0, 1) === '_') {
                   _.set(x, 'type', '_' + decamelize(camelize(x.type.substr(1)), '_'))
@@ -196,7 +196,7 @@ const importProps = (mysqlDb, callback) => {
                 _.unset(x, 'integer')
               }
               if (x.datatype === 'file' && x.string) {
-                let fileArray = x.string.split('\n')
+                const fileArray = x.string.split('\n')
 
                 if (fileArray[0].substr(0, 2) === 'A:' && fileArray[0].substr(2)) { _.set(x, 'filename', fileArray[0].substr(2)) }
                 if (fileArray[1].substr(0, 2) === 'B:' && fileArray[1].substr(2)) { _.set(x, 'md5', fileArray[1].substr(2)) }
@@ -207,7 +207,7 @@ const importProps = (mysqlDb, callback) => {
                 _.unset(x, 'string')
               }
               if (x.type === 'formula' && x.string) {
-                let formula = formulas.find(f => f.old === x.string)
+                const formula = formulas.find(f => f.old === x.string)
 
                 if (formula) {
                   x.string = formula.new
@@ -240,7 +240,7 @@ const importProps = (mysqlDb, callback) => {
       mongoCon.db(mysqlDb).collection('entity').find({}).sort({ oid: 1 }).toArray((err, entities) => {
         if (err) { return callback(err) }
 
-        var l = entities.length
+        let l = entities.length
         async.eachSeries(entities, (entity, callback) => {
           async.parallel([
             (callback) => {
@@ -271,8 +271,8 @@ const importProps = (mysqlDb, callback) => {
     (callback) => {
       log('create sqs queue')
 
-      var sqs = new aws.SQS()
-      var lambda = new aws.Lambda()
+      const sqs = new aws.SQS()
+      const lambda = new aws.Lambda()
 
       sqs.createQueue({
         QueueName: `entu-api-entity-aggregate-queue-${mysqlDb}.fifo`,
@@ -320,8 +320,8 @@ const importProps = (mysqlDb, callback) => {
       mongoCon.db(mysqlDb).collection('entity').find({}, { _id: true }).sort({ _id: 1 }).toArray((err, entities) => {
         if (err) { return callback(err) }
 
-        var l = entities.length
-        var sqs = new aws.SQS()
+        const l = entities.length
+        const sqs = new aws.SQS()
 
         async.eachSeries(entities, (entity, callback) => {
           const message = {
@@ -349,7 +349,7 @@ const importProps = (mysqlDb, callback) => {
 const importFiles = (mysqlDb, callback) => {
   log(`start ${mysqlDb} files import`)
 
-  var sqlCon = mysql.createConnection({
+  const sqlCon = mysql.createConnection({
     host: MYSQL_HOST,
     port: MYSQL_PORT,
     user: MYSQL_USER,
@@ -376,7 +376,7 @@ const importFiles = (mysqlDb, callback) => {
     const d3Folder = mysqlDb.replace('vabamu', 'okupatsioon').replace('hoimurahvad', 'fennougria')
 
     async.eachSeries(files, (file, callback) => {
-      log(`${file.id} - ${file.s3_key} - ${Math.round(file.filesize/100000000)/10}GB`)
+      log(`${file.id} - ${file.s3_key} - ${Math.round(file.filesize / 100000000) / 10}GB`)
 
       s3.getObject({ Bucket: S3_BUCKET, Key: file.s3_key }, (err, s3Data) => {
       // s3.getObject({ Bucket: S3_BUCKET, Key: file.s3_key.replace(mysqlDb + '_2/', mysqlDb + '/') }, (err, s3Data) => {
@@ -389,7 +389,7 @@ const importFiles = (mysqlDb, callback) => {
         const s3Filesize = s3Data.Body.length
         const doKey = `${d3Folder}/${s3Md5.substr(0, 1)}/${s3Md5}`
 
-        log(`${file.id} - ${file.s3_key} - ${Math.round(s3Filesize/100000000)/10}GB downloaded`)
+        log(`${file.id} - ${file.s3_key} - ${Math.round(s3Filesize / 100000000) / 10}GB downloaded`)
 
         if (file.md5 && file.md5 !== s3Md5) {
           log(`${file.id} - Db/S3 md5 error ${file.md5} vs ${s3Md5}`)
@@ -433,7 +433,7 @@ const importFiles = (mysqlDb, callback) => {
             if (s3Md5 !== doMd5) { log(`${file.id} - S3/DO md5 error ${s3Md5} vs ${doMd5}`) }
             if (s3Filesize !== doFilesize) { log(`${file.id} - S3/DO size error ${s3Filesize} vs ${doFilesize}`) }
 
-            if(s3Md5 === doMd5 && s3Filesize === doFilesize) {
+            if (s3Md5 === doMd5 && s3Filesize === doFilesize) {
               sqlCon.query(require('./sql/update_files.sql'), [doMd5, doFilesize, 'DO', file.id], callback)
             } else {
               callback()
@@ -453,7 +453,7 @@ const importFiles = (mysqlDb, callback) => {
 const importFilesS3 = async (mysqlDb, callback) => {
   log(`start ${mysqlDb} files import`)
 
-  var sqlCon = mysql.createConnection({
+  const sqlCon = mysql.createConnection({
     host: MYSQL_HOST,
     port: MYSQL_PORT,
     user: MYSQL_USER,
@@ -481,7 +481,7 @@ const importFilesS3 = async (mysqlDb, callback) => {
     s3Files = [...s3Files, ...d3Response.Contents]
   }
 
-  console.log(s3Files.length);
+  console.log(s3Files.length)
 
   async.eachSeries(s3Files, (file, callback) => {
     sqlCon.query(require('./sql/update_s3.sql'), [
@@ -491,7 +491,6 @@ const importFilesS3 = async (mysqlDb, callback) => {
       file.Size,
       file.StorageClass
     ], callback)
-
   }, (err) => {
     if (err) { return callback(err) }
 
@@ -503,7 +502,7 @@ const importFilesS3 = async (mysqlDb, callback) => {
 const importFilesDO = async (mysqlDb, callback) => {
   log(`start ${mysqlDb} files import`)
 
-  var sqlCon = mysql.createConnection({
+  const sqlCon = mysql.createConnection({
     host: MYSQL_HOST,
     port: MYSQL_PORT,
     user: MYSQL_USER,
@@ -531,7 +530,7 @@ const importFilesDO = async (mysqlDb, callback) => {
     s3Files = [...s3Files, ...d3Response.Contents]
   }
 
-  console.log(s3Files.length);
+  console.log(s3Files.length)
 
   async.eachSeries(s3Files, (file, callback) => {
     sqlCon.query(require('./sql/update_do.sql'), [
@@ -541,7 +540,6 @@ const importFilesDO = async (mysqlDb, callback) => {
       file.Size,
       file.StorageClass
     ], callback)
-
   }, (err) => {
     if (err) { return callback(err) }
 
