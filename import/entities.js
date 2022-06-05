@@ -140,7 +140,7 @@ async function replaceIds (database) {
 
     entityCount--
     if (entityCount % 100 === 0 && entityCount > 0) {
-      log(`${entityCount} entities to go`)
+      log(`  ${entityCount} entities to go`)
     }
   }
 
@@ -162,7 +162,7 @@ async function aggregateEntities (database) {
 
     entityCount--
     if (entityCount % 100 === 0 && entityCount > 0) {
-      log(`${entityCount} entities to go`)
+      log(`  ${entityCount} entities to go`)
     }
   }
 
