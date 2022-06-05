@@ -1,12 +1,13 @@
-import _ from 'lodash'
-import decamelize from 'decamelize'
 import dotenv from 'dotenv'
 import fs from 'fs'
+import path from 'path'
+import https from 'https'
 import { MongoClient } from 'mongodb'
 import mysql from 'mysql2/promise'
-import path from 'path'
+import _ from 'lodash'
 import yaml from 'js-yaml'
 import camelize from 'camelcase'
+import decamelize from 'decamelize'
 
 dotenv.config()
 
@@ -27,6 +28,7 @@ async function importEntities () {
     await insertEntities(database)
     await insertProperties(database)
     await replaceIds(database)
+    await aggregateEntities(database)
 
     log(`End database ${database} import`)
   }
@@ -144,6 +146,28 @@ async function replaceIds (database) {
   await mongoClient.close()
 }
 
+async function aggregateEntities (database) {
+  log('Aggregate Entities')
+
+  const mongo = await mongoClient.connect()
+
+  const entities = await mongo.db(database).collection('entity').find({}).sort({ oid: 1 }).toArray()
+  let entityCount = entities.length
+
+  for (let i = 0; i < entities.length; i++) {
+    const entity = entities[i]
+
+    await sendAggregateToApi(database, entity._id)
+
+    entityCount--
+    if (entityCount % 100 === 0 && entityCount > 0) {
+      log(`${entityCount} entities to go`)
+    }
+  }
+
+  await mongoClient.close()
+}
+
 async function executeSql (filename, database, params) {
   const sqlPath = path.resolve(path.dirname(''), 'sql', filename + '.sql')
   const sql = fs.readFileSync(sqlPath, 'utf8')
@@ -240,6 +264,27 @@ function cleanProperty (property) {
   _.unset(newProperty, 'datatype')
 
   return newProperty
+}
+
+const sendAggregateToApi = async (database, entityId) => {
+  return new Promise((resolve, reject) => {
+    https.get(`${process.env.ENTU_API_URL}/entity/${entityId}/aggregate?account=${database}`, response => {
+      let body = ''
+
+      response.on('data', function (d) {
+        body += d
+      })
+
+      response.on('end', function () {
+        try {
+          resolve(JSON.parse(body))
+        } catch (e) {
+          console.error(e)
+          reject(new Error(e))
+        }
+      })
+    })
+  })
 }
 
 function log (message) {
