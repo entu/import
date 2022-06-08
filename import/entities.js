@@ -9,6 +9,8 @@ import _ from 'lodash'
 import yaml from 'js-yaml'
 import camelize from 'camelcase'
 import decamelize from 'decamelize'
+import { SQSClient, CreateQueueCommand, GetQueueAttributesCommand } from '@aws-sdk/client-sqs'
+import { LambdaClient, CreateEventSourceMappingCommand } from '@aws-sdk/client-lambda'
 
 dotenv.config()
 
@@ -29,6 +31,7 @@ async function importEntities () {
     await insertEntities(database)
     await insertProperties(database)
     await replaceIds(database)
+    await createSqsQueue(database)
     await aggregateEntities(database)
 
     log(`End database ${database} import`)
@@ -145,6 +148,33 @@ async function replaceIds (database) {
   }
 
   await mongoClient.close()
+}
+
+async function createSqsQueue (database) {
+  log('Create AWS SQS Queue')
+
+  const sqs = new SQSClient()
+  const lambda = new LambdaClient()
+
+  const { QueueUrl } = await sqs.send(new CreateQueueCommand({
+    QueueName: `${process.env.AWS_STACK}-entity-aggregate-${database}.fifo`,
+    Attributes: {
+      VisibilityTimeout: '600',
+      FifoQueue: 'true',
+      ContentBasedDeduplication: 'true'
+    }
+  }))
+
+  const { Attributes } = await sqs.send(new GetQueueAttributesCommand({
+    QueueUrl,
+    AttributeNames: ['QueueArn']
+  }))
+
+  await lambda.send(new CreateEventSourceMappingCommand({
+    EventSourceArn: Attributes.QueueArn,
+    FunctionName: `${process.env.AWS_STACK}-entity-aggregate-get`,
+    BatchSize: 1
+  }))
 }
 
 async function aggregateEntities (database) {
