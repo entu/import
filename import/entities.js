@@ -35,6 +35,8 @@ async function importEntities () {
     await aggregateEntities(database)
 
     log(`End database ${database} import`)
+    console.log('')
+    console.log('')
   }
 
   process.exit()
@@ -118,11 +120,12 @@ async function insertProperties (database) {
     const cleanProperties = properties.map(cleanProperty)
 
     await mongo.db(database).collection('property').insertMany(cleanProperties)
-    await mongoClient.close()
 
     count = properties.length
     offset = offset + count
   }
+
+  await mongoClient.close()
 }
 
 async function replaceIds (database) {
@@ -170,11 +173,15 @@ async function createSqsQueue (database) {
     AttributeNames: ['QueueArn']
   }))
 
-  await lambda.send(new CreateEventSourceMappingCommand({
-    EventSourceArn: Attributes.QueueArn,
-    FunctionName: `${process.env.AWS_STACK}-entity-aggregate-get`,
-    BatchSize: 1
-  }))
+  try {
+    await lambda.send(new CreateEventSourceMappingCommand({
+      EventSourceArn: Attributes.QueueArn,
+      FunctionName: `${process.env.AWS_STACK}-entity-aggregate-get`,
+      BatchSize: 1
+    }))
+  } catch (error) {
+    // Mapping is done
+  }
 }
 
 async function aggregateEntities (database) {
