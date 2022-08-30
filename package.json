@@ -4,28 +4,29 @@
     "private": true,
     "description": "Entu MySQL to MongoDb import script",
     "author": "Argo Roots <argo@roots.ee>",
+    "license": "MIT",
     "type": "module",
     "scripts": {
         "lint": "eslint ./ --fix --ignore-path .gitignore --ext .js",
         "import:entities": "node ./import/entities.js"
     },
     "dependencies": {
-        "@aws-sdk/client-lambda": "3.137.0",
-        "@aws-sdk/client-sqs": "3.137.0",
-        "aws-sdk": "2.1182.0",
+        "@aws-sdk/client-lambda": "3.160.0",
+        "@aws-sdk/client-sqs": "3.160.0",
+        "aws-sdk": "2.1205.0",
         "camelcase": "7.0.0",
         "decamelize": "6.0.0",
         "dotenv": "16.0.1",
         "js-yaml": "4.1.0",
         "lodash": "4.17.21",
-        "mongodb": "4.8.1",
+        "mongodb": "4.9.0",
         "mysql2": "2.3.3"
     },
     "devDependencies": {
-        "eslint": "8.20.0",
+        "eslint": "8.23.0",
         "eslint-config-standard": "17.0.0",
         "eslint-plugin-import": "2.26.0",
-        "eslint-plugin-n": "15.2.4",
-        "eslint-plugin-promise": "6.0.0"
+        "eslint-plugin-n": "15.2.5",
+        "eslint-plugin-promise": "6.0.1"
     }
 }
