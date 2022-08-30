@@ -21,17 +21,18 @@ importEntities()
 
 async function importEntities () {
   const dbList = await executeSql('get_databases')
+  // const dbList = [{ db: 'vabamu' }]
 
   for (let i = 0; i < dbList.length; i++) {
     const { db: database } = dbList[i]
     log(`Start database ${database} import`)
 
-    await prepareMySql(database)
-    await prepareMongoDb(database)
-    await insertEntities(database)
-    await insertProperties(database)
-    await replaceIds(database)
-    await createSqsQueue(database)
+    // await prepareMySql(database)
+    // await prepareMongoDb(database)
+    // await insertEntities(database)
+    // await insertProperties(database)
+    // await replaceIds(database)
+    // await createSqsQueue(database)
     await aggregateEntities(database)
 
     log(`End database ${database} import`)
@@ -109,6 +110,9 @@ async function insertEntities (database) {
 async function insertProperties (database) {
   log('Insert properties to MongoDB')
 
+  const propertiesCountResult = await executeSql('get_properties_count', database)
+  const propertiesCount = propertiesCountResult[0].count
+
   const limit = 10000
   let count = limit
   let offset = 0
@@ -123,6 +127,8 @@ async function insertProperties (database) {
 
     count = properties.length
     offset = offset + count
+
+    log(`  ${propertiesCount - offset} properties to go`)
   }
 
   await mongoClient.close()
@@ -133,7 +139,15 @@ async function replaceIds (database) {
 
   const mongo = await mongoClient.connect()
 
-  const entities = await mongo.db(database).collection('entity').find({}).sort({ oid: 1 }).toArray()
+  const entities = await mongo.db(database).collection('entity').find({
+    oid: { $exists: true },
+    propsOk: { $exists: false }
+  }, {
+    collation: {
+      locale: 'et',
+      numericOrdering: true
+    }
+  }).sort({ oid: 1 }).toArray()
   let entityCount = entities.length
 
   for (let i = 0; i < entities.length; i++) {
@@ -143,9 +157,10 @@ async function replaceIds (database) {
     await mongo.db(database).collection('property').updateMany({ reference: entity.oid }, { $set: { reference: entity._id } })
     await mongo.db(database).collection('property').updateMany({ 'created.by': entity.oid }, { $set: { 'created.by': entity._id } })
     await mongo.db(database).collection('property').updateMany({ 'deleted.by': entity.oid }, { $set: { 'deleted.by': entity._id } })
+    await mongo.db(database).collection('entity').updateOne({ _id: entity._id }, { $set: { propsOk: true } })
 
     entityCount--
-    if (entityCount % 100 === 0 && entityCount > 0) {
+    if (entityCount % 1000 === 0 && entityCount > 0) {
       log(`  ${entityCount} entities to go`)
     }
   }
@@ -189,7 +204,7 @@ async function aggregateEntities (database) {
 
   const mongo = await mongoClient.connect()
 
-  const entities = await mongo.db(database).collection('entity').find({}).sort({ oid: 1 }).toArray()
+  const entities = await mongo.db(database).collection('entity').find().sort({ _id: 1 }).toArray()
   let entityCount = entities.length
 
   for (let i = 0; i < entities.length; i++) {
