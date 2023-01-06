@@ -1,3 +1,8 @@
+# CONCAT(a, b, c)
+# COUNT(a, b, c)
+# SUBTRACT(a, b, c)
+# SUM(a, b, c)
+
 -
     old: ';{self.varustus.triipkood};{self.varustus.invnr};'
     new: CONCAT(';', varustus.triipkood, ';', varustus.invnr, ';')
@@ -985,3 +990,36 @@
 -
     old: '@isolate@'
     new: isolate
+-
+    old: '{self.funding-eki - self.expenses-eki}'
+    new: SUBTRACT(self.funding_eki, self.expenses_eki)
+-
+    old: '{self.sum-eki - self.expenses-eki}'
+    new: SUBTRACT(self.sum_eki, self.expenses_eki)
+-
+    old: '{SUM(self.child.budget-eki.expenses-eki)}'
+    new: SUM(self.child.budget_eki.expenses_eki)
+-
+    old: '{SUM(self.child.budget-eki.expenses)}'
+    new: SUM(self.child.budget_eki.expenses)
+-
+    old: '{SUM(self.child.budget-eki.sum-eki)}'
+    new: SUM(self.child.budget_eki.sum_eki)
+-
+    old: '{SUM(self.child.budget-eki.sum)}'
+    new: SUM(self.child.budget_eki.sum)
+-
+    old: '{SUM(self.child.expense-eki.sum-eki)}'
+    new: SUM(self.child.expense_eki.sum_eki)
+-
+    old: '{SUM(self.child.expense-eki.sum)}'
+    new: SUM(self.child.expense_eki.sum)
+-
+    old: '{SUM(self.child.funding-eki.actual-sum)}'
+    new: SUM(self.child.funding_eki.actual_sum)
+-
+    old: '{SUM(self.child.funding.actual-sum)}'
+    new: SUM(self.child.funding.actual_sum)
+-
+    old: '@number@ @prize@ @candidate-name@'
+    new: CONCAT(number, prize, candidate_name)
