@@ -215,6 +215,15 @@ INSERT INTO props (
     ('property_search', 'type', NULL, 'string', 'boolean', NULL, NULL, 1),
     ('property_search', 'ordinal', NULL, 'integer', NULL, 12, NULL, 1),
 
+    ('property_search', '_mid', NULL, 'string', 'property_table', NULL, NULL, 1),
+    ('property_search', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
+    ('property_search', '_parent', NULL, 'reference', NULL, NULL, 'property', 1),
+    ('property_search', 'name', NULL, 'string', 'table', NULL, NULL, 1),
+    ('property_search', 'label', 'en', 'string', 'Is in table viev', NULL, NULL, 1),
+    ('property_search', 'label', 'et', 'string', 'Is in table viev', NULL, NULL, 1),
+    ('property_search', 'type', NULL, 'string', 'boolean', NULL, NULL, 1),
+    ('property_search', 'ordinal', NULL, 'integer', NULL, 13, NULL, 1),
+
     ('property_classifier', '_mid', NULL, 'string', 'property_classifier', NULL, NULL, 1),
     ('property_classifier', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
     ('property_classifier', '_parent', NULL, 'reference', NULL, NULL, 'property', 1),
@@ -223,7 +232,7 @@ INSERT INTO props (
     ('property_classifier', 'label', 'et', 'string', 'Classifier', NULL, NULL, 1),
     ('property_classifier', 'label_plural', 'en', 'string', 'Classifierss', NULL, NULL, 1),
     ('property_classifier', 'type', NULL, 'string', 'reference', NULL, NULL, 1),
-    ('property_classifier', 'ordinal', NULL, 'integer', NULL, 13, NULL, 1),
+    ('property_classifier', 'ordinal', NULL, 'integer', NULL, 14, NULL, 1),
 
     ('property_formula', '_mid', NULL, 'string', 'property_formula', NULL, NULL, 1),
     ('property_formula', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
@@ -232,7 +241,7 @@ INSERT INTO props (
     ('property_formula', 'label', 'en', 'string', 'Formula', NULL, NULL, 1),
     ('property_formula', 'label', 'et', 'string', 'Formula', NULL, NULL, 1),
     ('property_formula', 'type', NULL, 'string', 'string', NULL, NULL, 1),
-    ('property_formula', 'ordinal', NULL, 'integer', NULL, 14, NULL, 1),
+    ('property_formula', 'ordinal', NULL, 'integer', NULL, 15, NULL, 1),
 
     ('property_set', '_mid', NULL, 'string', 'property_set', NULL, NULL, 1),
     ('property_set', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
