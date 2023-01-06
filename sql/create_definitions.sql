@@ -485,7 +485,10 @@ INSERT INTO props (
     value_string
 ) SELECT DISTINCT
     NULLIF(CONCAT(LOWER(TRIM(REPLACE(pd.entity_definition_keyname, '-', '_'))), '_', LOWER(TRIM(REPLACE(pd.dataproperty, '-', '_')))), '_'),
-    TRIM(t.field),
+    CASE TRIM(t.field)
+        WHEN 'fieldset' THEN 'group'
+    	 ELSE TRIM(t.field)
+    END,
     CASE t.language
         WHEN 'estonian' THEN 'et'
         WHEN 'english' THEN 'en'
