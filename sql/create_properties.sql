@@ -50,7 +50,7 @@ INSERT INTO props (
         ELSE NULL
     END,
     CASE pd.datatype
-        WHEN 'decimal' THEN p.value_double
+        WHEN 'decimal' THEN p.value_decimal
         ELSE NULL
     END,
     CASE pd.datatype
