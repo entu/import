@@ -20,11 +20,13 @@ const mongoClient = new MongoClient(process.env.MONGODB, { useNewUrlParser: true
 importEntities()
 
 async function importEntities () {
-  const dbList = await executeSql('get_databases')
-  // const dbList = [{ db: 'vabamu' }]
+  // const dbList = (await executeSql('get_databases')).map(x => x.db)
+  const dbList = [
+    'roots'
+  ]
 
   for (let i = 0; i < dbList.length; i++) {
-    const { db: database } = dbList[i]
+    const database = dbList[i]
     log(`Start database ${database} import`)
 
     await prepareMySql(database)
