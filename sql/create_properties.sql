@@ -5,7 +5,7 @@ INSERT INTO props (
     language,
     value_string,
     value_integer,
-    value_double,
+    value_decimal,
     value_reference,
     value_date,
     created_at,

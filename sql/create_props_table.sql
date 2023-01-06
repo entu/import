@@ -22,7 +22,7 @@ CREATE TABLE `props` (
     `datatype` varchar(16) DEFAULT NULL,
     `value_string` text DEFAULT NULL,
     `value_integer` int(11) DEFAULT NULL,
-    `value_double` decimal(15,4) DEFAULT NULL,
+    `value_decimal` decimal(15,4) DEFAULT NULL,
     `value_reference` varchar(64) DEFAULT NULL,
     `value_date` datetime DEFAULT NULL,
     `created_at` datetime DEFAULT NULL,

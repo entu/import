@@ -20,7 +20,13 @@ const mongoClient = new MongoClient(process.env.MONGODB, { useNewUrlParser: true
 importEntities()
 
 async function importEntities () {
-  // const dbList = (await executeSql('get_databases')).map(x => x.db)
+  const databases = await executeSql('get_databases')
+
+  log(`Databases: ${databases.map(x => x.db).join(', ')}`)
+  console.log('')
+  console.log('')
+
+  // const dbList = databases.map(x => x.db)
   const dbList = [
     'roots'
   ]
@@ -33,7 +39,6 @@ async function importEntities () {
     await prepareMongoDb(database)
     await insertEntities(database)
     await insertProperties(database)
-    await replaceDoubles(database)
     await replaceIds(database)
     await createSqsQueue(database)
     await aggregateEntities(database)
@@ -133,16 +138,6 @@ async function insertProperties (database) {
 
     log(`  ${propertiesCount - offset} properties to go`)
   }
-
-  await mongoClient.close()
-}
-
-async function replaceDoubles (database) {
-  log('Replace string with Double')
-
-  const mongo = await mongoClient.connect()
-
-  await mongo.db(database).collection('property').updateMany({ double: { $exists: true } }, [{ $set: { double: { $toDouble: '$double' } } }])
 
   await mongoClient.close()
 }
@@ -294,6 +289,18 @@ function cleanProperty (property) {
   if (newProperty.datatype === 'datetime' || newProperty.datatype === 'atby') {
     _.set(newProperty, 'datetime', newProperty.date)
     _.unset(newProperty, 'date')
+  }
+
+  if (newProperty.datatype === 'integer') {
+    console.log('integer', newProperty.decimal, _.toInteger(newProperty.integer))
+    _.set(newProperty, 'number', _.toInteger(newProperty.integer))
+    _.unset(newProperty, 'integer')
+  }
+
+  if (newProperty.datatype === 'decimal') {
+    console.log('decimal', newProperty.decimal, _.toNumber(newProperty.decimal))
+    _.set(newProperty, 'number', _.toNumber(newProperty.decimal))
+    _.unset(newProperty, 'decimal')
   }
 
   if (newProperty.datatype === 'boolean') {
