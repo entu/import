@@ -292,13 +292,11 @@ function cleanProperty (property) {
   }
 
   if (newProperty.datatype === 'integer') {
-    console.log('integer', newProperty.decimal, _.toInteger(newProperty.integer))
     _.set(newProperty, 'number', _.toInteger(newProperty.integer))
     _.unset(newProperty, 'integer')
   }
 
   if (newProperty.datatype === 'decimal') {
-    console.log('decimal', newProperty.decimal, _.toNumber(newProperty.decimal))
     _.set(newProperty, 'number', _.toNumber(newProperty.decimal))
     _.unset(newProperty, 'decimal')
   }
