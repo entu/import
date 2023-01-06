@@ -436,6 +436,28 @@ AND entity_definition_keyname IN (SELECT keyname FROM entity_definition)
 AND NULLIF(search < 1, 1) IS NOT NULL;
 
 
+/* property is in tableview */
+INSERT INTO props (
+    entity,
+    type,
+    datatype,
+    value_integer
+) SELECT DISTINCT
+    NULLIF(CONCAT(LOWER(TRIM(REPLACE(pd.entity_definition_keyname, '-', '_'))), '_', LOWER(TRIM(REPLACE(pd.dataproperty, '-', '_')))), '_'),
+    'table',
+    'boolean',
+    1
+FROM
+    translation AS t,
+    property_definition AS pd
+WHERE pd.entity_definition_keyname = t.entity_definition_keyname
+AND pd.dataproperty NOT IN ('entu-changed-at', 'entu-changed-by', 'entu-created-at', 'entu-created-by')
+AND pd.entity_definition_keyname NOT LIKE 'conf-%'
+AND pd.entity_definition_keyname IN (SELECT keyname FROM entity_definition)
+AND t.field = 'displaytable'
+AND INSTR(LOWER(t.value), CONCAT('@', LOWER(pd.dataproperty), '@')) > 0;
+
+
 /* property has classifier (reference property) */
 INSERT INTO props (
     entity,
@@ -475,7 +497,7 @@ FROM
     translation AS t,
     property_definition AS pd
 WHERE pd.keyname = t.property_definition_keyname
-AND t.property_definition_keyname NOT IN ('entu-changed-at', 'entu-changed-by', 'entu-created-at', 'entu-created-by')
+AND pd.dataproperty NOT IN ('entu-changed-at', 'entu-changed-by', 'entu-created-at', 'entu-created-by')
 AND pd.entity_definition_keyname NOT LIKE 'conf-%'
 AND pd.entity_definition_keyname IN (SELECT keyname FROM entity_definition)
 AND t.field IN ('label', 'label_plural', 'description', 'fieldset')
