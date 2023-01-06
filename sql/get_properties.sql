@@ -5,7 +5,7 @@ SELECT
     datatype,
     value_text AS `string`,
     value_integer AS `integer`,
-    value_decimal AS `decimal`,
+    value_double AS `double`,
     CASE type
         WHEN '_created' THEN created_at
         WHEN '_deleted' THEN created_at

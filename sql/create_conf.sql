@@ -145,7 +145,7 @@ INSERT INTO props (
     ('property_type', 'set', NULL, 'string', 'boolean', NULL, NULL, 1),
     ('property_type', 'set', NULL, 'string', 'date', NULL, NULL, 1),
     ('property_type', 'set', NULL, 'string', 'datetime', NULL, NULL, 1),
-    ('property_type', 'set', NULL, 'string', 'decimal', NULL, NULL, 1),
+    ('property_type', 'set', NULL, 'string', 'double', NULL, NULL, 1),
     ('property_type', 'set', NULL, 'string', 'file', NULL, NULL, 1),
     ('property_type', 'set', NULL, 'string', 'integer', NULL, NULL, 1),
     ('property_type', 'set', NULL, 'string', 'reference', NULL, NULL, 1),

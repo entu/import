@@ -31,7 +31,7 @@ async function importEntities () {
     await prepareMongoDb(database)
     await insertEntities(database)
     await insertProperties(database)
-    await replaceDecimals(database)
+    await replaceDoubles(database)
     await replaceIds(database)
     await createSqsQueue(database)
     await aggregateEntities(database)
@@ -135,12 +135,12 @@ async function insertProperties (database) {
   await mongoClient.close()
 }
 
-async function replaceDecimals (database) {
-  log('Replace strings with decimals')
+async function replaceDoubles (database) {
+  log('Replace string with Double')
 
   const mongo = await mongoClient.connect()
 
-  await mongo.db(database).collection('property').updateMany({ decimal: { $exists: true } }, [{ $set: { decimal: { $toDecimal: '$decimal' } } }])
+  await mongo.db(database).collection('property').updateMany({ double: { $exists: true } }, [{ $set: { double: { $toDouble: '$double' } } }])
 
   await mongoClient.close()
 }
