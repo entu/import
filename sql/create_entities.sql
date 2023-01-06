@@ -3,7 +3,7 @@ INSERT INTO props (
     entity,
     type,
     datatype,
-    value_text
+    value_string
 ) SELECT DISTINCT
     id,
     '_mid',

@@ -3,7 +3,7 @@ SELECT
     type,
     language,
     datatype,
-    value_text AS `string`,
+    value_string AS `string`,
     value_integer AS `integer`,
     value_double AS `double`,
     CASE type

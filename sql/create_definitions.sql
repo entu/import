@@ -3,7 +3,7 @@ INSERT INTO props (
     entity,
     type,
     datatype,
-    value_text
+    value_string
 ) SELECT DISTINCT
     NULLIF(LOWER(TRIM(REPLACE(keyname, '-', '_'))), ''),
     '_mid',
@@ -18,7 +18,7 @@ INSERT INTO props (
     entity,
     type,
     datatype,
-    value_text
+    value_string
 ) SELECT DISTINCT
     NULLIF(LOWER(TRIM(REPLACE(keyname, '-', '_'))), ''),
     'name',
@@ -99,7 +99,7 @@ INSERT INTO props (
     type,
     language,
     datatype,
-    value_text
+    value_string
 ) SELECT DISTINCT
     NULLIF(LOWER(TRIM(REPLACE(entity_definition_keyname, '-', '_'))), ''),
     TRIM(field),
@@ -155,7 +155,7 @@ INSERT INTO props (
     entity,
     type,
     datatype,
-    value_text
+    value_string
 ) SELECT DISTINCT
     NULLIF(CONCAT(LOWER(TRIM(REPLACE(entity_definition_keyname, '-', '_'))), '_', LOWER(TRIM(REPLACE(dataproperty, '-', '_')))), '_'),
     'name',
@@ -242,7 +242,7 @@ INSERT INTO props (
     entity,
     type,
     datatype,
-    value_text
+    value_string
 ) SELECT DISTINCT
     NULLIF(CONCAT(LOWER(TRIM(REPLACE(entity_definition_keyname, '-', '_'))), '_', LOWER(TRIM(REPLACE(dataproperty, '-', '_')))), '_'),
     'type',
@@ -259,7 +259,7 @@ INSERT INTO props (
     entity,
     type,
     datatype,
-    value_text
+    value_string
 ) SELECT DISTINCT
     NULLIF(CONCAT(LOWER(TRIM(REPLACE(entity_definition_keyname, '-', '_'))), '_', LOWER(TRIM(REPLACE(dataproperty, '-', '_')))), '_'),
     'default',
@@ -278,7 +278,7 @@ INSERT INTO props (
     entity,
     type,
     datatype,
-    value_text
+    value_string
 ) SELECT DISTINCT
     NULLIF(CONCAT(LOWER(TRIM(REPLACE(entity_definition_keyname, '-', '_'))), '_', LOWER(TRIM(REPLACE(dataproperty, '-', '_')))), '_'),
     'formula',
@@ -460,7 +460,7 @@ INSERT INTO props (
     type,
     language,
     datatype,
-    value_text
+    value_string
 ) SELECT DISTINCT
     NULLIF(CONCAT(LOWER(TRIM(REPLACE(pd.entity_definition_keyname, '-', '_'))), '_', LOWER(TRIM(REPLACE(pd.dataproperty, '-', '_')))), '_'),
     TRIM(t.field),
@@ -487,7 +487,7 @@ INSERT INTO props (
     entity,
     type,
     datatype,
-    value_text,
+    value_string,
     value_reference
 ) SELECT DISTINCT
     CONCAT(LOWER(TRIM(REPLACE(t.entity_definition_keyname, '-', '_'))), '_name'),

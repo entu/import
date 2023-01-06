@@ -20,7 +20,7 @@ INSERT INTO props (
     type,
     language,
     datatype,
-    value_text
+    value_string
 ) SELECT
     CONCAT('menu_', LOWER(TRIM(REPLACE(entity_definition_keyname, '-', '_')))),
     'name',
@@ -50,7 +50,7 @@ INSERT INTO props (
     type,
     language,
     datatype,
-    value_text
+    value_string
 ) SELECT DISTINCT
     CONCAT('menu_', LOWER(TRIM(REPLACE(entity_definition_keyname, '-', '_')))),
     'group',
@@ -71,7 +71,7 @@ INSERT INTO props (
     entity,
     type,
     datatype,
-    value_text
+    value_string
 ) SELECT DISTINCT
     CONCAT('menu_', LOWER(TRIM(REPLACE(entity_definition_keyname, '-', '_')))),
     'query',
@@ -125,7 +125,7 @@ INSERT INTO props (
     type,
     language,
     datatype,
-    value_text,
+    value_string,
     value_integer,
     value_reference
 ) VALUES

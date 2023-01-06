@@ -4,7 +4,7 @@ INSERT INTO props (
     type,
     language,
     datatype,
-    value_text,
+    value_string,
     value_integer,
     value_reference,
     conf
