@@ -27,12 +27,13 @@ async function importEntities () {
     const { db: database } = dbList[i]
     log(`Start database ${database} import`)
 
-    // await prepareMySql(database)
-    // await prepareMongoDb(database)
-    // await insertEntities(database)
-    // await insertProperties(database)
-    // await replaceIds(database)
-    // await createSqsQueue(database)
+    await prepareMySql(database)
+    await prepareMongoDb(database)
+    await insertEntities(database)
+    await insertProperties(database)
+    await replaceDecimals(database)
+    await replaceIds(database)
+    await createSqsQueue(database)
     await aggregateEntities(database)
 
     log(`End database ${database} import`)
@@ -130,6 +131,16 @@ async function insertProperties (database) {
 
     log(`  ${propertiesCount - offset} properties to go`)
   }
+
+  await mongoClient.close()
+}
+
+async function replaceDecimals (database) {
+  log('Replace strings with decimals')
+
+  const mongo = await mongoClient.connect()
+
+  await mongo.db(database).collection('property').updateMany({ decimal: { $exists: true } }, [{ $set: { decimal: { $toDecimal: '$decimal' } } }])
 
   await mongoClient.close()
 }

@@ -6,5 +6,5 @@ WHERE TABLE_SCHEMA NOT IN (
     'performance_schema',
     'sys'
 )
-AND TABLE_SCHEMA > 'roots'
+AND TABLE_SCHEMA = 'roots'
 ORDER BY TABLE_SCHEMA;
