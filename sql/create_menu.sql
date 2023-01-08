@@ -11,7 +11,7 @@ INSERT INTO props (
     'menu'
 FROM translation
 WHERE field = 'menu'
-AND entity_definition_keyname NOT LIKE 'conf-%';
+AND entity_definition_keyname IN (SELECT keyname FROM props_keyname);
 
 
 /* name */
@@ -38,7 +38,7 @@ AND entity_definition_keyname IN (
     FROM translation
     WHERE field = 'menu'
 )
-AND entity_definition_keyname NOT LIKE 'conf-%'
+AND entity_definition_keyname IN (SELECT keyname FROM props_keyname)
 GROUP BY
     entity_definition_keyname,
     language;
@@ -63,7 +63,7 @@ INSERT INTO props (
     TRIM(value)
 FROM translation
 WHERE field = 'menu'
-AND entity_definition_keyname NOT LIKE 'conf-%';
+AND entity_definition_keyname IN (SELECT keyname FROM props_keyname);
 
 
 /* query */
@@ -79,7 +79,7 @@ INSERT INTO props (
     CONCAT('_type.string=', LOWER(TRIM(REPLACE(entity_definition_keyname, '-', '_'))), '&sort=name.string')
 FROM translation
 WHERE field = 'menu'
-AND entity_definition_keyname NOT LIKE 'conf-%'
+AND entity_definition_keyname IN (SELECT keyname FROM props_keyname)
 GROUP BY
     entity_definition_keyname;
 
@@ -116,7 +116,7 @@ FROM
         AND property_definition.dataproperty = 'entu-user'
     ) AS users
 WHERE field = 'menu'
-AND entity_definition_keyname NOT LIKE 'conf-%';
+AND entity_definition_keyname IN (SELECT keyname FROM props_keyname);
 
 
 /* conf menu */

@@ -10,7 +10,7 @@ INSERT INTO props (
     'string',
     NULLIF(LOWER(TRIM(REPLACE(keyname, '-', '_'))), '')
 FROM entity_definition
-WHERE keyname NOT LIKE 'conf-%';
+WHERE keyname IN (SELECT keyname FROM props_keyname);
 
 
 /* key */
@@ -25,7 +25,7 @@ INSERT INTO props (
     'string',
     NULLIF(LOWER(TRIM(REPLACE(keyname, '-', '_'))), '')
 FROM entity_definition
-WHERE keyname NOT LIKE 'conf-%';
+WHERE keyname IN (SELECT keyname FROM props_keyname);
 
 
 /* type */
@@ -40,7 +40,7 @@ INSERT INTO props (
     'reference',
     'entity'
 FROM entity_definition
-WHERE keyname NOT LIKE 'conf-%';
+WHERE keyname IN (SELECT keyname FROM props_keyname);
 
 
 /* rights */
@@ -74,7 +74,7 @@ FROM
         AND entity.is_deleted = 0
         AND property_definition.dataproperty = 'entu-user'
     ) AS users
-WHERE keyname NOT LIKE 'conf-%';
+WHERE keyname IN (SELECT keyname FROM props_keyname);
 
 
 /* open-after-add properties */
@@ -89,8 +89,8 @@ INSERT INTO props (
     'boolean',
     1
 FROM entity_definition
-WHERE keyname NOT LIKE 'conf-%'
-AND open_after_add = 1;
+WHERE open_after_add = 1
+AND keyname IN (SELECT keyname FROM props_keyname);
 
 
 /* translation (label, label_plural, ...) fields */
@@ -111,9 +111,8 @@ INSERT INTO props (
     'string',
     REPLACE(TRIM(value), '@title@', '@name@')
 FROM translation
-WHERE entity_definition_keyname NOT LIKE 'conf-%'
-AND field IN ('label', 'label_plural', 'description')
-AND entity_definition_keyname IS NOT NULL;
+WHERE field IN ('label', 'label_plural', 'description')
+AND entity_definition_keyname IN (SELECT keyname FROM props_keyname);
 
 
 /* allowed-child, default-parent, optional-parent */
@@ -128,8 +127,8 @@ INSERT INTO props (
     'reference',
     IFNULL(related_entity_id, NULLIF(LOWER(TRIM(REPLACE(related_entity_definition_keyname, '-', '_'))), ''))
 FROM relationship
-WHERE entity_definition_keyname IS NOT NULL
-AND relationship_definition_keyname IN ('allowed-child', 'default-parent', 'optional-parent');
+WHERE relationship_definition_keyname IN ('allowed-child', 'default-parent', 'optional-parent')
+AND entity_definition_keyname IN (SELECT keyname FROM props_keyname);
 
 
 /* add from menu */
@@ -146,8 +145,8 @@ INSERT INTO props (
 FROM relationship
 WHERE relationship_definition_keyname = 'optional-parent'
 AND is_deleted = 0
-GROUP BY
-    entity_definition_keyname;
+AND entity_definition_keyname IN (SELECT keyname FROM props_keyname)
+GROUP BY entity_definition_keyname;
 
 
 /* property key */
@@ -162,9 +161,31 @@ INSERT INTO props (
     'string',
     IF(dataproperty = 'title', 'name', NULLIF(LOWER(TRIM(REPLACE(dataproperty, '-', '_'))), ''))
 FROM property_definition
-WHERE dataproperty NOT IN ('entu-changed-at', 'entu-changed-by', 'entu-created-at', 'entu-created-by')
-AND entity_definition_keyname NOT LIKE 'conf-%'
-AND entity_definition_keyname IN (SELECT keyname FROM entity_definition);
+WHERE dataproperty NOT IN (
+    'analytics-code',
+    'auth-erply',
+    'auth-facebook',
+    'auth-google',
+    'auth-live',
+    'auth-mailgun',
+    'auth-mobileid',
+    'auth-s3',
+    'database-host',
+    'database-password',
+    'database-port',
+    'database-ssl-ca',
+    'database-ssl-path',
+    'database-user',
+    'entu-changed-at',
+    'entu-changed-by',
+    'entu-created-at',
+    'entu-created-by',
+    'entu-url',
+    'mongodb',
+    'tablepagesize',
+    'tagcloud'
+)
+AND entity_definition_keyname IN (SELECT keyname FROM props_keyname);
 
 
 /* property type */
@@ -179,9 +200,31 @@ INSERT INTO props (
     'reference',
     'property'
 FROM property_definition
-WHERE dataproperty NOT IN ('entu-changed-at', 'entu-changed-by', 'entu-created-at', 'entu-created-by')
-AND entity_definition_keyname NOT LIKE 'conf-%'
-AND entity_definition_keyname IN (SELECT keyname FROM entity_definition);
+WHERE dataproperty NOT IN (
+    'analytics-code',
+    'auth-erply',
+    'auth-facebook',
+    'auth-google',
+    'auth-live',
+    'auth-mailgun',
+    'auth-mobileid',
+    'auth-s3',
+    'database-host',
+    'database-password',
+    'database-port',
+    'database-ssl-ca',
+    'database-ssl-path',
+    'database-user',
+    'entu-changed-at',
+    'entu-changed-by',
+    'entu-created-at',
+    'entu-created-by',
+    'entu-url',
+    'mongodb',
+    'tablepagesize',
+    'tagcloud'
+)
+AND entity_definition_keyname IN (SELECT keyname FROM props_keyname);
 
 
 /* property rights */
@@ -215,9 +258,31 @@ FROM
         AND entity.is_deleted = 0
         AND property_definition.dataproperty = 'entu-user'
     ) AS users
-WHERE dataproperty NOT IN ('entu-changed-at', 'entu-changed-by', 'entu-created-at', 'entu-created-by')
-AND entity_definition_keyname NOT LIKE 'conf-%'
-AND entity_definition_keyname IN (SELECT keyname FROM entity_definition);
+WHERE dataproperty NOT IN (
+    'analytics-code',
+    'auth-erply',
+    'auth-facebook',
+    'auth-google',
+    'auth-live',
+    'auth-mailgun',
+    'auth-mobileid',
+    'auth-s3',
+    'database-host',
+    'database-password',
+    'database-port',
+    'database-ssl-ca',
+    'database-ssl-path',
+    'database-user',
+    'entu-changed-at',
+    'entu-changed-by',
+    'entu-created-at',
+    'entu-created-by',
+    'entu-url',
+    'mongodb',
+    'tablepagesize',
+    'tagcloud'
+)
+AND entity_definition_keyname IN (SELECT keyname FROM props_keyname);
 
 
 /* property parent entity */
@@ -232,9 +297,31 @@ INSERT INTO props (
     'reference',
     NULLIF(LOWER(TRIM(REPLACE(entity_definition_keyname, '-', '_'))), '')
 FROM property_definition
-WHERE dataproperty NOT IN ('entu-changed-at', 'entu-changed-by', 'entu-created-at', 'entu-created-by')
-AND entity_definition_keyname NOT LIKE 'conf-%'
-AND entity_definition_keyname IN (SELECT keyname FROM entity_definition);
+WHERE dataproperty NOT IN (
+    'analytics-code',
+    'auth-erply',
+    'auth-facebook',
+    'auth-google',
+    'auth-live',
+    'auth-mailgun',
+    'auth-mobileid',
+    'auth-s3',
+    'database-host',
+    'database-password',
+    'database-port',
+    'database-ssl-ca',
+    'database-ssl-path',
+    'database-user',
+    'entu-changed-at',
+    'entu-changed-by',
+    'entu-created-at',
+    'entu-created-by',
+    'entu-url',
+    'mongodb',
+    'tablepagesize',
+    'tagcloud'
+)
+AND entity_definition_keyname IN (SELECT keyname FROM props_keyname);
 
 
 /* property datatype */
@@ -247,11 +334,38 @@ INSERT INTO props (
     NULLIF(CONCAT(LOWER(TRIM(REPLACE(entity_definition_keyname, '-', '_'))), '_', LOWER(TRIM(REPLACE(dataproperty, '-', '_')))), '_'),
     'type',
     'string',
-    NULLIF(LOWER(TRIM(REPLACE(datatype, '-', '_'))), '')
+    CASE NULLIF(LOWER(TRIM(REPLACE(datatype, '-', '_'))), '')
+        WHEN 'decimal' THEN 'number'
+        WHEN 'integer' THEN 'number'
+        WHEN 'text' THEN 'string'
+        ELSE NULLIF(LOWER(TRIM(REPLACE(datatype, '-', '_'))), '')
+    END
 FROM property_definition
-WHERE dataproperty NOT IN ('entu-changed-at', 'entu-changed-by', 'entu-created-at', 'entu-created-by')
-AND entity_definition_keyname NOT LIKE 'conf-%'
-AND entity_definition_keyname IN (SELECT keyname FROM entity_definition);
+WHERE dataproperty NOT IN (
+    'analytics-code',
+    'auth-erply',
+    'auth-facebook',
+    'auth-google',
+    'auth-live',
+    'auth-mailgun',
+    'auth-mobileid',
+    'auth-s3',
+    'database-host',
+    'database-password',
+    'database-port',
+    'database-ssl-ca',
+    'database-ssl-path',
+    'database-user',
+    'entu-changed-at',
+    'entu-changed-by',
+    'entu-created-at',
+    'entu-created-by',
+    'entu-url',
+    'mongodb',
+    'tablepagesize',
+    'tagcloud'
+)
+AND entity_definition_keyname IN (SELECT keyname FROM props_keyname);
 
 
 /* property default value */
@@ -266,11 +380,33 @@ INSERT INTO props (
     'string',
     TRIM(defaultvalue)
 FROM property_definition
-WHERE dataproperty NOT IN ('entu-changed-at', 'entu-changed-by', 'entu-created-at', 'entu-created-by')
-AND entity_definition_keyname NOT LIKE 'conf-%'
-AND entity_definition_keyname IN (SELECT keyname FROM entity_definition)
-AND NULLIF(formula < 1, 1) IS NULL
-AND NULLIF(TRIM(defaultvalue), '') IS NOT NULL;
+WHERE NULLIF(formula < 1, 1) IS NULL
+AND NULLIF(TRIM(defaultvalue), '') IS NOT NULL
+AND dataproperty NOT IN (
+    'analytics-code',
+    'auth-erply',
+    'auth-facebook',
+    'auth-google',
+    'auth-live',
+    'auth-mailgun',
+    'auth-mobileid',
+    'auth-s3',
+    'database-host',
+    'database-password',
+    'database-port',
+    'database-ssl-ca',
+    'database-ssl-path',
+    'database-user',
+    'entu-changed-at',
+    'entu-changed-by',
+    'entu-created-at',
+    'entu-created-by',
+    'entu-url',
+    'mongodb',
+    'tablepagesize',
+    'tagcloud'
+)
+AND entity_definition_keyname IN (SELECT keyname FROM props_keyname);
 
 
 /* property is formula */
@@ -285,10 +421,32 @@ INSERT INTO props (
     'string',
     TRIM(defaultvalue)
 FROM property_definition
-WHERE dataproperty NOT IN ('entu-changed-at', 'entu-changed-by', 'entu-created-at', 'entu-created-by')
-AND entity_definition_keyname NOT LIKE 'conf-%'
-AND entity_definition_keyname IN (SELECT keyname FROM entity_definition)
-AND NULLIF(formula < 1, 1) IS NOT NULL;
+WHERE NULLIF(formula < 1, 1) IS NOT NULL
+AND dataproperty NOT IN (
+    'analytics-code',
+    'auth-erply',
+    'auth-facebook',
+    'auth-google',
+    'auth-live',
+    'auth-mailgun',
+    'auth-mobileid',
+    'auth-s3',
+    'database-host',
+    'database-password',
+    'database-port',
+    'database-ssl-ca',
+    'database-ssl-path',
+    'database-user',
+    'entu-changed-at',
+    'entu-changed-by',
+    'entu-created-at',
+    'entu-created-by',
+    'entu-url',
+    'mongodb',
+    'tablepagesize',
+    'tagcloud'
+)
+AND entity_definition_keyname IN (SELECT keyname FROM props_keyname);
 
 
 /* property is hidden */
@@ -303,10 +461,32 @@ INSERT INTO props (
     'boolean',
     1
 FROM property_definition
-WHERE dataproperty NOT IN ('entu-changed-at', 'entu-changed-by', 'entu-created-at', 'entu-created-by')
-AND entity_definition_keyname NOT LIKE 'conf-%'
-AND entity_definition_keyname IN (SELECT keyname FROM entity_definition)
-AND visible = 0;
+WHERE visible = 0
+AND dataproperty NOT IN (
+    'analytics-code',
+    'auth-erply',
+    'auth-facebook',
+    'auth-google',
+    'auth-live',
+    'auth-mailgun',
+    'auth-mobileid',
+    'auth-s3',
+    'database-host',
+    'database-password',
+    'database-port',
+    'database-ssl-ca',
+    'database-ssl-path',
+    'database-user',
+    'entu-changed-at',
+    'entu-changed-by',
+    'entu-created-at',
+    'entu-created-by',
+    'entu-url',
+    'mongodb',
+    'tablepagesize',
+    'tagcloud'
+)
+AND entity_definition_keyname IN (SELECT keyname FROM props_keyname);
 
 
 /* property ordinal */
@@ -321,10 +501,32 @@ INSERT INTO props (
     'integer',
     ordinal
 FROM property_definition
-WHERE dataproperty NOT IN ('entu-changed-at', 'entu-changed-by', 'entu-created-at', 'entu-created-by')
-AND entity_definition_keyname NOT LIKE 'conf-%'
-AND entity_definition_keyname IN (SELECT keyname FROM entity_definition)
-AND ordinal IS NOT NULL;
+WHERE ordinal IS NOT NULL
+AND dataproperty NOT IN (
+    'analytics-code',
+    'auth-erply',
+    'auth-facebook',
+    'auth-google',
+    'auth-live',
+    'auth-mailgun',
+    'auth-mobileid',
+    'auth-s3',
+    'database-host',
+    'database-password',
+    'database-port',
+    'database-ssl-ca',
+    'database-ssl-path',
+    'database-user',
+    'entu-changed-at',
+    'entu-changed-by',
+    'entu-created-at',
+    'entu-created-by',
+    'entu-url',
+    'mongodb',
+    'tablepagesize',
+    'tagcloud'
+)
+AND entity_definition_keyname IN (SELECT keyname FROM props_keyname);
 
 
 /* property is multilingual */
@@ -339,10 +541,32 @@ INSERT INTO props (
     'boolean',
     1
 FROM property_definition
-WHERE dataproperty NOT IN ('entu-changed-at', 'entu-changed-by', 'entu-created-at', 'entu-created-by')
-AND entity_definition_keyname NOT LIKE 'conf-%'
-AND entity_definition_keyname IN (SELECT keyname FROM entity_definition)
-AND NULLIF(multilingual < 1, 1) IS NOT NULL;
+WHERE NULLIF(multilingual < 1, 1) IS NOT NULL
+AND dataproperty NOT IN (
+    'analytics-code',
+    'auth-erply',
+    'auth-facebook',
+    'auth-google',
+    'auth-live',
+    'auth-mailgun',
+    'auth-mobileid',
+    'auth-s3',
+    'database-host',
+    'database-password',
+    'database-port',
+    'database-ssl-ca',
+    'database-ssl-path',
+    'database-user',
+    'entu-changed-at',
+    'entu-changed-by',
+    'entu-created-at',
+    'entu-created-by',
+    'entu-url',
+    'mongodb',
+    'tablepagesize',
+    'tagcloud'
+)
+AND entity_definition_keyname IN (SELECT keyname FROM props_keyname);
 
 
 /* property is list */
@@ -357,10 +581,32 @@ INSERT INTO props (
     'boolean',
     1
 FROM property_definition
-WHERE dataproperty NOT IN ('entu-changed-at', 'entu-changed-by', 'entu-created-at', 'entu-created-by')
-AND entity_definition_keyname NOT LIKE 'conf-%'
-AND entity_definition_keyname IN (SELECT keyname FROM entity_definition)
-AND NULLIF(multiplicity < 1, 1) IS NULL;
+WHERE NULLIF(multiplicity < 1, 1) IS NULL
+AND dataproperty NOT IN (
+    'analytics-code',
+    'auth-erply',
+    'auth-facebook',
+    'auth-google',
+    'auth-live',
+    'auth-mailgun',
+    'auth-mobileid',
+    'auth-s3',
+    'database-host',
+    'database-password',
+    'database-port',
+    'database-ssl-ca',
+    'database-ssl-path',
+    'database-user',
+    'entu-changed-at',
+    'entu-changed-by',
+    'entu-created-at',
+    'entu-created-by',
+    'entu-url',
+    'mongodb',
+    'tablepagesize',
+    'tagcloud'
+)
+AND entity_definition_keyname IN (SELECT keyname FROM props_keyname);
 
 
 /* property is readonly */
@@ -375,11 +621,33 @@ INSERT INTO props (
     'boolean',
     1
 FROM property_definition
-WHERE dataproperty NOT IN ('entu-changed-at', 'entu-changed-by', 'entu-created-at', 'entu-created-by')
-AND entity_definition_keyname NOT LIKE 'conf-%'
-AND entity_definition_keyname IN (SELECT keyname FROM entity_definition)
-AND NULLIF(readonly < 1, 1) IS NOT NULL
-AND NULLIF(formula < 1, 1) IS NULL;
+WHERE NULLIF(readonly < 1, 1) IS NOT NULL
+AND NULLIF(formula < 1, 1) IS NULL
+AND dataproperty NOT IN (
+    'analytics-code',
+    'auth-erply',
+    'auth-facebook',
+    'auth-google',
+    'auth-live',
+    'auth-mailgun',
+    'auth-mobileid',
+    'auth-s3',
+    'database-host',
+    'database-password',
+    'database-port',
+    'database-ssl-ca',
+    'database-ssl-path',
+    'database-user',
+    'entu-changed-at',
+    'entu-changed-by',
+    'entu-created-at',
+    'entu-created-by',
+    'entu-url',
+    'mongodb',
+    'tablepagesize',
+    'tagcloud'
+)
+AND entity_definition_keyname IN (SELECT keyname FROM props_keyname);
 
 
 /* property is public */
@@ -394,10 +662,32 @@ INSERT INTO props (
     'boolean',
     1
 FROM property_definition
-WHERE dataproperty NOT IN ('entu-changed-at', 'entu-changed-by', 'entu-created-at', 'entu-created-by')
-AND entity_definition_keyname NOT LIKE 'conf-%'
-AND entity_definition_keyname IN (SELECT keyname FROM entity_definition)
-AND NULLIF(public < 1, 1) IS NOT NULL;
+WHERE NULLIF(public < 1, 1) IS NOT NULL
+AND dataproperty NOT IN (
+    'analytics-code',
+    'auth-erply',
+    'auth-facebook',
+    'auth-google',
+    'auth-live',
+    'auth-mailgun',
+    'auth-mobileid',
+    'auth-s3',
+    'database-host',
+    'database-password',
+    'database-port',
+    'database-ssl-ca',
+    'database-ssl-path',
+    'database-user',
+    'entu-changed-at',
+    'entu-changed-by',
+    'entu-created-at',
+    'entu-created-by',
+    'entu-url',
+    'mongodb',
+    'tablepagesize',
+    'tagcloud'
+)
+AND entity_definition_keyname IN (SELECT keyname FROM props_keyname);
 
 
 /* property is mandatory */
@@ -412,10 +702,32 @@ INSERT INTO props (
     'boolean',
     1
 FROM property_definition
-WHERE dataproperty NOT IN ('entu-changed-at', 'entu-changed-by', 'entu-created-at', 'entu-created-by')
-AND entity_definition_keyname NOT LIKE 'conf-%'
-AND entity_definition_keyname IN (SELECT keyname FROM entity_definition)
-AND NULLIF(mandatory < 1, 1) IS NOT NULL;
+WHERE NULLIF(mandatory < 1, 1) IS NOT NULL
+AND dataproperty NOT IN (
+    'analytics-code',
+    'auth-erply',
+    'auth-facebook',
+    'auth-google',
+    'auth-live',
+    'auth-mailgun',
+    'auth-mobileid',
+    'auth-s3',
+    'database-host',
+    'database-password',
+    'database-port',
+    'database-ssl-ca',
+    'database-ssl-path',
+    'database-user',
+    'entu-changed-at',
+    'entu-changed-by',
+    'entu-created-at',
+    'entu-created-by',
+    'entu-url',
+    'mongodb',
+    'tablepagesize',
+    'tagcloud'
+)
+AND entity_definition_keyname IN (SELECT keyname FROM props_keyname);
 
 
 /* property is searchable */
@@ -430,10 +742,32 @@ INSERT INTO props (
     'boolean',
     1
 FROM property_definition
-WHERE dataproperty NOT IN ('entu-changed-at', 'entu-changed-by', 'entu-created-at', 'entu-created-by')
-AND entity_definition_keyname NOT LIKE 'conf-%'
-AND entity_definition_keyname IN (SELECT keyname FROM entity_definition)
-AND NULLIF(search < 1, 1) IS NOT NULL;
+WHERE NULLIF(search < 1, 1) IS NOT NULL
+AND dataproperty NOT IN (
+    'analytics-code',
+    'auth-erply',
+    'auth-facebook',
+    'auth-google',
+    'auth-live',
+    'auth-mailgun',
+    'auth-mobileid',
+    'auth-s3',
+    'database-host',
+    'database-password',
+    'database-port',
+    'database-ssl-ca',
+    'database-ssl-path',
+    'database-user',
+    'entu-changed-at',
+    'entu-changed-by',
+    'entu-created-at',
+    'entu-created-by',
+    'entu-url',
+    'mongodb',
+    'tablepagesize',
+    'tagcloud'
+)
+AND entity_definition_keyname IN (SELECT keyname FROM props_keyname);
 
 
 /* property is in tableview */
@@ -451,11 +785,33 @@ FROM
     translation AS t,
     property_definition AS pd
 WHERE pd.entity_definition_keyname = t.entity_definition_keyname
-AND pd.dataproperty NOT IN ('entu-changed-at', 'entu-changed-by', 'entu-created-at', 'entu-created-by')
-AND pd.entity_definition_keyname NOT LIKE 'conf-%'
-AND pd.entity_definition_keyname IN (SELECT keyname FROM entity_definition)
 AND t.field = 'displaytable'
-AND INSTR(LOWER(t.value), CONCAT('@', LOWER(pd.dataproperty), '@')) > 0;
+AND INSTR(LOWER(t.value), CONCAT('@', LOWER(pd.dataproperty), '@')) > 0
+AND pd.dataproperty NOT IN (
+    'analytics-code',
+    'auth-erply',
+    'auth-facebook',
+    'auth-google',
+    'auth-live',
+    'auth-mailgun',
+    'auth-mobileid',
+    'auth-s3',
+    'database-host',
+    'database-password',
+    'database-port',
+    'database-ssl-ca',
+    'database-ssl-path',
+    'database-user',
+    'entu-changed-at',
+    'entu-changed-by',
+    'entu-created-at',
+    'entu-created-by',
+    'entu-url',
+    'mongodb',
+    'tablepagesize',
+    'tagcloud'
+)
+AND pd.entity_definition_keyname IN (SELECT keyname FROM props_keyname);
 
 
 /* property has classifier (reference property) */
@@ -470,10 +826,32 @@ INSERT INTO props (
     'reference',
     NULLIF(LOWER(TRIM(REPLACE(classifying_entity_definition_keyname, '-', '_'))), '')
 FROM property_definition
-WHERE dataproperty NOT IN ('entu-changed-at', 'entu-changed-by', 'entu-created-at', 'entu-created-by')
-AND entity_definition_keyname NOT LIKE 'conf-%'
-AND entity_definition_keyname IN (SELECT keyname FROM entity_definition)
-AND classifying_entity_definition_keyname IS NOT NULL;
+WHERE classifying_entity_definition_keyname IS NOT NULL
+AND dataproperty NOT IN (
+    'analytics-code',
+    'auth-erply',
+    'auth-facebook',
+    'auth-google',
+    'auth-live',
+    'auth-mailgun',
+    'auth-mobileid',
+    'auth-s3',
+    'database-host',
+    'database-password',
+    'database-port',
+    'database-ssl-ca',
+    'database-ssl-path',
+    'database-user',
+    'entu-changed-at',
+    'entu-changed-by',
+    'entu-created-at',
+    'entu-created-by',
+    'entu-url',
+    'mongodb',
+    'tablepagesize',
+    'tagcloud'
+)
+AND entity_definition_keyname IN (SELECT keyname FROM props_keyname);
 
 
 /* property translation (label, ...) fields */
@@ -500,11 +878,32 @@ FROM
     translation AS t,
     property_definition AS pd
 WHERE pd.keyname = t.property_definition_keyname
-AND pd.dataproperty NOT IN ('entu-changed-at', 'entu-changed-by', 'entu-created-at', 'entu-created-by')
-AND pd.entity_definition_keyname NOT LIKE 'conf-%'
-AND pd.entity_definition_keyname IN (SELECT keyname FROM entity_definition)
 AND t.field IN ('label', 'label_plural', 'description', 'fieldset')
-AND t.property_definition_keyname IS NOT NULL;
+AND pd.dataproperty NOT IN (
+    'analytics-code',
+    'auth-erply',
+    'auth-facebook',
+    'auth-google',
+    'auth-live',
+    'auth-mailgun',
+    'auth-mobileid',
+    'auth-s3',
+    'database-host',
+    'database-password',
+    'database-port',
+    'database-ssl-ca',
+    'database-ssl-path',
+    'database-user',
+    'entu-changed-at',
+    'entu-changed-by',
+    'entu-created-at',
+    'entu-created-by',
+    'entu-url',
+    'mongodb',
+    'tablepagesize',
+    'tagcloud'
+)
+AND pd.entity_definition_keyname IN (SELECT keyname FROM props_keyname);
 
 
 /* missing name (formula) */
@@ -542,14 +941,13 @@ FROM
         UNION SELECT 'type', 'string'
         UNION SELECT 'formula', 'string'
     ) AS x
-WHERE t.entity_definition_keyname NOT LIKE 'conf-%'
+WHERE t.field = 'displayname'
 AND t.entity_definition_keyname NOT IN (
     SELECT entity_definition_keyname
     FROM property_definition
     WHERE TRIM(LOWER(dataproperty)) IN ('name', 'title')
 )
-AND t.field = 'displayname'
-AND t.entity_definition_keyname IS NOT NULL;
+AND t.entity_definition_keyname IN (SELECT keyname FROM props_keyname);
 
 
 /* missing name (formula) rights */
@@ -570,14 +968,17 @@ INSERT INTO props (
 FROM (
     SELECT DISTINCT entity_definition_keyname
     FROM translation
-    WHERE entity_definition_keyname NOT LIKE 'conf-%'
+    WHERE field = 'displayname'
     AND entity_definition_keyname NOT IN (
         SELECT entity_definition_keyname
         FROM property_definition
         WHERE TRIM(LOWER(dataproperty)) IN ('name', 'title')
     )
-    AND field = 'displayname'
-    AND entity_definition_keyname IS NOT NULL
+    AND entity_definition_keyname IN (
+        SELECT DISTINCT entity_definition_keyname
+        FROM entity
+        WHERE entity_definition_keyname NOT LIKE 'conf-%'
+    )
 ) AS entities,
 (
     SELECT
