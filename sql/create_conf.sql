@@ -232,6 +232,15 @@ INSERT INTO props (
     ('property_classifier', 'type', NULL, 'string', 'reference', NULL, NULL, 1),
     ('property_classifier', 'ordinal', NULL, 'integer', NULL, 14, NULL, 1),
 
+    ('property_decimals', '_mid', NULL, 'string', 'property_decimals', NULL, NULL, 1),
+    ('property_decimals', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
+    ('property_decimals', '_parent', NULL, 'reference', NULL, NULL, 'property', 1),
+    ('property_decimals', 'name', NULL, 'string', 'decimals', NULL, NULL, 1),
+    ('property_decimals', 'label', 'en', 'string', 'Decimal places', NULL, NULL, 1),
+    ('property_decimals', 'label', 'et', 'string', 'Decimal places', NULL, NULL, 1),
+    ('property_decimals', 'type', NULL, 'string', 'string', NULL, NULL, 1),
+    ('property_decimals', 'ordinal', NULL, 'integer', NULL, 15, NULL, 1),
+
     ('property_formula', '_mid', NULL, 'string', 'property_formula', NULL, NULL, 1),
     ('property_formula', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
     ('property_formula', '_parent', NULL, 'reference', NULL, NULL, 'property', 1),
