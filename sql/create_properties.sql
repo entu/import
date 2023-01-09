@@ -73,5 +73,5 @@ FROM
 WHERE pd.keyname = p.property_definition_keyname
 AND e.id = p.entity_id
 AND NULLIF(formula < 1, 1) IS NULL
-AND pd.dataproperty IN (SELECT keyname FROM mongo_property_keyname)
+AND p.property_definition_keyname IN (SELECT keyname FROM mongo_property_keyname)
 AND e.entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);

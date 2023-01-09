@@ -99,12 +99,6 @@ INSERT INTO mongo_property_keyname (keyname)
 SELECT DISTINCT keyname
 FROM property_definition
 WHERE keyname NOT IN (
-    'entu-changed-at',
-    'entu-changed-by',
-    'entu-created-at',
-    'entu-created-by'
-)
-AND dataproperty NOT IN (
     'customer-analytics-code',
     'customer-auth-erply',
     'customer-auth-facebook',
@@ -126,5 +120,10 @@ AND dataproperty NOT IN (
     'customer-mongodb',
     'customer-tablepagesize',
     'customer-tagcloud'
+) AND dataproperty NOT IN (
+    'entu-changed-at',
+    'entu-changed-by',
+    'entu-created-at',
+    'entu-created-by'
 )
 AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);

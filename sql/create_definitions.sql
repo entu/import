@@ -161,7 +161,7 @@ INSERT INTO mongo (
     'string',
     IF(dataproperty = 'title', 'name', NULLIF(LOWER(TRIM(REPLACE(dataproperty, '-', '_'))), ''))
 FROM property_definition
-WHERE dataproperty IN (SELECT keyname FROM mongo_property_keyname)
+WHERE keyname IN (SELECT keyname FROM mongo_property_keyname)
 AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
@@ -177,7 +177,7 @@ INSERT INTO mongo (
     'reference',
     'property'
 FROM property_definition
-WHERE dataproperty IN (SELECT keyname FROM mongo_property_keyname)
+WHERE keyname IN (SELECT keyname FROM mongo_property_keyname)
 AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
@@ -212,7 +212,7 @@ FROM
         AND entity.is_deleted = 0
         AND property_definition.dataproperty = 'entu-user'
     ) AS users
-WHERE dataproperty IN (SELECT keyname FROM mongo_property_keyname)
+WHERE keyname IN (SELECT keyname FROM mongo_property_keyname)
 AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
@@ -228,7 +228,7 @@ INSERT INTO mongo (
     'reference',
     NULLIF(LOWER(TRIM(REPLACE(entity_definition_keyname, '-', '_'))), '')
 FROM property_definition
-WHERE dataproperty IN (SELECT keyname FROM mongo_property_keyname)
+WHERE keyname IN (SELECT keyname FROM mongo_property_keyname)
 AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
@@ -249,7 +249,7 @@ INSERT INTO mongo (
         ELSE NULLIF(LOWER(TRIM(REPLACE(datatype, '-', '_'))), '')
     END
 FROM property_definition
-WHERE dataproperty IN (SELECT keyname FROM mongo_property_keyname)
+WHERE keyname IN (SELECT keyname FROM mongo_property_keyname)
 AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
@@ -267,7 +267,7 @@ INSERT INTO mongo (
 FROM property_definition
 WHERE NULLIF(formula < 1, 1) IS NULL
 AND NULLIF(TRIM(defaultvalue), '') IS NOT NULL
-AND dataproperty IN (SELECT keyname FROM mongo_property_keyname)
+AND keyname IN (SELECT keyname FROM mongo_property_keyname)
 AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
@@ -287,7 +287,7 @@ INSERT INTO mongo (
     END
 FROM property_definition
 WHERE datatype IN ('decimal', 'integer')
-AND dataproperty IN (SELECT keyname FROM mongo_property_keyname)
+AND keyname IN (SELECT keyname FROM mongo_property_keyname)
 AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
@@ -304,7 +304,7 @@ INSERT INTO mongo (
     1
 FROM property_definition
 WHERE datatype IN ('text')
-AND dataproperty IN (SELECT keyname FROM mongo_property_keyname)
+AND keyname IN (SELECT keyname FROM mongo_property_keyname)
 AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
@@ -321,7 +321,7 @@ INSERT INTO mongo (
     TRIM(defaultvalue)
 FROM property_definition
 WHERE NULLIF(formula < 1, 1) IS NOT NULL
-AND dataproperty IN (SELECT keyname FROM mongo_property_keyname)
+AND keyname IN (SELECT keyname FROM mongo_property_keyname)
 AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
@@ -338,7 +338,7 @@ INSERT INTO mongo (
     1
 FROM property_definition
 WHERE visible = 0
-AND dataproperty IN (SELECT keyname FROM mongo_property_keyname)
+AND keyname IN (SELECT keyname FROM mongo_property_keyname)
 AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
@@ -355,7 +355,7 @@ INSERT INTO mongo (
     ordinal
 FROM property_definition
 WHERE ordinal IS NOT NULL
-AND dataproperty IN (SELECT keyname FROM mongo_property_keyname)
+AND keyname IN (SELECT keyname FROM mongo_property_keyname)
 AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
@@ -372,7 +372,7 @@ INSERT INTO mongo (
     1
 FROM property_definition
 WHERE NULLIF(multilingual < 1, 1) IS NOT NULL
-AND dataproperty IN (SELECT keyname FROM mongo_property_keyname)
+AND keyname IN (SELECT keyname FROM mongo_property_keyname)
 AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
@@ -389,7 +389,7 @@ INSERT INTO mongo (
     1
 FROM property_definition
 WHERE NULLIF(multiplicity < 1, 1) IS NULL
-AND dataproperty IN (SELECT keyname FROM mongo_property_keyname)
+AND keyname IN (SELECT keyname FROM mongo_property_keyname)
 AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
@@ -407,7 +407,7 @@ INSERT INTO mongo (
 FROM property_definition
 WHERE NULLIF(readonly < 1, 1) IS NOT NULL
 AND NULLIF(formula < 1, 1) IS NULL
-AND dataproperty IN (SELECT keyname FROM mongo_property_keyname)
+AND keyname IN (SELECT keyname FROM mongo_property_keyname)
 AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
@@ -424,7 +424,7 @@ INSERT INTO mongo (
     1
 FROM property_definition
 WHERE NULLIF(public < 1, 1) IS NOT NULL
-AND dataproperty IN (SELECT keyname FROM mongo_property_keyname)
+AND keyname IN (SELECT keyname FROM mongo_property_keyname)
 AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
@@ -441,7 +441,7 @@ INSERT INTO mongo (
     1
 FROM property_definition
 WHERE NULLIF(mandatory < 1, 1) IS NOT NULL
-AND dataproperty IN (SELECT keyname FROM mongo_property_keyname)
+AND keyname IN (SELECT keyname FROM mongo_property_keyname)
 AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
@@ -458,7 +458,7 @@ INSERT INTO mongo (
     1
 FROM property_definition
 WHERE NULLIF(search < 1, 1) IS NOT NULL
-AND dataproperty IN (SELECT keyname FROM mongo_property_keyname)
+AND keyname IN (SELECT keyname FROM mongo_property_keyname)
 AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
@@ -479,7 +479,7 @@ FROM
 WHERE pd.entity_definition_keyname = t.entity_definition_keyname
 AND t.field = 'displaytable'
 AND INSTR(LOWER(t.value), CONCAT('@', LOWER(pd.dataproperty), '@')) > 0
-AND pd.dataproperty IN (SELECT keyname FROM mongo_property_keyname)
+AND pd.keyname IN (SELECT keyname FROM mongo_property_keyname)
 AND pd.entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
@@ -496,7 +496,7 @@ INSERT INTO mongo (
     NULLIF(LOWER(TRIM(REPLACE(classifying_entity_definition_keyname, '-', '_'))), '')
 FROM property_definition
 WHERE classifying_entity_definition_keyname IS NOT NULL
-AND dataproperty IN (SELECT keyname FROM mongo_property_keyname)
+AND keyname IN (SELECT keyname FROM mongo_property_keyname)
 AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
@@ -528,7 +528,7 @@ AND (
     t.field IN ('label', 'label_plural', 'description')
     OR (t.field = 'fieldset' AND t.property_definition_keyname NOT LIKE 'person-%')
 )
-AND pd.dataproperty IN (SELECT keyname FROM mongo_property_keyname)
+AND pd.keyname IN (SELECT keyname FROM mongo_property_keyname)
 AND pd.entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
@@ -600,11 +600,7 @@ FROM (
         FROM property_definition
         WHERE TRIM(LOWER(dataproperty)) IN ('name', 'title')
     )
-    AND entity_definition_keyname IN (
-        SELECT DISTINCT entity_definition_keyname
-        FROM entity
-        WHERE entity_definition_keyname NOT LIKE 'conf-%'
-    )
+    AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname)
 ) AS entities,
 (
     SELECT
