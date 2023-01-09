@@ -115,7 +115,7 @@ WHERE field IN ('label', 'label_plural', 'description')
 AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
-/* allowed-child, default-parent, optional-parent */
+/* default-parent */
 INSERT INTO mongo (
     entity,
     type,
@@ -127,11 +127,46 @@ INSERT INTO mongo (
     'reference',
     IFNULL(related_entity_id, NULLIF(LOWER(TRIM(REPLACE(related_entity_definition_keyname, '-', '_'))), ''))
 FROM relationship
-WHERE relationship_definition_keyname IN ('allowed-child', 'default-parent', 'optional-parent')
+WHERE relationship_definition_keyname = 'default-parent'
 AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname)
 AND related_entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
-/* add from menu */
+
+/* add from (allowed-child) */
+INSERT INTO mongo (
+    entity,
+    type,
+    datatype,
+    value_reference
+) SELECT DISTINCT
+    IFNULL(related_entity_id, NULLIF(LOWER(TRIM(REPLACE(related_entity_definition_keyname, '-', '_'))), '')),
+    'add_from',
+    'reference',
+    NULLIF(LOWER(TRIM(REPLACE(entity_definition_keyname, '-', '_'))), '')
+FROM relationship
+WHERE relationship_definition_keyname = 'allowed-child'
+AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname)
+AND related_entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
+
+
+/* add from (optional-parent) */
+INSERT INTO mongo (
+    entity,
+    type,
+    datatype,
+    value_reference
+) SELECT DISTINCT
+    NULLIF(LOWER(TRIM(REPLACE(entity_definition_keyname, '-', '_'))), ''),
+    'add_from',
+    'reference',
+    IFNULL(related_entity_id, NULLIF(LOWER(TRIM(REPLACE(related_entity_definition_keyname, '-', '_'))), ''))
+FROM relationship
+WHERE relationship_definition_keyname = 'optional-parent'
+AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname)
+AND related_entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
+
+
+/* add from (menu) */
 INSERT INTO mongo (
     entity,
     type,
@@ -139,7 +174,7 @@ INSERT INTO mongo (
     value_reference
 ) SELECT
     NULLIF(LOWER(TRIM(REPLACE(entity_definition_keyname, '-', '_'))), ''),
-    'add_from_menu',
+    'add_from',
     'reference',
     CONCAT('menu_', LOWER(TRIM(REPLACE(entity_definition_keyname, '-', '_'))))
 FROM relationship
