@@ -114,10 +114,16 @@ WHERE keyname NOT IN (
     'customer-database-ssl-ca',
     'customer-database-ssl-path',
     'customer-database-user',
+    'customer-domain',
     'customer-entu-url',
     'customer-feedback-email',
+    'customer-language-ref',
+    'customer-language',
     'customer-maintenancegroup',
     'customer-mongodb',
+    'customer-motd',
+    'customer-path',
+    'customer-regnr',
     'customer-tablepagesize',
     'customer-tagcloud'
 ) AND dataproperty NOT IN (
