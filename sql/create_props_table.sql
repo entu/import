@@ -13,6 +13,8 @@ UPDATE relationship SET changed = NULL WHERE CAST(changed AS CHAR(20)) = '0000-0
 UPDATE relationship SET deleted = NULL WHERE CAST(deleted AS CHAR(20)) = '0000-00-00 00:00:00';
 
 DROP TABLE IF EXISTS props;
+DROP TABLE IF EXISTS props_entity_keyname;
+DROP TABLE IF EXISTS props_property_keyname;
 
 CREATE TABLE `props` (
     `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -37,15 +39,19 @@ CREATE TABLE `props` (
     KEY `datatype` (`datatype`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS props_keyname;
-
-CREATE TABLE `props_keyname` (
+CREATE TABLE `props_entity_keyname` (
     `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
     `keyname` varchar(32) NOT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO props_keyname (keyname)
+CREATE TABLE `props_property_keyname` (
+    `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+    `keyname` varchar(32) NOT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO props_entity_keyname (keyname)
 SELECT DISTINCT entity_definition_keyname
 FROM entity
 WHERE id NOT IN (
@@ -88,3 +94,37 @@ WHERE id NOT IN (
     OR (entity_definition_keyname = 'textbook' AND search LIKE '%Testõpik%')
     OR (entity_definition_keyname = 'workbook' AND search LIKE '%Testtöövihik%')
 );
+
+INSERT INTO props_property_keyname (keyname)
+SELECT DISTINCT keyname
+FROM property_definition
+WHERE keyname NOT IN (
+    'entu-changed-at',
+    'entu-changed-by',
+    'entu-created-at',
+    'entu-created-by'
+)
+AND dataproperty NOT IN (
+    'customer-analytics-code',
+    'customer-auth-erply',
+    'customer-auth-facebook',
+    'customer-auth-google',
+    'customer-auth-live',
+    'customer-auth-mailgun',
+    'customer-auth-mobileid',
+    'customer-auth-s3',
+    'customer-billing-email',
+    'customer-database-host',
+    'customer-database-password',
+    'customer-database-port',
+    'customer-database-ssl-ca',
+    'customer-database-ssl-path',
+    'customer-database-user',
+    'customer-entu-url',
+    'customer-feedback-email',
+    'customer-maintenancegroup',
+    'customer-mongodb',
+    'customer-tablepagesize',
+    'customer-tagcloud'
+)
+AND entity_definition_keyname IN (SELECT keyname FROM props_entity_keyname);

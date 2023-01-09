@@ -73,29 +73,5 @@ FROM
 WHERE pd.keyname = p.property_definition_keyname
 AND e.id = p.entity_id
 AND NULLIF(formula < 1, 1) IS NULL
-AND pd.dataproperty NOT IN (
-    'analytics-code',
-    'auth-erply',
-    'auth-facebook',
-    'auth-google',
-    'auth-live',
-    'auth-mailgun',
-    'auth-mobileid',
-    'auth-s3',
-    'database-host',
-    'database-password',
-    'database-port',
-    'database-ssl-ca',
-    'database-ssl-path',
-    'database-user',
-    'entu-changed-at',
-    'entu-changed-by',
-    'entu-created-at',
-    'entu-created-by',
-    'entu-url',
-    'mongodb',
-    'tablepagesize',
-    'tagcloud'
-)
-AND pd.keyname NOT LIKE 'conf-%'
-AND e.entity_definition_keyname IN (SELECT keyname FROM props_keyname);
+AND pd.dataproperty IN (SELECT keyname FROM props_property_keyname)
+AND e.entity_definition_keyname IN (SELECT keyname FROM props_entity_keyname);
