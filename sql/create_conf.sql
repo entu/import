@@ -27,7 +27,7 @@ INSERT INTO props (
     ('entity_name', 'label', 'en', 'string', 'Name', NULL, NULL, 1),
     ('entity_name', 'label', 'et', 'string', 'Name', NULL, NULL, 1),
     ('entity_name', 'type', NULL, 'string', 'string', NULL, NULL, 1),
-    ('entity_name', 'ordinal', NULL, 'integer', NULL, 1, NULL, 1),
+    ('entity_name', 'ordinal', NULL, 'integer', NULL, 10, NULL, 1),
 
     ('entity_label', '_mid', NULL, 'string', 'entity_label', NULL, NULL, 1),
     ('entity_label', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
@@ -36,7 +36,7 @@ INSERT INTO props (
     ('entity_label', 'label', 'en', 'string', 'Label', NULL, NULL, 1),
     ('entity_label', 'label', 'et', 'string', 'Label', NULL, NULL, 1),
     ('entity_label', 'type', NULL, 'string', 'string', NULL, NULL, 1),
-    ('entity_label', 'ordinal', NULL, 'integer', NULL, 2, NULL, 1),
+    ('entity_label', 'ordinal', NULL, 'integer', NULL, 20, NULL, 1),
     ('entity_label', 'multilingual', NULL, 'boolean', NULL, 1, NULL, 1),
 
     ('entity_label_plural', '_mid', NULL, 'string', 'entity_label_plural', NULL, NULL, 1),
@@ -46,7 +46,7 @@ INSERT INTO props (
     ('entity_label_plural', 'label', 'en', 'string', 'Label (plural)', NULL, NULL, 1),
     ('entity_label_plural', 'label', 'et', 'string', 'Label (plural)', NULL, NULL, 1),
     ('entity_label_plural', 'type', NULL, 'string', 'string', NULL, NULL, 1),
-    ('entity_label_plural', 'ordinal', NULL, 'integer', NULL, 3, NULL, 1),
+    ('entity_label_plural', 'ordinal', NULL, 'integer', NULL, 30, NULL, 1),
     ('entity_label_plural', 'multilingual', NULL, 'boolean', NULL, 1, NULL, 1),
 
     ('entity_allowed_child', '_mid', NULL, 'string', 'entity_allowed_child', NULL, NULL, 1),
@@ -57,7 +57,7 @@ INSERT INTO props (
     ('entity_allowed_child', 'label', 'et', 'string', 'Allowed child', NULL, NULL, 1),
     ('entity_allowed_child', 'label_plural', 'en', 'string', 'Allowed childs', NULL, NULL, 1),
     ('entity_allowed_child', 'type', NULL, 'string', 'reference', NULL, NULL, 1),
-    ('entity_allowed_child', 'ordinal', NULL, 'integer', NULL, 4, NULL, 1),
+    ('entity_allowed_child', 'ordinal', NULL, 'integer', NULL, 40, NULL, 1),
 
     ('entity_add_from_menu', '_mid', NULL, 'string', 'entity_add_from_menu', NULL, NULL, 1),
     ('entity_add_from_menu', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
@@ -67,7 +67,7 @@ INSERT INTO props (
     ('entity_add_from_menu', 'label', 'et', 'string', 'Add from menu', NULL, NULL, 1),
     ('entity_add_from_menu', 'label_plural', 'en', 'string', 'Add from menus', NULL, NULL, 1),
     ('entity_add_from_menu', 'type', NULL, 'string', 'reference', NULL, NULL, 1),
-    ('entity_add_from_menu', 'ordinal', NULL, 'integer', NULL, 5, NULL, 1),
+    ('entity_add_from_menu', 'ordinal', NULL, 'integer', NULL, 50, NULL, 1),
 
     ('entity_optional_parent', '_mid', NULL, 'string', 'entity_optional_parent', NULL, NULL, 1),
     ('entity_optional_parent', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
@@ -77,7 +77,7 @@ INSERT INTO props (
     ('entity_optional_parent', 'label', 'et', 'string', 'Optional parent', NULL, NULL, 1),
     ('entity_optional_parent', 'label_plural', 'en', 'string', 'Optional parents', NULL, NULL, 1),
     ('entity_optional_parent', 'type', NULL, 'string', 'reference', NULL, NULL, 1),
-    ('entity_optional_parent', 'ordinal', NULL, 'integer', NULL, 6, NULL, 1),
+    ('entity_optional_parent', 'ordinal', NULL, 'integer', NULL, 60, NULL, 1),
 
     ('entity_open_after_add', '_mid', NULL, 'string', 'entity_open_after_add', NULL, NULL, 1),
     ('entity_open_after_add', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
@@ -86,7 +86,7 @@ INSERT INTO props (
     ('entity_open_after_add', 'label', 'en', 'string', 'Open after add', NULL, NULL, 1),
     ('entity_open_after_add', 'label', 'et', 'string', 'Open after add', NULL, NULL, 1),
     ('entity_open_after_add', 'type', NULL, 'string', 'boolean', NULL, NULL, 1),
-    ('entity_open_after_add', 'ordinal', NULL, 'integer', NULL, 7, NULL, 1),
+    ('entity_open_after_add', 'ordinal', NULL, 'integer', NULL, 70, NULL, 1),
 
     ('property', '_mid', NULL, 'string', 'property', NULL, NULL, 1),
     ('property', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
@@ -102,7 +102,8 @@ INSERT INTO props (
     ('property_name', 'label', 'en', 'string', 'Name', NULL, NULL, 1),
     ('property_name', 'label', 'et', 'string', 'Name', NULL, NULL, 1),
     ('property_name', 'type', NULL, 'string', 'string', NULL, NULL, 1),
-    ('property_name', 'ordinal', NULL, 'integer', NULL, 1, NULL, 1),
+    ('property_name', 'ordinal', NULL, 'integer', NULL, 10, NULL, 1),
+    ('property_name', 'table', NULL, 'boolean', NULL, 1, NULL, 1),
 
     ('property_label', '_mid', NULL, 'string', 'property_label', NULL, NULL, 1),
     ('property_label', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
@@ -111,8 +112,9 @@ INSERT INTO props (
     ('property_label', 'label', 'en', 'string', 'Label', NULL, NULL, 1),
     ('property_label', 'label', 'et', 'string', 'Label', NULL, NULL, 1),
     ('property_label', 'type', NULL, 'string', 'string', NULL, NULL, 1),
-    ('property_label', 'ordinal', NULL, 'integer', NULL, 2, NULL, 1),
+    ('property_label', 'ordinal', NULL, 'integer', NULL, 20, NULL, 1),
     ('property_label', 'multilingual', NULL, 'boolean', NULL, 1, NULL, 1),
+    ('property_label', 'table', NULL, 'boolean', NULL, 1, NULL, 1),
 
     ('property_label_plural', '_mid', NULL, 'string', 'property_label_plural', NULL, NULL, 1),
     ('property_label_plural', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
@@ -121,7 +123,7 @@ INSERT INTO props (
     ('property_label_plural', 'label', 'en', 'string', 'Label (plural)', NULL, NULL, 1),
     ('property_label_plural', 'label', 'et', 'string', 'Label (plural)', NULL, NULL, 1),
     ('property_label_plural', 'type', NULL, 'string', 'string', NULL, NULL, 1),
-    ('property_label_plural', 'ordinal', NULL, 'integer', NULL, 3, NULL, 1),
+    ('property_label_plural', 'ordinal', NULL, 'integer', NULL, 30, NULL, 1),
     ('property_label_plural', 'multilingual', NULL, 'boolean', NULL, 1, NULL, 1),
 
     ('property_group', '_mid', NULL, 'string', 'property_group', NULL, NULL, 1),
@@ -131,8 +133,9 @@ INSERT INTO props (
     ('property_group', 'label', 'en', 'string', 'Group', NULL, NULL, 1),
     ('property_group', 'label', 'et', 'string', 'Group', NULL, NULL, 1),
     ('property_group', 'type', NULL, 'string', 'string', NULL, NULL, 1),
-    ('property_group', 'ordinal', NULL, 'integer', NULL, 4, NULL, 1),
+    ('property_group', 'ordinal', NULL, 'integer', NULL, 40, NULL, 1),
     ('property_group', 'multilingual', NULL, 'boolean', NULL, 1, NULL, 1),
+    ('property_group', 'table', NULL, 'boolean', NULL, 1, NULL, 1),
 
     ('property_type', '_mid', NULL, 'string', 'property_type', NULL, NULL, 1),
     ('property_type', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
@@ -141,7 +144,7 @@ INSERT INTO props (
     ('property_type', 'label', 'en', 'string', 'Type', NULL, NULL, 1),
     ('property_type', 'label', 'et', 'string', 'Type', NULL, NULL, 1),
     ('property_type', 'type', NULL, 'string', 'string', NULL, NULL, 1),
-    ('property_type', 'ordinal', NULL, 'integer', NULL, 5, NULL, 1),
+    ('property_type', 'ordinal', NULL, 'integer', NULL, 50, NULL, 1),
     ('property_type', 'set', NULL, 'string', 'boolean', NULL, NULL, 1),
     ('property_type', 'set', NULL, 'string', 'datetime', NULL, NULL, 1),
     ('property_type', 'set', NULL, 'string', 'file', NULL, NULL, 1),
@@ -149,6 +152,7 @@ INSERT INTO props (
     ('property_type', 'set', NULL, 'string', 'reference', NULL, NULL, 1),
     ('property_type', 'set', NULL, 'string', 'set', NULL, NULL, 1),
     ('property_type', 'set', NULL, 'string', 'string', NULL, NULL, 1),
+    ('property_type', 'table', NULL, 'boolean', NULL, 1, NULL, 1),
 
     ('property_ordinal', '_mid', NULL, 'string', 'property_ordinal', NULL, NULL, 1),
     ('property_ordinal', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
@@ -156,8 +160,9 @@ INSERT INTO props (
     ('property_ordinal', 'name', NULL, 'string', 'ordinal', NULL, NULL, 1),
     ('property_ordinal', 'label', 'en', 'string', 'Ordinal', NULL, NULL, 1),
     ('property_ordinal', 'label', 'et', 'string', 'Ordinal', NULL, NULL, 1),
-    ('property_ordinal', 'type', NULL, 'string', 'integer', NULL, NULL, 1),
-    ('property_ordinal', 'ordinal', NULL, 'integer', NULL, 6, NULL, 1),
+    ('property_ordinal', 'type', NULL, 'string', 'number', NULL, NULL, 1),
+    ('property_ordinal', 'ordinal', NULL, 'integer', NULL, 60, NULL, 1),
+    ('property_ordinal', 'table', NULL, 'boolean', NULL, 1, NULL, 1),
 
     ('property_list', '_mid', NULL, 'string', 'property_list', NULL, NULL, 1),
     ('property_list', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
@@ -166,7 +171,16 @@ INSERT INTO props (
     ('property_list', 'label', 'en', 'string', 'Is list', NULL, NULL, 1),
     ('property_list', 'label', 'et', 'string', 'Is list', NULL, NULL, 1),
     ('property_list', 'type', NULL, 'string', 'boolean', NULL, NULL, 1),
-    ('property_list', 'ordinal', NULL, 'integer', NULL, 7, NULL, 1),
+    ('property_list', 'ordinal', NULL, 'integer', NULL, 70, NULL, 1),
+
+    ('property_markdown', '_mid', NULL, 'string', 'property_markdown', NULL, NULL, 1),
+    ('property_markdown', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
+    ('property_markdown', '_parent', NULL, 'reference', NULL, NULL, 'property', 1),
+    ('property_markdown', 'name', NULL, 'string', 'markdown', NULL, NULL, 1),
+    ('property_markdown', 'label', 'en', 'string', 'Is markdown', NULL, NULL, 1),
+    ('property_markdown', 'label', 'et', 'string', 'Is markdown', NULL, NULL, 1),
+    ('property_markdown', 'type', NULL, 'string', 'boolean', NULL, NULL, 1),
+    ('property_markdown', 'ordinal', NULL, 'integer', NULL, 75, NULL, 1),
 
     ('property_multilingual', '_mid', NULL, 'string', 'property_multilingual', NULL, NULL, 1),
     ('property_multilingual', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
@@ -175,7 +189,7 @@ INSERT INTO props (
     ('property_multilingual', 'label', 'en', 'string', 'Is multilingual', NULL, NULL, 1),
     ('property_multilingual', 'label', 'et', 'string', 'Is multilingual', NULL, NULL, 1),
     ('property_multilingual', 'type', NULL, 'string', 'boolean', NULL, NULL, 1),
-    ('property_multilingual', 'ordinal', NULL, 'integer', NULL, 8, NULL, 1),
+    ('property_multilingual', 'ordinal', NULL, 'integer', NULL, 80, NULL, 1),
 
     ('property_readonly', '_mid', NULL, 'string', 'property_readonly', NULL, NULL, 1),
     ('property_readonly', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
@@ -184,7 +198,7 @@ INSERT INTO props (
     ('property_readonly', 'label', 'en', 'string', 'Is read-only', NULL, NULL, 1),
     ('property_readonly', 'label', 'et', 'string', 'Is read-only', NULL, NULL, 1),
     ('property_readonly', 'type', NULL, 'string', 'boolean', NULL, NULL, 1),
-    ('property_readonly', 'ordinal', NULL, 'integer', NULL, 9, NULL, 1),
+    ('property_readonly', 'ordinal', NULL, 'integer', NULL, 90, NULL, 1),
 
     ('property_mandatory', '_mid', NULL, 'string', 'property_mandatory', NULL, NULL, 1),
     ('property_mandatory', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
@@ -193,7 +207,8 @@ INSERT INTO props (
     ('property_mandatory', 'label', 'en', 'string', 'Is mandatory', NULL, NULL, 1),
     ('property_mandatory', 'label', 'et', 'string', 'Is mandatory', NULL, NULL, 1),
     ('property_mandatory', 'type', NULL, 'string', 'boolean', NULL, NULL, 1),
-    ('property_mandatory', 'ordinal', NULL, 'integer', NULL, 10, NULL, 1),
+    ('property_mandatory', 'ordinal', NULL, 'integer', NULL, 100, NULL, 1),
+    ('property_mandatory', 'table', NULL, 'boolean', NULL, 1, NULL, 1),
 
     ('property_public', '_mid', NULL, 'string', 'property_public', NULL, NULL, 1),
     ('property_public', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
@@ -202,7 +217,8 @@ INSERT INTO props (
     ('property_public', 'label', 'en', 'string', 'Is public', NULL, NULL, 1),
     ('property_public', 'label', 'et', 'string', 'Is public', NULL, NULL, 1),
     ('property_public', 'type', NULL, 'string', 'boolean', NULL, NULL, 1),
-    ('property_public', 'ordinal', NULL, 'integer', NULL, 11, NULL, 1),
+    ('property_public', 'ordinal', NULL, 'integer', NULL, 110, NULL, 1),
+    ('property_public', 'table', NULL, 'boolean', NULL, 1, NULL, 1),
 
     ('property_search', '_mid', NULL, 'string', 'property_search', NULL, NULL, 1),
     ('property_search', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
@@ -211,7 +227,7 @@ INSERT INTO props (
     ('property_search', 'label', 'en', 'string', 'Is searchable', NULL, NULL, 1),
     ('property_search', 'label', 'et', 'string', 'Is searchable', NULL, NULL, 1),
     ('property_search', 'type', NULL, 'string', 'boolean', NULL, NULL, 1),
-    ('property_search', 'ordinal', NULL, 'integer', NULL, 12, NULL, 1),
+    ('property_search', 'ordinal', NULL, 'integer', NULL, 120, NULL, 1),
 
     ('property_table', '_mid', NULL, 'string', 'property_table', NULL, NULL, 1),
     ('property_table', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
@@ -220,7 +236,7 @@ INSERT INTO props (
     ('property_table', 'label', 'en', 'string', 'Is in table viev', NULL, NULL, 1),
     ('property_table', 'label', 'et', 'string', 'Is in table viev', NULL, NULL, 1),
     ('property_table', 'type', NULL, 'string', 'boolean', NULL, NULL, 1),
-    ('property_table', 'ordinal', NULL, 'integer', NULL, 13, NULL, 1),
+    ('property_table', 'ordinal', NULL, 'integer', NULL, 130, NULL, 1),
 
     ('property_classifier', '_mid', NULL, 'string', 'property_classifier', NULL, NULL, 1),
     ('property_classifier', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
@@ -230,7 +246,7 @@ INSERT INTO props (
     ('property_classifier', 'label', 'et', 'string', 'Classifier', NULL, NULL, 1),
     ('property_classifier', 'label_plural', 'en', 'string', 'Classifierss', NULL, NULL, 1),
     ('property_classifier', 'type', NULL, 'string', 'reference', NULL, NULL, 1),
-    ('property_classifier', 'ordinal', NULL, 'integer', NULL, 14, NULL, 1),
+    ('property_classifier', 'ordinal', NULL, 'integer', NULL, 140, NULL, 1),
 
     ('property_decimals', '_mid', NULL, 'string', 'property_decimals', NULL, NULL, 1),
     ('property_decimals', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
@@ -239,7 +255,7 @@ INSERT INTO props (
     ('property_decimals', 'label', 'en', 'string', 'Decimal places', NULL, NULL, 1),
     ('property_decimals', 'label', 'et', 'string', 'Decimal places', NULL, NULL, 1),
     ('property_decimals', 'type', NULL, 'string', 'string', NULL, NULL, 1),
-    ('property_decimals', 'ordinal', NULL, 'integer', NULL, 15, NULL, 1),
+    ('property_decimals', 'ordinal', NULL, 'integer', NULL, 150, NULL, 1),
 
     ('property_formula', '_mid', NULL, 'string', 'property_formula', NULL, NULL, 1),
     ('property_formula', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
@@ -248,7 +264,7 @@ INSERT INTO props (
     ('property_formula', 'label', 'en', 'string', 'Formula', NULL, NULL, 1),
     ('property_formula', 'label', 'et', 'string', 'Formula', NULL, NULL, 1),
     ('property_formula', 'type', NULL, 'string', 'string', NULL, NULL, 1),
-    ('property_formula', 'ordinal', NULL, 'integer', NULL, 15, NULL, 1),
+    ('property_formula', 'ordinal', NULL, 'integer', NULL, 150, NULL, 1),
 
     ('property_set', '_mid', NULL, 'string', 'property_set', NULL, NULL, 1),
     ('property_set', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
@@ -257,7 +273,7 @@ INSERT INTO props (
     ('property_set', 'label', 'en', 'string', 'Set', NULL, NULL, 1),
     ('property_set', 'label', 'et', 'string', 'Set', NULL, NULL, 1),
     ('property_set', 'type', NULL, 'string', 'string', NULL, NULL, 1),
-    ('property_set', 'ordinal', NULL, 'integer', NULL, 15, NULL, 1),
+    ('property_set', 'ordinal', NULL, 'integer', NULL, 150, NULL, 1),
     ('property_set', 'list', NULL, 'boolean', NULL, 1, NULL, 1),
 
     ('menu', '_mid', NULL, 'string', 'menu', NULL, NULL, 1),
@@ -304,7 +320,7 @@ INSERT INTO props (
     ('menu_ordinal', 'name', NULL, 'string', 'ordinal', NULL, NULL, 1),
     ('menu_ordinal', 'label', 'en', 'string', 'Ordinal', NULL, NULL, 1),
     ('menu_ordinal', 'label', 'et', 'string', 'Ordinal', NULL, NULL, 1),
-    ('menu_ordinal', 'type', NULL, 'string', 'integer', NULL, NULL, 1),
+    ('menu_ordinal', 'type', NULL, 'string', 'number', NULL, NULL, 1),
     ('menu_ordinal', 'ordinal', NULL, 'integer', NULL, 4, NULL, 1),
 
     ('menu_text', '_mid', NULL, 'string', 'menu_text', NULL, NULL, 1),

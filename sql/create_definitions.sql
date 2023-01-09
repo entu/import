@@ -452,6 +452,46 @@ AND dataproperty NOT IN (
 AND entity_definition_keyname IN (SELECT keyname FROM props_keyname);
 
 
+/* property is markdown */
+INSERT INTO props (
+    entity,
+    type,
+    datatype,
+    value_integer
+) SELECT DISTINCT
+    NULLIF(CONCAT(LOWER(TRIM(REPLACE(entity_definition_keyname, '-', '_'))), '_', LOWER(TRIM(REPLACE(dataproperty, '-', '_')))), '_'),
+    'markdown',
+    'boolean',
+    1
+FROM property_definition
+WHERE datatype IN ('text')
+AND dataproperty NOT IN (
+    'analytics-code',
+    'auth-erply',
+    'auth-facebook',
+    'auth-google',
+    'auth-live',
+    'auth-mailgun',
+    'auth-mobileid',
+    'auth-s3',
+    'database-host',
+    'database-password',
+    'database-port',
+    'database-ssl-ca',
+    'database-ssl-path',
+    'database-user',
+    'entu-changed-at',
+    'entu-changed-by',
+    'entu-created-at',
+    'entu-created-by',
+    'entu-url',
+    'mongodb',
+    'tablepagesize',
+    'tagcloud'
+)
+AND entity_definition_keyname IN (SELECT keyname FROM props_keyname);
+
+
 /* property is formula */
 INSERT INTO props (
     entity,
