@@ -961,7 +961,10 @@ FROM
     translation AS t,
     property_definition AS pd
 WHERE pd.keyname = t.property_definition_keyname
-AND t.field IN ('label', 'label_plural', 'description', 'fieldset')
+AND (
+    t.field IN ('label', 'label_plural', 'description')
+    OR (t.field = 'fieldset' AND t.property_definition_keyname NOT LIKE 'person-%')
+)
 AND pd.dataproperty NOT IN (
     'analytics-code',
     'auth-erply',
