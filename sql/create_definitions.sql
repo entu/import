@@ -128,8 +128,8 @@ INSERT INTO mongo (
     IFNULL(related_entity_id, NULLIF(LOWER(TRIM(REPLACE(related_entity_definition_keyname, '-', '_'))), ''))
 FROM relationship
 WHERE relationship_definition_keyname IN ('allowed-child', 'default-parent', 'optional-parent')
-AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
-
+AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname)
+AND related_entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 /* add from menu */
 INSERT INTO mongo (
