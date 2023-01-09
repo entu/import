@@ -1,5 +1,5 @@
 /* key */
-INSERT INTO props (
+INSERT INTO mongo (
     entity,
     type,
     datatype,
@@ -11,11 +11,11 @@ INSERT INTO props (
     'menu'
 FROM translation
 WHERE field = 'menu'
-AND entity_definition_keyname IN (SELECT keyname FROM props_entity_keyname);
+AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
 /* name */
-INSERT INTO props (
+INSERT INTO mongo (
     entity,
     type,
     language,
@@ -38,14 +38,14 @@ AND entity_definition_keyname IN (
     FROM translation
     WHERE field = 'menu'
 )
-AND entity_definition_keyname IN (SELECT keyname FROM props_entity_keyname)
+AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname)
 GROUP BY
     entity_definition_keyname,
     language;
 
 
 /* group */
-INSERT INTO props (
+INSERT INTO mongo (
     entity,
     type,
     language,
@@ -63,11 +63,11 @@ INSERT INTO props (
     TRIM(value)
 FROM translation
 WHERE field = 'menu'
-AND entity_definition_keyname IN (SELECT keyname FROM props_entity_keyname);
+AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
 /* query */
-INSERT INTO props (
+INSERT INTO mongo (
     entity,
     type,
     datatype,
@@ -79,13 +79,13 @@ INSERT INTO props (
     CONCAT('_type.string=', LOWER(TRIM(REPLACE(entity_definition_keyname, '-', '_'))), '&sort=name.string')
 FROM translation
 WHERE field = 'menu'
-AND entity_definition_keyname IN (SELECT keyname FROM props_entity_keyname)
+AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname)
 GROUP BY
     entity_definition_keyname;
 
 
 /* rights */
-INSERT INTO props (
+INSERT INTO mongo (
     entity,
     type,
     datatype,
@@ -116,11 +116,11 @@ FROM
         AND property_definition.dataproperty = 'entu-user'
     ) AS users
 WHERE field = 'menu'
-AND entity_definition_keyname IN (SELECT keyname FROM props_entity_keyname);
+AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
 /* conf menu */
-INSERT INTO props (
+INSERT INTO mongo (
     entity,
     type,
     language,
@@ -147,7 +147,7 @@ INSERT INTO props (
 
 
 /* conf menu rights */
-INSERT INTO props (
+INSERT INTO mongo (
     entity,
     type,
     datatype,

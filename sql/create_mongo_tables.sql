@@ -12,11 +12,11 @@ UPDATE relationship SET created = NULL WHERE CAST(created AS CHAR(20)) = '0000-0
 UPDATE relationship SET changed = NULL WHERE CAST(changed AS CHAR(20)) = '0000-00-00 00:00:00';
 UPDATE relationship SET deleted = NULL WHERE CAST(deleted AS CHAR(20)) = '0000-00-00 00:00:00';
 
-DROP TABLE IF EXISTS props;
-DROP TABLE IF EXISTS props_entity_keyname;
-DROP TABLE IF EXISTS props_property_keyname;
+DROP TABLE IF EXISTS mongo;
+DROP TABLE IF EXISTS mongo_entity_keyname;
+DROP TABLE IF EXISTS mongo_property_keyname;
 
-CREATE TABLE `props` (
+CREATE TABLE `mongo` (
     `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
     `entity` varchar(64) DEFAULT NULL,
     `type` varchar(32) DEFAULT NULL,
@@ -39,19 +39,19 @@ CREATE TABLE `props` (
     KEY `datatype` (`datatype`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `props_entity_keyname` (
+CREATE TABLE `mongo_entity_keyname` (
     `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
     `keyname` varchar(32) NOT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `props_property_keyname` (
+CREATE TABLE `mongo_property_keyname` (
     `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
     `keyname` varchar(32) NOT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO props_entity_keyname (keyname)
+INSERT INTO mongo_entity_keyname (keyname)
 SELECT DISTINCT entity_definition_keyname
 FROM entity
 WHERE id NOT IN (
@@ -95,7 +95,7 @@ WHERE id NOT IN (
     OR (entity_definition_keyname = 'workbook' AND search LIKE '%Testtöövihik%')
 );
 
-INSERT INTO props_property_keyname (keyname)
+INSERT INTO mongo_property_keyname (keyname)
 SELECT DISTINCT keyname
 FROM property_definition
 WHERE keyname NOT IN (
@@ -127,4 +127,4 @@ AND dataproperty NOT IN (
     'customer-tablepagesize',
     'customer-tagcloud'
 )
-AND entity_definition_keyname IN (SELECT keyname FROM props_entity_keyname);
+AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);

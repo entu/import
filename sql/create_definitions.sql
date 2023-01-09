@@ -1,5 +1,5 @@
 /* id */
-INSERT INTO props (
+INSERT INTO mongo (
     entity,
     type,
     datatype,
@@ -10,11 +10,11 @@ INSERT INTO props (
     'string',
     NULLIF(LOWER(TRIM(REPLACE(keyname, '-', '_'))), '')
 FROM entity_definition
-WHERE keyname IN (SELECT keyname FROM props_entity_keyname);
+WHERE keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
 /* key */
-INSERT INTO props (
+INSERT INTO mongo (
     entity,
     type,
     datatype,
@@ -25,11 +25,11 @@ INSERT INTO props (
     'string',
     NULLIF(LOWER(TRIM(REPLACE(keyname, '-', '_'))), '')
 FROM entity_definition
-WHERE keyname IN (SELECT keyname FROM props_entity_keyname);
+WHERE keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
 /* type */
-INSERT INTO props (
+INSERT INTO mongo (
     entity,
     type,
     datatype,
@@ -40,11 +40,11 @@ INSERT INTO props (
     'reference',
     'entity'
 FROM entity_definition
-WHERE keyname IN (SELECT keyname FROM props_entity_keyname);
+WHERE keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
 /* rights */
-INSERT INTO props (
+INSERT INTO mongo (
     entity,
     type,
     datatype,
@@ -74,11 +74,11 @@ FROM
         AND entity.is_deleted = 0
         AND property_definition.dataproperty = 'entu-user'
     ) AS users
-WHERE keyname IN (SELECT keyname FROM props_entity_keyname);
+WHERE keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
 /* open-after-add properties */
-INSERT INTO props (
+INSERT INTO mongo (
     entity,
     type,
     datatype,
@@ -90,11 +90,11 @@ INSERT INTO props (
     1
 FROM entity_definition
 WHERE open_after_add = 1
-AND keyname IN (SELECT keyname FROM props_entity_keyname);
+AND keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
 /* translation (label, label_plural, ...) fields */
-INSERT INTO props (
+INSERT INTO mongo (
     entity,
     type,
     language,
@@ -112,11 +112,11 @@ INSERT INTO props (
     REPLACE(TRIM(value), '@title@', '@name@')
 FROM translation
 WHERE field IN ('label', 'label_plural', 'description')
-AND entity_definition_keyname IN (SELECT keyname FROM props_entity_keyname);
+AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
 /* allowed-child, default-parent, optional-parent */
-INSERT INTO props (
+INSERT INTO mongo (
     entity,
     type,
     datatype,
@@ -128,11 +128,11 @@ INSERT INTO props (
     IFNULL(related_entity_id, NULLIF(LOWER(TRIM(REPLACE(related_entity_definition_keyname, '-', '_'))), ''))
 FROM relationship
 WHERE relationship_definition_keyname IN ('allowed-child', 'default-parent', 'optional-parent')
-AND entity_definition_keyname IN (SELECT keyname FROM props_entity_keyname);
+AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
 /* add from menu */
-INSERT INTO props (
+INSERT INTO mongo (
     entity,
     type,
     datatype,
@@ -145,12 +145,12 @@ INSERT INTO props (
 FROM relationship
 WHERE relationship_definition_keyname = 'optional-parent'
 AND is_deleted = 0
-AND entity_definition_keyname IN (SELECT keyname FROM props_entity_keyname)
+AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname)
 GROUP BY entity_definition_keyname;
 
 
 /* property key */
-INSERT INTO props (
+INSERT INTO mongo (
     entity,
     type,
     datatype,
@@ -161,12 +161,12 @@ INSERT INTO props (
     'string',
     IF(dataproperty = 'title', 'name', NULLIF(LOWER(TRIM(REPLACE(dataproperty, '-', '_'))), ''))
 FROM property_definition
-WHERE dataproperty IN (SELECT keyname FROM props_property_keyname)
-AND entity_definition_keyname IN (SELECT keyname FROM props_entity_keyname);
+WHERE dataproperty IN (SELECT keyname FROM mongo_property_keyname)
+AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
 /* property type */
-INSERT INTO props (
+INSERT INTO mongo (
     entity,
     type,
     datatype,
@@ -177,12 +177,12 @@ INSERT INTO props (
     'reference',
     'property'
 FROM property_definition
-WHERE dataproperty IN (SELECT keyname FROM props_property_keyname)
-AND entity_definition_keyname IN (SELECT keyname FROM props_entity_keyname);
+WHERE dataproperty IN (SELECT keyname FROM mongo_property_keyname)
+AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
 /* property rights */
-INSERT INTO props (
+INSERT INTO mongo (
     entity,
     type,
     datatype,
@@ -212,12 +212,12 @@ FROM
         AND entity.is_deleted = 0
         AND property_definition.dataproperty = 'entu-user'
     ) AS users
-WHERE dataproperty IN (SELECT keyname FROM props_property_keyname)
-AND entity_definition_keyname IN (SELECT keyname FROM props_entity_keyname);
+WHERE dataproperty IN (SELECT keyname FROM mongo_property_keyname)
+AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
 /* property parent entity */
-INSERT INTO props (
+INSERT INTO mongo (
     entity,
     type,
     datatype,
@@ -228,12 +228,12 @@ INSERT INTO props (
     'reference',
     NULLIF(LOWER(TRIM(REPLACE(entity_definition_keyname, '-', '_'))), '')
 FROM property_definition
-WHERE dataproperty IN (SELECT keyname FROM props_property_keyname)
-AND entity_definition_keyname IN (SELECT keyname FROM props_entity_keyname);
+WHERE dataproperty IN (SELECT keyname FROM mongo_property_keyname)
+AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
 /* property datatype */
-INSERT INTO props (
+INSERT INTO mongo (
     entity,
     type,
     datatype,
@@ -249,12 +249,12 @@ INSERT INTO props (
         ELSE NULLIF(LOWER(TRIM(REPLACE(datatype, '-', '_'))), '')
     END
 FROM property_definition
-WHERE dataproperty IN (SELECT keyname FROM props_property_keyname)
-AND entity_definition_keyname IN (SELECT keyname FROM props_entity_keyname);
+WHERE dataproperty IN (SELECT keyname FROM mongo_property_keyname)
+AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
 /* property default value */
-INSERT INTO props (
+INSERT INTO mongo (
     entity,
     type,
     datatype,
@@ -267,12 +267,12 @@ INSERT INTO props (
 FROM property_definition
 WHERE NULLIF(formula < 1, 1) IS NULL
 AND NULLIF(TRIM(defaultvalue), '') IS NOT NULL
-AND dataproperty IN (SELECT keyname FROM props_property_keyname)
-AND entity_definition_keyname IN (SELECT keyname FROM props_entity_keyname);
+AND dataproperty IN (SELECT keyname FROM mongo_property_keyname)
+AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
 /* property decimal places */
-INSERT INTO props (
+INSERT INTO mongo (
     entity,
     type,
     datatype,
@@ -287,12 +287,12 @@ INSERT INTO props (
     END
 FROM property_definition
 WHERE datatype IN ('decimal', 'integer')
-AND dataproperty IN (SELECT keyname FROM props_property_keyname)
-AND entity_definition_keyname IN (SELECT keyname FROM props_entity_keyname);
+AND dataproperty IN (SELECT keyname FROM mongo_property_keyname)
+AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
 /* property is markdown */
-INSERT INTO props (
+INSERT INTO mongo (
     entity,
     type,
     datatype,
@@ -304,12 +304,12 @@ INSERT INTO props (
     1
 FROM property_definition
 WHERE datatype IN ('text')
-AND dataproperty IN (SELECT keyname FROM props_property_keyname)
-AND entity_definition_keyname IN (SELECT keyname FROM props_entity_keyname);
+AND dataproperty IN (SELECT keyname FROM mongo_property_keyname)
+AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
 /* property is formula */
-INSERT INTO props (
+INSERT INTO mongo (
     entity,
     type,
     datatype,
@@ -321,12 +321,12 @@ INSERT INTO props (
     TRIM(defaultvalue)
 FROM property_definition
 WHERE NULLIF(formula < 1, 1) IS NOT NULL
-AND dataproperty IN (SELECT keyname FROM props_property_keyname)
-AND entity_definition_keyname IN (SELECT keyname FROM props_entity_keyname);
+AND dataproperty IN (SELECT keyname FROM mongo_property_keyname)
+AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
 /* property is hidden */
-INSERT INTO props (
+INSERT INTO mongo (
     entity,
     type,
     datatype,
@@ -338,12 +338,12 @@ INSERT INTO props (
     1
 FROM property_definition
 WHERE visible = 0
-AND dataproperty IN (SELECT keyname FROM props_property_keyname)
-AND entity_definition_keyname IN (SELECT keyname FROM props_entity_keyname);
+AND dataproperty IN (SELECT keyname FROM mongo_property_keyname)
+AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
 /* property ordinal */
-INSERT INTO props (
+INSERT INTO mongo (
     entity,
     type,
     datatype,
@@ -355,12 +355,12 @@ INSERT INTO props (
     ordinal
 FROM property_definition
 WHERE ordinal IS NOT NULL
-AND dataproperty IN (SELECT keyname FROM props_property_keyname)
-AND entity_definition_keyname IN (SELECT keyname FROM props_entity_keyname);
+AND dataproperty IN (SELECT keyname FROM mongo_property_keyname)
+AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
 /* property is multilingual */
-INSERT INTO props (
+INSERT INTO mongo (
     entity,
     type,
     datatype,
@@ -372,12 +372,12 @@ INSERT INTO props (
     1
 FROM property_definition
 WHERE NULLIF(multilingual < 1, 1) IS NOT NULL
-AND dataproperty IN (SELECT keyname FROM props_property_keyname)
-AND entity_definition_keyname IN (SELECT keyname FROM props_entity_keyname);
+AND dataproperty IN (SELECT keyname FROM mongo_property_keyname)
+AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
 /* property is list */
-INSERT INTO props (
+INSERT INTO mongo (
     entity,
     type,
     datatype,
@@ -389,12 +389,12 @@ INSERT INTO props (
     1
 FROM property_definition
 WHERE NULLIF(multiplicity < 1, 1) IS NULL
-AND dataproperty IN (SELECT keyname FROM props_property_keyname)
-AND entity_definition_keyname IN (SELECT keyname FROM props_entity_keyname);
+AND dataproperty IN (SELECT keyname FROM mongo_property_keyname)
+AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
 /* property is readonly */
-INSERT INTO props (
+INSERT INTO mongo (
     entity,
     type,
     datatype,
@@ -407,12 +407,12 @@ INSERT INTO props (
 FROM property_definition
 WHERE NULLIF(readonly < 1, 1) IS NOT NULL
 AND NULLIF(formula < 1, 1) IS NULL
-AND dataproperty IN (SELECT keyname FROM props_property_keyname)
-AND entity_definition_keyname IN (SELECT keyname FROM props_entity_keyname);
+AND dataproperty IN (SELECT keyname FROM mongo_property_keyname)
+AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
 /* property is public */
-INSERT INTO props (
+INSERT INTO mongo (
     entity,
     type,
     datatype,
@@ -424,12 +424,12 @@ INSERT INTO props (
     1
 FROM property_definition
 WHERE NULLIF(public < 1, 1) IS NOT NULL
-AND dataproperty IN (SELECT keyname FROM props_property_keyname)
-AND entity_definition_keyname IN (SELECT keyname FROM props_entity_keyname);
+AND dataproperty IN (SELECT keyname FROM mongo_property_keyname)
+AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
 /* property is mandatory */
-INSERT INTO props (
+INSERT INTO mongo (
     entity,
     type,
     datatype,
@@ -441,12 +441,12 @@ INSERT INTO props (
     1
 FROM property_definition
 WHERE NULLIF(mandatory < 1, 1) IS NOT NULL
-AND dataproperty IN (SELECT keyname FROM props_property_keyname)
-AND entity_definition_keyname IN (SELECT keyname FROM props_entity_keyname);
+AND dataproperty IN (SELECT keyname FROM mongo_property_keyname)
+AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
 /* property is searchable */
-INSERT INTO props (
+INSERT INTO mongo (
     entity,
     type,
     datatype,
@@ -458,12 +458,12 @@ INSERT INTO props (
     1
 FROM property_definition
 WHERE NULLIF(search < 1, 1) IS NOT NULL
-AND dataproperty IN (SELECT keyname FROM props_property_keyname)
-AND entity_definition_keyname IN (SELECT keyname FROM props_entity_keyname);
+AND dataproperty IN (SELECT keyname FROM mongo_property_keyname)
+AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
 /* property is in tableview */
-INSERT INTO props (
+INSERT INTO mongo (
     entity,
     type,
     datatype,
@@ -479,12 +479,12 @@ FROM
 WHERE pd.entity_definition_keyname = t.entity_definition_keyname
 AND t.field = 'displaytable'
 AND INSTR(LOWER(t.value), CONCAT('@', LOWER(pd.dataproperty), '@')) > 0
-AND pd.dataproperty IN (SELECT keyname FROM props_property_keyname)
-AND pd.entity_definition_keyname IN (SELECT keyname FROM props_entity_keyname);
+AND pd.dataproperty IN (SELECT keyname FROM mongo_property_keyname)
+AND pd.entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
 /* property has classifier (reference property) */
-INSERT INTO props (
+INSERT INTO mongo (
     entity,
     type,
     datatype,
@@ -496,12 +496,12 @@ INSERT INTO props (
     NULLIF(LOWER(TRIM(REPLACE(classifying_entity_definition_keyname, '-', '_'))), '')
 FROM property_definition
 WHERE classifying_entity_definition_keyname IS NOT NULL
-AND dataproperty IN (SELECT keyname FROM props_property_keyname)
-AND entity_definition_keyname IN (SELECT keyname FROM props_entity_keyname);
+AND dataproperty IN (SELECT keyname FROM mongo_property_keyname)
+AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
 /* property translation (label, ...) fields */
-INSERT INTO props (
+INSERT INTO mongo (
     entity,
     type,
     language,
@@ -528,12 +528,12 @@ AND (
     t.field IN ('label', 'label_plural', 'description')
     OR (t.field = 'fieldset' AND t.property_definition_keyname NOT LIKE 'person-%')
 )
-AND pd.dataproperty IN (SELECT keyname FROM props_property_keyname)
-AND pd.entity_definition_keyname IN (SELECT keyname FROM props_entity_keyname);
+AND pd.dataproperty IN (SELECT keyname FROM mongo_property_keyname)
+AND pd.entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
 /* missing name (formula) */
-INSERT INTO props (
+INSERT INTO mongo (
     entity,
     type,
     datatype,
@@ -573,11 +573,11 @@ AND t.entity_definition_keyname NOT IN (
     FROM property_definition
     WHERE TRIM(LOWER(dataproperty)) IN ('name', 'title')
 )
-AND t.entity_definition_keyname IN (SELECT keyname FROM props_entity_keyname);
+AND t.entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
 /* missing name (formula) rights */
-INSERT INTO props (
+INSERT INTO mongo (
     entity,
     type,
     datatype,

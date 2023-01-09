@@ -53,7 +53,7 @@ async function importEntities () {
 
 async function prepareMySql (database) {
   const sqls = [
-    'create_props_table',
+    'create_mongo_tables',
     'create_entities',
     'create_properties',
     'create_definitions',

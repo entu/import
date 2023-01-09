@@ -1,5 +1,5 @@
 SELECT DISTINCT
     entity AS oid
-FROM props
+FROM mongo
 ORDER BY
     entity;

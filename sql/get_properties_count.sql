@@ -1,1 +1,1 @@
-SELECT COUNT(*) AS count FROM props;
+SELECT COUNT(*) AS count FROM mongo;

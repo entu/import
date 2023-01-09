@@ -1,5 +1,5 @@
 /* conf */
-INSERT INTO props (
+INSERT INTO mongo (
     entity,
     type,
     language,
@@ -335,7 +335,7 @@ INSERT INTO props (
 
 
 /* conf rights */
-INSERT INTO props (
+INSERT INTO mongo (
     entity,
     type,
     datatype,
@@ -352,7 +352,7 @@ INSERT INTO props (
 FROM (
     SELECT DISTINCT
         entity
-    FROM props
+    FROM mongo
     WHERE conf = 1
 ) AS entities,
 (

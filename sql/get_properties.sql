@@ -20,7 +20,7 @@ SELECT
     created_by,
     deleted_at,
     deleted_by
-FROM props
+FROM mongo
 ORDER BY
     entity,
     type,
