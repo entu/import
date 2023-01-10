@@ -71,6 +71,7 @@ INSERT INTO mongo (
     ('property', 'label', 'en', 'string', 'Property', NULL, NULL, 1),
     ('property', 'label', 'et', 'string', 'Property', NULL, NULL, 1),
     ('property', 'label_plural', 'en', 'string', 'Properties', NULL, NULL, 1),
+    ('property', 'add_from', NULL, 'reference', NULL, NULL, 'entity', 1),
 
     ('property_name', '_mid', NULL, 'string', 'property_name', NULL, NULL, 1),
     ('property_name', '_type', NULL, 'reference', NULL, NULL, 'property', 1),

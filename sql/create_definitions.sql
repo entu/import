@@ -159,11 +159,11 @@ INSERT INTO mongo (
     NULLIF(LOWER(TRIM(REPLACE(entity_definition_keyname, '-', '_'))), ''),
     'add_from',
     'reference',
-    IFNULL(related_entity_id, NULLIF(LOWER(TRIM(REPLACE(related_entity_definition_keyname, '-', '_'))), ''))
+    related_entity_id
 FROM relationship
 WHERE relationship_definition_keyname = 'optional-parent'
-AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname)
-AND related_entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
+AND related_entity_id IS NOT NULL
+AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
 /* add from (menu) */
