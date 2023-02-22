@@ -41,7 +41,8 @@ async function importEntities () {
     await insertProperties(database)
     await replaceIds(database)
     await createSqsQueue(database)
-    await aggregateEntities(database)
+    await aggregateNewEntities(database)
+    await aggregateAllEntities(database)
 
     log(`End database ${database} import`)
     console.log('')
@@ -179,15 +180,28 @@ async function replaceIds (database) {
 async function createSqsQueue (database) {
   log('Create AWS SQS Queue')
 
-  const sqs = new SQSClient()
-  const lambda = new LambdaClient()
+  const sqs = new SQSClient({
+    region: process.env.AWS_REGION,
+    credentials: {
+      accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+    }
+  })
+  const lambda = new LambdaClient({
+    region: process.env.AWS_REGION,
+    credentials: {
+      accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+    }
+  })
 
   const { QueueUrl } = await sqs.send(new CreateQueueCommand({
-    QueueName: `${process.env.AWS_STACK}-entity-aggregate-${database}.fifo`,
+    QueueName: `${process.env.AWS_STACK}-entity-aggregate-${database}`,
+    // QueueName: `${process.env.AWS_STACK}-entity-aggregate-${database}.fifo`,
     Attributes: {
-      VisibilityTimeout: '600',
-      FifoQueue: 'true',
-      ContentBasedDeduplication: 'true'
+      VisibilityTimeout: '600'
+      // FifoQueue: 'true',
+      // ContentBasedDeduplication: 'true'
     }
   }))
 
@@ -207,8 +221,30 @@ async function createSqsQueue (database) {
   }
 }
 
-async function aggregateEntities (database) {
-  log('Aggregate Entities')
+async function aggregateNewEntities (database) {
+  log('Aggregate New Entities')
+
+  const mongo = await mongoClient.connect()
+
+  const entities = await mongo.db(database).collection('entity').find({ aggregated: { $exists: false } }).sort({ _id: 1 }).toArray()
+  let entityCount = entities.length
+
+  for (let i = 0; i < entities.length; i++) {
+    const entity = entities[i]
+
+    await sendAggregateToApi(database, entity._id)
+
+    entityCount--
+    if (entityCount % 100 === 0 && entityCount > 0) {
+      log(`  ${entityCount} entities to go`)
+    }
+  }
+
+  await mongoClient.close()
+}
+
+async function aggregateAllEntities (database) {
+  log('Aggregate All Entities')
 
   const mongo = await mongoClient.connect()
 
