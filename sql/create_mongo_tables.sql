@@ -41,14 +41,16 @@ CREATE TABLE `mongo` (
 
 CREATE TABLE `mongo_entity_keyname` (
     `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-    `keyname` varchar(32) NOT NULL,
-    PRIMARY KEY (`id`)
+    `keyname` varchar(64) NOT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `keyname` (`keyname`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `mongo_property_keyname` (
     `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-    `keyname` varchar(32) NOT NULL,
-    PRIMARY KEY (`id`)
+    `keyname` varchar(64) NOT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `keyname` (`keyname`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO mongo_entity_keyname (keyname)
@@ -57,6 +59,7 @@ FROM entity
 WHERE id NOT IN (
     SELECT id FROM entity
     WHERE entity_definition_keyname LIKE 'conf-%'
+    OR entity_definition_keyname = 'maintenancegroup'
     OR (entity_definition_keyname = 'acceptance-report' AND search LIKE '%Testvastuvõtuakt%')
     OR (entity_definition_keyname = 'audiovideo' AND search LIKE '%Testauvis%')
     OR (entity_definition_keyname = 'book' AND search LIKE '%Testraamat%')
@@ -125,7 +128,10 @@ WHERE keyname NOT IN (
     'customer-path',
     'customer-regnr',
     'customer-tablepagesize',
-    'customer-tagcloud'
+    'customer-tagcloud',
+    'sw-screen-health',
+    'sw-screen-last-check',
+    'sw-screen-last-update'
 ) AND dataproperty NOT IN (
     'entu-changed-at',
     'entu-changed-by',

@@ -5,12 +5,14 @@ INSERT INTO mongo (
     datatype,
     value_string
 ) SELECT DISTINCT
-    id,
+    e.id,
     '_mid',
     'string',
-    id
-FROM entity
-WHERE entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
+    e.id
+FROM
+    entity AS e,
+    mongo_entity_keyname AS mek
+WHERE mek.keyname = e.entity_definition_keyname;
 
 
 /* type */
@@ -22,14 +24,16 @@ INSERT INTO mongo (
     created_at,
     created_by
 ) SELECT DISTINCT
-    id,
+    e.id,
     '_type',
     'reference',
-    TRIM(LOWER(REPLACE(entity_definition_keyname, '-', '_'))),
-    created,
-    IF(TRIM(created_by) REGEXP '^-?[0-9]+$', TRIM(created_by), NULL)
-FROM entity
-WHERE entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
+    TRIM(LOWER(REPLACE(e.entity_definition_keyname, '-', '_'))),
+    e.created,
+    IF(TRIM(e.created_by) REGEXP '^-?[0-9]+$', TRIM(e.created_by), NULL)
+FROM
+    entity AS e,
+    mongo_entity_keyname AS mek
+WHERE mek.keyname = e.entity_definition_keyname;
 
 
 /* created at/by */
@@ -40,14 +44,16 @@ INSERT INTO mongo (
     created_at,
     created_by
 ) SELECT DISTINCT
-    id,
+    e.id,
     '_created',
     'atby',
-    created,
-    IF(TRIM(created_by) REGEXP '^-?[0-9]+$', TRIM(created_by), NULL)
-FROM entity
-WHERE (created IS NOT NULL OR IF(TRIM(created_by) REGEXP '^-?[0-9]+$', TRIM(created_by), NULL) IS NOT NULL)
-AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
+    e.created,
+    IF(TRIM(e.created_by) REGEXP '^-?[0-9]+$', TRIM(e.created_by), NULL)
+FROM
+    entity AS e,
+    mongo_entity_keyname AS mek
+WHERE mek.keyname = e.entity_definition_keyname
+AND (e.created IS NOT NULL OR IF(TRIM(e.created_by) REGEXP '^-?[0-9]+$', TRIM(e.created_by), NULL) IS NOT NULL);
 
 
 /* deleted at/by */
@@ -58,14 +64,16 @@ INSERT INTO mongo (
     created_at,
     created_by
 ) SELECT DISTINCT
-    id,
+    e.id,
     '_deleted',
     'atby',
-    deleted,
-    IF(TRIM(deleted_by) REGEXP '^-?[0-9]+$', TRIM(deleted_by), NULL)
-FROM entity
-WHERE is_deleted = 1
-AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
+    e.deleted,
+    IF(TRIM(e.deleted_by) REGEXP '^-?[0-9]+$', TRIM(e.deleted_by), NULL)
+FROM
+    entity AS e,
+    mongo_entity_keyname AS mek
+WHERE mek.keyname = e.entity_definition_keyname
+AND e.is_deleted = 1;
 
 
 /* parents */
@@ -89,10 +97,11 @@ INSERT INTO mongo (
     IF(TRIM(r.deleted_by) REGEXP '^-?[0-9]+$', TRIM(r.deleted_by), NULL)
 FROM
     relationship AS r,
-    entity AS e
+    entity AS e,
+    mongo_entity_keyname AS mek
 WHERE e.id = r.related_entity_id
-AND r.relationship_definition_keyname = 'child'
-AND e.entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
+AND mek.keyname = e.entity_definition_keyname
+AND r.relationship_definition_keyname = 'child';
 
 
 /* rights */
@@ -116,10 +125,11 @@ INSERT INTO mongo (
     IF(TRIM(r.deleted_by) REGEXP '^-?[0-9]+$', TRIM(r.deleted_by), NULL)
 FROM
     relationship AS r,
-    entity AS e
+    entity AS e,
+    mongo_entity_keyname AS mek
 WHERE e.id = r.entity_id
-AND r.relationship_definition_keyname IN ('editor', 'expander', 'owner', 'viewer')
-AND e.entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
+AND mek.keyname = e.entity_definition_keyname
+AND r.relationship_definition_keyname IN ('editor', 'expander', 'owner', 'viewer');
 
 
 /* sharing */
@@ -129,10 +139,12 @@ INSERT INTO mongo (
     datatype,
     value_integer
 ) SELECT DISTINCT
-    id,
+    e.id,
     '_public',
     'boolean',
     1
-FROM entity
-WHERE TRIM(LOWER(sharing)) = 'public'
-AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
+FROM
+    entity AS e,
+    mongo_entity_keyname AS mek
+WHERE mek.keyname = e.entity_definition_keyname
+AND TRIM(LOWER(e.sharing)) = 'public';

@@ -69,9 +69,11 @@ INSERT INTO mongo (
 FROM
     property AS p,
     property_definition AS pd,
-    entity AS e
+    entity AS e,
+    mongo_property_keyname AS mpk,
+    mongo_entity_keyname AS mek
 WHERE pd.keyname = p.property_definition_keyname
 AND e.id = p.entity_id
-AND NULLIF(formula < 1, 1) IS NULL
-AND p.property_definition_keyname IN (SELECT keyname FROM mongo_property_keyname)
-AND e.entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
+AND mpk.keyname = p.property_definition_keyname
+AND mek.keyname = e.entity_definition_keyname
+AND NULLIF(formula < 1, 1) IS NULL;
