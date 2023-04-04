@@ -16,6 +16,7 @@ dotenv.config()
 
 const formulas = yaml.load(fs.readFileSync(path.resolve(path.dirname(''), 'import', 'formulas.yaml'), 'utf8'))
 const mongoClient = new MongoClient(process.env.MONGODB, { useNewUrlParser: true, useUnifiedTopology: true })
+const mysqlConnections = {}
 
 importEntities()
 
@@ -128,11 +129,13 @@ async function insertProperties (database) {
 
   while (count === limit) {
     const mongo = await mongoClient.connect()
-    const properties = await executeSql('get_properties', database, [limit, offset])
+    const properties = await executeSql('get_properties', database, [limit])
 
     const cleanProperties = properties.map(cleanProperty)
 
     await mongo.db(database).collection('property').insertMany(cleanProperties)
+
+    await executeSql('update_property', database, [properties.map(x => x.id)])
 
     count = properties.length
     offset = offset + count
@@ -265,22 +268,27 @@ async function aggregateAllEntities (database) {
   await mongoClient.close()
 }
 
+async function mysqlDb (database) {
+  if (!mysqlConnections[database]) {
+    mysqlConnections[database] = await mysql.createConnection({
+      host: process.env.MYSQL_HOST,
+      port: process.env.MYSQL_PORT,
+      user: process.env.MYSQL_USER,
+      password: process.env.MYSQL_PASSWORD,
+      database,
+      multipleStatements: true
+    })
+  }
+
+  return mysqlConnections[database]
+}
+
 async function executeSql (filename, database, params) {
   const sqlPath = path.resolve(path.dirname(''), 'sql', filename + '.sql')
   const sql = fs.readFileSync(sqlPath, 'utf8')
 
-  const connection = await mysql.createConnection({
-    host: process.env.MYSQL_HOST,
-    port: process.env.MYSQL_PORT,
-    user: process.env.MYSQL_USER,
-    password: process.env.MYSQL_PASSWORD,
-    database,
-    multipleStatements: true
-  })
-
+  const connection = await mysqlDb(database)
   const [rows] = await connection.query(sql, params)
-
-  connection.end()
 
   return rows
 }
@@ -289,7 +297,7 @@ function cleanProperty (property) {
   const newProperty = {}
 
   Object.keys(property).forEach(key => {
-    if (property[key] === 0 || property[key] === false || !!property[key]) {
+    if (key !== 'id' || property[key] === 0 || property[key] === false || !!property[key]) {
       newProperty[key] = property[key]
     }
   })

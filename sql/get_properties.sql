@@ -1,4 +1,5 @@
 SELECT
+    id,
     entity,
     type,
     language,
@@ -21,9 +22,10 @@ SELECT
     deleted_at,
     deleted_by
 FROM mongo
+WHERE imported = 0
 ORDER BY
     entity,
     type,
     language,
     type
-LIMIT ? OFFSET ?;
+LIMIT ?;

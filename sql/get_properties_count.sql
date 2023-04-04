@@ -1,1 +1,3 @@
-SELECT COUNT(*) AS count FROM mongo;
+SELECT COUNT(*) AS count
+FROM mongo
+WHERE imported = 0;
