@@ -3,7 +3,7 @@ import fs from 'fs'
 import path from 'path'
 import https from 'https'
 import crypto from 'crypto'
-import { MongoClient } from 'mongodb'
+import { MongoClient, ObjectId } from 'mongodb'
 import mysql from 'mysql2/promise'
 import _ from 'lodash'
 import yaml from 'js-yaml'
@@ -112,8 +112,12 @@ async function insertEntities (database) {
   log('Insert entities to MongoDB')
   const mongo = await mongoClient.connect()
   const entities = await executeSql('get_entities', database)
+  const cleanEntities = entities.map(x => ({
+    _id: x.created_at ? new ObjectId(x.created_at.getTime() / 1000) : undefined,
+    oid: x.oid
+  }))
 
-  await mongo.db(database).collection('entity').insertMany(entities)
+  await mongo.db(database).collection('entity').insertMany(cleanEntities)
   await mongoClient.close()
 }
 
@@ -301,6 +305,10 @@ function cleanProperty (property) {
       newProperty[key] = property[key]
     }
   })
+
+  if (newProperty.created_at) {
+    _.set(newProperty, '_id', new ObjectId(newProperty.created_at.getTime() / 1000))
+  }
 
   if (newProperty.type) {
     if (newProperty.type.substr(0, 1) === '_') {

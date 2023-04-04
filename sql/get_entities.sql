@@ -1,5 +1,6 @@
-SELECT DISTINCT
-    entity AS oid
+SELECT
+    entity AS oid,
+    MIN(created_at) AS created_at
 FROM mongo
-ORDER BY
-    entity;
+GROUP BY entity
+ORDER BY entity;
