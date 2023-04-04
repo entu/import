@@ -301,7 +301,7 @@ function cleanProperty (property) {
   const newProperty = {}
 
   Object.keys(property).forEach(key => {
-    if (key !== 'id' || property[key] === 0 || property[key] === false || !!property[key]) {
+    if (property[key] === 0 || property[key] === false || !!property[key]) {
       newProperty[key] = property[key]
     }
   })
@@ -384,6 +384,7 @@ function cleanProperty (property) {
     newProperty.string = crypto.createHash('sha256').update(newProperty.string).digest('hex')
   }
 
+  _.unset(newProperty, 'id')
   _.unset(newProperty, 'datatype')
 
   return newProperty
