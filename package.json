@@ -11,8 +11,8 @@
         "import:entities": "node ./import/entities.js"
     },
     "dependencies": {
-        "@aws-sdk/client-lambda": "3.303.0",
-        "@aws-sdk/client-sqs": "3.303.0",
+        "@aws-sdk/client-lambda": "3.350.0",
+        "@aws-sdk/client-sqs": "3.350.0",
         "aws-sdk": "2.1349.0",
         "camelcase": "7.0.1",
         "decamelize": "6.0.0",
