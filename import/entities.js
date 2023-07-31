@@ -27,10 +27,7 @@ async function importEntities () {
   console.log('')
   console.log('')
 
-  // const dbList = databases.map(x => x.db)
-  const dbList = [
-    'roots'
-  ]
+  const dbList = databases.map(x => x.db)
 
   for (let i = 0; i < dbList.length; i++) {
     const database = dbList[i]
