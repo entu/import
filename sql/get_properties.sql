@@ -26,6 +26,5 @@ WHERE imported = 0
 ORDER BY
     entity,
     type,
-    language,
-    type
+    language
 LIMIT ?;
