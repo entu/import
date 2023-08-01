@@ -8,4 +8,5 @@ WHERE TABLE_SCHEMA NOT IN (
     'performance_schema',
     'sys'
 )
+AND TABLE_SCHEMA > 'ehituskool'
 ORDER BY TABLE_SCHEMA;
