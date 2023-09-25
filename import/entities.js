@@ -37,6 +37,7 @@ async function importEntities () {
     await prepareMongoDb(database)
     await insertEntities(database)
     await insertProperties(database)
+    await cleanupMySql(database)
     await replaceIds(database)
     await createSqsQueue(database)
     await aggregateNewEntities(database)
@@ -145,6 +146,11 @@ async function insertProperties (database) {
   }
 
   await mongoClient.close()
+}
+
+async function cleanupMySql (database) {
+  log('Run drop_mongo_tables.sql in MySQL')
+  await executeSql('drop_mongo_tables', database)
 }
 
 async function replaceIds (database) {
