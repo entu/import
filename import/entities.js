@@ -15,7 +15,7 @@ import { LambdaClient, CreateEventSourceMappingCommand } from '@aws-sdk/client-l
 dotenv.config()
 
 const formulas = yaml.load(fs.readFileSync(path.resolve(path.dirname(''), 'import', 'formulas.yaml'), 'utf8'))
-const mongoClient = new MongoClient(process.env.MONGODB, { useNewUrlParser: true, useUnifiedTopology: true })
+const mongoClient = new MongoClient(process.env.MONGODB)
 const mysqlConnections = {}
 
 importEntities()

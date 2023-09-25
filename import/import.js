@@ -81,7 +81,7 @@ const importProps = (mysqlDb, callback) => {
     },
 
     (callback) => {
-      mongo.MongoClient.connect(MONGODB, { ssl: true, sslValidate: true, useNewUrlParser: true, useUnifiedTopology: true }, (err, con) => {
+      mongo.MongoClient.connect(MONGODB, { ssl: true, sslValidate: true }, (err, con) => {
         if (err) { return callback(err) }
 
         mongoCon = con
