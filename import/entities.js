@@ -167,6 +167,9 @@ async function replaceIds (database) {
       numericOrdering: true
     }
   }).sort({ oid: 1 }).toArray()
+
+  const start = new Date().getTime() / 1000
+  const entityTotal = entities.length
   let entityCount = entities.length
 
   for (let i = 0; i < entities.length; i++) {
@@ -180,7 +183,11 @@ async function replaceIds (database) {
 
     entityCount--
     if (entityCount % 1000 === 0 && entityCount > 0) {
-      log(`  ${entityCount} entities to go`)
+      const end = new Date().getTime() / 1000
+      const speed = (entityTotal - entityCount) / (end - start)
+      const timeLeftMin = Math.floor(entityCount / speed / 60)
+
+      log(`  ${entityCount} entities (${timeLeftMin} minutes) to go`)
     }
   }
 
@@ -237,6 +244,9 @@ async function aggregateNewEntities (database) {
   const mongo = await mongoClient.connect()
 
   const entities = await mongo.db(database).collection('entity').find({ aggregated: { $exists: false } }).sort({ _id: 1 }).toArray()
+
+  const start = new Date().getTime() / 1000
+  const entityTotal = entities.length
   let entityCount = entities.length
 
   for (let i = 0; i < entities.length; i++) {
@@ -246,7 +256,11 @@ async function aggregateNewEntities (database) {
 
     entityCount--
     if (entityCount % 100 === 0 && entityCount > 0) {
-      log(`  ${entityCount} entities to go`)
+      const end = new Date().getTime() / 1000
+      const speed = (entityTotal - entityCount) / (end - start)
+      const timeLeftMin = Math.floor(entityCount / speed / 60)
+
+      log(`  ${entityCount} entities (${timeLeftMin} minutes) to go`)
     }
   }
 
@@ -259,6 +273,9 @@ async function aggregateAllEntities (database) {
   const mongo = await mongoClient.connect()
 
   const entities = await mongo.db(database).collection('entity').find().sort({ _id: 1 }).toArray()
+
+  const start = new Date().getTime() / 1000
+  const entityTotal = entities.length
   let entityCount = entities.length
 
   for (let i = 0; i < entities.length; i++) {
@@ -268,7 +285,11 @@ async function aggregateAllEntities (database) {
 
     entityCount--
     if (entityCount % 100 === 0 && entityCount > 0) {
-      log(`  ${entityCount} entities to go`)
+      const end = new Date().getTime() / 1000
+      const speed = (entityTotal - entityCount) / (end - start)
+      const timeLeftMin = Math.floor(entityCount / speed / 60)
+
+      log(`  ${entityCount} entities (${timeLeftMin} minutes) to go`)
     }
   }
 
