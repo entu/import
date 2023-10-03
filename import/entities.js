@@ -85,11 +85,13 @@ async function prepareMongoDb (database) {
   await mongo.db(database).collection('entity').createIndexes([
     { key: { oid: 1 } },
     { key: { access: 1 } },
+    { key: { 'private._parent.reference': 1 } },
     { key: { 'private._type.string': 1 } },
-    { key: { 'search.private': 1 } },
-    { key: { 'search.public': 1 } },
+    { key: { 'private.entu_api_key.string': 1 } },
     { key: { 'private.entu_user.string': 1 } },
-    { key: { 'private.entu_api_key.string': 1 } }
+    { key: { 'private.name.string': 1 } },
+    { key: { 'search.private': 1 } },
+    { key: { 'search.public': 1 } }
   ])
 
   log('Add property indexes to MongoDB')
