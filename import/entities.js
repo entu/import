@@ -187,9 +187,9 @@ async function replaceIds (database) {
     if (entityCount % 1000 === 0 && entityCount > 0) {
       const end = new Date().getTime() / 1000
       const speed = (entityTotal - entityCount) / (end - start)
-      const timeLeftMin = Math.floor(entityCount / speed / 60)
+      const timeLeft = getTimeLeft(entityCount / speed)
 
-      log(`  ${entityCount} entities (${timeLeftMin} minutes) to go`)
+      log(`  ${entityCount} entities (${timeLeft}) to go`)
     }
   }
 
@@ -257,12 +257,12 @@ async function aggregateNewEntities (database) {
     await sendAggregateToApi(database, entity._id)
 
     entityCount--
-    if (entityCount % 100 === 0 && entityCount > 0) {
+    if (entityCount % 1000 === 0 && entityCount > 0) {
       const end = new Date().getTime() / 1000
       const speed = (entityTotal - entityCount) / (end - start)
-      const timeLeftMin = Math.floor(entityCount / speed / 60)
+      const timeLeft = getTimeLeft(entityCount / speed)
 
-      log(`  ${entityCount} entities (${timeLeftMin} minutes) to go`)
+      log(`  ${entityCount} entities (${timeLeft}) to go`)
     }
   }
 
@@ -286,12 +286,12 @@ async function aggregateAllEntities (database) {
     await sendAggregateToApi(database, entity._id)
 
     entityCount--
-    if (entityCount % 100 === 0 && entityCount > 0) {
+    if (entityCount % 1000 === 0 && entityCount > 0) {
       const end = new Date().getTime() / 1000
       const speed = (entityTotal - entityCount) / (end - start)
-      const timeLeftMin = Math.floor(entityCount / speed / 60)
+      const timeLeft = getTimeLeft(entityCount / speed)
 
-      log(`  ${entityCount} entities (${timeLeftMin} minutes) to go`)
+      log(`  ${entityCount} entities (${timeLeft}) to go`)
     }
   }
 
@@ -439,4 +439,16 @@ const sendAggregateToApi = async (database, entityId) => {
 
 function log (message) {
   console.log(new Date().toISOString().substring(11).replace('Z', ''), message)
+}
+
+function getTimeLeft (seconds) {
+  // return hours and minutes
+  const hours = Math.floor(seconds / 3600)
+  const minutes = Math.floor((seconds - (hours * 3600)) / 60)
+
+  if (hours === 0) {
+    return `${minutes}m`
+  }
+
+  return `${hours}h ${minutes}m`
 }
