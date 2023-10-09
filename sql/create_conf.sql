@@ -233,9 +233,10 @@ INSERT INTO mongo (
     ('property_decimals', '_parent', NULL, 'reference', NULL, NULL, 'property', 1),
     ('property_decimals', 'name', NULL, 'string', 'decimals', NULL, NULL, 1),
     ('property_decimals', 'label', 'en', 'string', 'Decimal places', NULL, NULL, 1),
-    ('property_decimals', 'type', NULL, 'string', 'string', NULL, NULL, 1),
     ('property_decimals', 'label', 'et', 'string', 'Kümnendkohti', NULL, NULL, 1),
+    ('property_decimals', 'type', NULL, 'string', 'number', NULL, NULL, 1),
     ('property_decimals', 'ordinal', NULL, 'integer', NULL, 150, NULL, 1),
+    ('property_decimals', 'decimals', NULL, 'integer', NULL, 0, NULL, 1),
 
     ('property_formula', '_mid', NULL, 'string', 'property_formula', NULL, NULL, 1),
     ('property_formula', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
