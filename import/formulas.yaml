@@ -334,9 +334,6 @@
     old: '{SUM(self.referrer.invoice-out.vat)}'
     new: SUM(referrer.invoice_out.vat)
 -
-    old: '@@'
-    new:
--
     old: '@aasta@ @kuu@'
     new: CONCAT(aasta, ' ', kuu)
 -
