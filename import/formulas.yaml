@@ -43,15 +43,6 @@
     old: '{self._created}'
     new: _created
 -
-    old: '{self.-contract.date}'
-    new: _contract.date
--
-    old: '{self.-contract.enddate}'
-    new: _contract.enddate
--
-    old: '{self.-contract.number}'
-    new: _contract.number
--
     old: '{self.author} {self.title} {self.journal} {self.pages} {self.year}'
     new: author ' ' name ' ' journal ' ' pages ' ' year
 -
