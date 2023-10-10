@@ -1,1022 +1,1022 @@
-# a b c
-# a b c COUNT
-# a b c SUBTRACT
-# a b c SUM
+# CONCAT(a, b, c)
+# COUNT(a, b, c)
+# SUBTRACT(a, b, c)
+# SUM(a, b, c)
 
 -
-    new: _child.*.budget SUM
-    old: '{SUM(self.child.*.budget)}'
--
-    new: _child.*.budget_hp SUM
-    old: '{SUM(self.child.*.budget-hp)}'
--
-    new: _child.*.expenses SUM
-    old: '{SUM(self.child.*.expenses)}'
--
-    new: _child.*.expenses_hp SUM
-    old: '{SUM(self.child.*.expenses-hp)}'
--
-    new: _child.*.funding SUM
-    old: '{SUM(self.child.*.funding)}'
--
-    new: _child.*.funding_hp SUM
-    old: '{SUM(self.child.*.funding-hp)}'
--
-    new: _child.budget.expenses SUM
-    old: '{SUM(self.child.budget.expenses)}'
--
-    new: _child.budget.expenses_hp SUM
-    old: '{SUM(self.child.budget.expenses-hp)}'
--
-    new: _child.budget.sum SUM
-    old: '{SUM(self.child.budget.sum)}'
--
-    new: _child.budget.sum_hp SUM
-    old: '{SUM(self.child.budget.sum-hp)}'
--
-    new: _child.copy._id COUNT
-    old: '{COUNT(self.child.copy.id)}'
--
-    new: _child.copy.barcode
-    old: '{self.child.copy.barcode}'
--
-    new: _child.copy.price SUM
-    old: '{SUM(self.child.copy.price)}'
--
-    new: _child.expense.sum SUM
-    old: '{SUM(self.child.expense.sum)}'
--
-    new: _child.expense.sum_hp SUM
-    old: '{SUM(self.child.expense.sum-hp)}'
--
-    new: _child.funding_hp.actual_sum SUM
-    old: '{SUM(self.child.funding-hp.actual-sum)}'
--
-    new: _child.funding.actual_sum _child.funding_hp.actual_sum SUM
-    old: '{SUM(self.child.funding.actual-sum)+SUM(self.child.funding-hp.actual-sum)}'
--
-    new: _child.laenutuse_rida.barcode
-    old: '{self.child.laenutuse-rida.barcode}'
--
-    new: _contract.date
-    old: '{self.-contract.date}'
--
-    new: _contract.enddate
-    old: '{self.-contract.enddate}'
--
-    new: _contract.number
-    old: '{self.-contract.number}'
--
-    new: _created
-    old: '{self._created}'
--
-    new: _id
-    old: '@id@'
--
-    new: _parent.*.author
-    old: '{self.parent..author}'
--
-    new: _parent.*.color
-    old: '{self.parent.*.color}'
--
-    new: _parent.*.name ' / ' name
-    old: '{self.parent..name} / {self.name}'
--
-    new: _parent.*.name
-    old: '{self.parent..name}'
--
-    new: _parent.*.name
-    old: '{self.parent..title}'
--
-    new: _parent.*.parent ' / ' _parent.*.name
-    old: '{self.parent.*.parent} / {self.parent.*.title}'
--
-    new: _parent.*.path ' / ' name
-    old: '{self.parent..path} / {self.name}'
--
-    new: _parent.*.path / name
-    old: '{self.parent..path}/{self.name}'
--
-    new: _parent.*.publisher
-    old: '{self.parent..publisher}'
--
-    new: _parent.*.publishing_date
-    old: '{self.parent..publishing-date}'
--
-    new: _parent.*.tag
-    old: '{self.parent.*.tag}'
--
-    new: _parent.category.path / et_name ( en_name )
-    old: '{self.parent.category.path}/{self.et-name}({self.en-name})'
--
-    new: _parent.chemical.name
-    old: '{self.parent.chemical.name}'
--
-    new: _parent.cl_asukoht.path / name
-    old: '{self.parent.cl-asukoht.path}/{self.name}'
--
-    new: _parent.cl_tag.fullname / name
-    old: '{self.parent.cl-tag.fullname}/{self.name}'
--
-    new: _parent.class.number _parent.class.letter
-    old: '{self.parent.class.number}{self.parent.class.letter}'
--
-    new: _parent.customer.name
-    old: '{self.parent.customer.name}'
--
-    new: _parent.department.name
-    old: '{self.parent.department.name}'
--
-    new: _parent.floor.address
-    old: '{self.parent.floor.address}'
--
-    new: _parent.floor.code
-    old: '{self.parent.floor.code}'
--
-    new: _parent.folder.description
-    old: '{self.parent.folder.description}'
--
-    new: _parent.folder.path _parent.partner.name ' / ' name
-    old: '{self.parent.folder.path}{self.parent.partner.name} / {self.name}'
--
-    new: _parent.group.name
-    old: '{self.parent.group.name}'
--
-    new: _parent.homepage_menu.path _parent.homepage_item.path / name
-    old: '{self.parent.homepage-menu.path}{self.parent.homepage-item.path}/{self.name}'
--
-    new: _parent.homepage_menu.path / name
-    old: '{self.parent.homepage-menu.path}/{self.name}'
--
-    new: _parent.institution.name _parent.*.path ' / ' name
-    old: '{self.parent.institution.name}{self.parent..path} / {self.name}'
--
-    new: _parent.inventory.name ' inventeerimisakt seisuga ' date .
-    old: '{self.parent.inventory.name}, inventeerimisakt seisuga {self.date}.'
--
-    new: _parent.inventory.name ' mahakandmisakt seisuga ' date .
-    old: '{self.parent.inventory.name}, mahakandmisakt seisuga {self.date}.'
--
-    new: _parent.inventory.name ' üleandmisakt seisuga ' date .
-    old: '{self.parent.inventory.name}, üleandmisakt seisuga {self.date}.'
--
-    new: _parent.location.address
-    old: '{self.parent.location.address}'
--
-    new: _parent.location.code
-    old: '{self.parent.location.code}'
--
-    new: _parent.location.path ' / ' name
-    old: '{self.parent.location.path} / {self.name}'
--
-    new: _parent.person.forename ' ' _parent.person.surname
-    old: '{self.parent.person.forename} {self.parent.person.surname}'
--
-    new: _parent.project.name
-    old: '{self.parent.project.name}'
--
-    new: _parent.project.path / name
-    old: '{self.parent.project.path}/{self.name}'
--
-    new: _parent.region.full_name / name
-    old: '{self.parent.region.fullName}/{self.name}'
--
-    new: _parent.story.name
-    old: '{self.parent.story.title}'
--
-    new: _parent.tag.full_name_en / name_en
-    old: '{self.parent.tag.fullName-en}/{self.name-en}'
--
-    new: _parent.tag.full_name_et / name_et
-    old: '{self.parent.tag.fullName-et}/{self.name-et}'
--
-    new: _parent.tag.full_name_ru / name_ru
-    old: '{self.parent.tag.fullName-ru}/{self.name-ru}'
--
-    new: _parent.tag.path / name
-    old: '{self.parent.tag.path}/{self.name}'
--
-    new: _parent.vastuv6tuakt.donator
-    old: '{self.parent.vastuv6tuakt.donator}'
--
-    new: _parent.vastuv6tuakt.registry_number
-    old: '{self.parent.vastuv6tuakt.registry-number}'
--
-    new: _parent.vastuv6tuakt.yleandmistingimus
-    old: '{self.parent.vastuv6tuakt.yleandmistingimus}'
--
-    new: ; varustus.triipkood ; varustus.invnr ;
     old: ';{self.varustus.triipkood};{self.varustus.invnr};'
+    new: CONCAT(';', varustus.triipkood, ';', varustus.invnr, ';')
 -
-    new: '''Museaale: '' eksponaate ''<br/>Teavikuid: '' eksemplare'
-    old: 'Museaale: @eksponaate@<br/>Teavikuid: @eksemplare@'
+    old: '(@inkmd@) @description@'
+    new: CONCAT('(', inkmd, ') ', description)
 -
-    new: '''Schedule: '' layout'
-    old: 'Schedule: @layout@'
+    old: '(@kuup2ev@) @maksja@'
+    new: CONCAT('(', kuup2ev, ') ', maksja)
 -
-    new: ( inkmd ') ' description
-    old: (@inkmd@) @description@
+    old: '(@outkmd@) @description@'
+    new: CONCAT('(', outkmd, ') ', description)
 -
-    new: ( kuup2ev ') ' maksja
-    old: (@kuup2ev@) @maksja@
--
-    new: ( outkmd ') ' description
-    old: (@outkmd@) @description@
--
-    new: '[ registry_number ]'
     old: '[{self.registry-number}]'
+    new: CONCAT('[', registry_number, ']')
 -
-    new: aasta ' ' kuu
-    old: '@aasta@ @kuu@'
+    old: '{COUNT(self.child.copy.id)}'
+    new: COUNT(_child.copy._id)
 -
-    new: address
-    old: '@address@'
--
-    new: algus ' - ' kestvus
-    old: '@algus@ - @kestvus@'
--
-    new: algus + tunde '. ' coach
-    old: '@algus@+@tunde@. @coach@'
--
-    new: applicant_name
-    old: '@applicant-name@'
--
-    new: assignee
-    old: '@assignee@'
--
-    new: asukoht ' ' description
-    old: '@asukoht@ @description@'
--
-    new: asukoht
-    old: '@asukoht@'
--
-    new: author ' - ' name
-    old: '@author@ - @title@'
--
-    new: author ' ' date
-    old: '@author@ @date@'
--
-    new: author ' ' name ' ' journal ' ' pages ' ' year
-    old: '{self.author} {self.title} {self.journal} {self.pages} {self.year}'
--
-    new: author ' ' publishing_date
-    old: '@author@ @publishing-date@'
--
-    new: author ' "' name '" ' journal ' ' volume ' ' issue ' ' page ' ' date
-    old: '{self.author}, "{self.title}", {self.journal}, {self.volume}, {self.issue}, {self.page}, {self.date}'
--
-    new: author '. ' year '. ' journal
-    old: '@author@. @year@. @journal@'
--
-    new: author
-    old: '@author@'
--
-    new: barcode ' ' location ' (' publishing_date ') ' author
-    old: '@barcode@ @location@ (@publishing-date@) @author@'
--
-    new: barcode ' ' name
-    old: '@barcode@ @title@'
--
-    new: barcode ' ' number ' (' publishing_date ') ' author
-    old: '@barcode@ @number@ (@publishing-date@) @author@'
--
-    new: barcode ' (' publishing_date ') ' author
-    old: '@barcode@ (@publishing-date@) @author@'
--
-    new: beer_name
-    old: '@beer-name@'
--
-    new: begin / end
-    old: '@begin@/@end@'
--
-    new: birthYear
-    old: '@birthYear@'
--
-    new: bronnialgus - bronnil6pp | algus - l6pp
-    old: '@bronnialgus@-@bronnil6pp@|@algus@-@l6pp@'
--
-    new: caption
-    old: '@caption@'
--
-    new: cas_number
-    old: '@cas-number@'
--
-    new: checkin ' (' start )
-    old: '@checkin@ (@start@)'
--
-    new: chemical
-    old: '@chemical@'
--
-    new: childperson.group
-    old: '{self.childperson.group}'
--
-    new: citation
-    old: '@citation@'
--
-    new: city ' / ' name
-    old: '@city@ / @name@'
--
-    new: class
-    old: '@class@'
--
-    new: code - name
-    old: '@code@-@name@'
--
-    new: code ' ' tag
-    old: '@code@ @tag@'
--
-    new: color
-    old: '@color@'
--
-    new: comment
-    old: '@comment@'
--
-    new: company ' ' department ' ' forename ' ' surname
-    old: '@company@ @department@ @forename@ @surname@'
--
-    new: company ' ' forename ' ' surname
-    old: '@company@ @forename@ @surname@'
--
-    new: company '<br/>Reg.Nr. ' regnr '<br/>Aadress ' address
-    old: '@company@<br/>Reg.Nr. @regnr@<br/>Aadress @address@'
--
-    new: company
-    old: '@company@'
--
-    new: conference ' ' year
-    old: '@conference@, @year@'
--
-    new: "conv_direction ' : ' related_person ' : ' conv_other_party ' : ' conv_opdepartment"
-    old: "@conv-direction@ : @related-person@ : @conv-other-party@ : @conv-opdepartment@"
--
-    new: customer
-    old: '@customer@'
--
-    new: cv_organisation
-    old: '@cv-organisation@'
--
-    new: cv_start ' - ' cv_to
-    old: '@cv-start@ - @cv-to@'
--
-    new: data_type
-    old: '@data-type@'
--
-    new: date ' ' author
-    old: '@date@ @author@'
--
-    new: date ' ' esimees '; ' liige
-    old: '@date@ @esimees@; @liige@'
--
-    new: date ' ' liige
-    old: '@date@ @liige@'
--
-    new: date ' ' method
-    old: '@date@ @method@'
--
-    new: date ' ' name
-    old: '@date@ @title@'
--
-    new: date ' ' number
-    old: '@date@ @number@'
--
-    new: date ' ' total '; ' liige
-    old: '@date@ @total@; @liige@'
--
-    new: date ' ' vendor
-    old: '@date@ @vendor@'
--
-    new: date ' (' object ') ' valu
-    old: '@date@ (@object@) @value@'
--
-    new: date
-    old: '@date@'
--
-    new: description ' (' equivalent )
-    old: '@description@ (@equivalent@)'
--
-    new: description
-    old: '@description@'
--
-    new: developed
-    old: '@developed@'
--
-    new: domain
-    old: '@domain@'
--
-    new: donator ' ' date
-    old: '@donator@ @date@'
--
-    new: done ' ' due_date ' ' assignee
-    old: '@done@ @due-date@ @assignee@'
--
-    new: eesmark
-    old: '@eesmark@'
--
-    new: eesnimi ' ' perenimi
-    old: '@eesnimi@ @perenimi@'
--
-    new: email ' - ' x_type ' - ' confirmed ' ' has_been_subsidised
-    old: '@email@ - @x-type@ - @confirmed@ @has-been-subsidised@'
--
-    new: email ' - ' x_type
-    old: '@email@ - @x-type@'
--
-    new: email ' ' phone
-    old: '@email@ @phone@'
--
-    new: email
-    old: '@email@'
--
-    new: en_title
-    old: '@en-title@'
--
-    new: entu_user ' ' notes
-    old: '@entu-user@ @notes@'
--
-    new: entu_user
-    old: '@entu-user@'
--
-    new: equipment
-    old: '@equipment@'
--
-    new: esitaja ' arve nr. ' number
-    old: '@esitaja@ arve nr. @number@'
--
-    new: et_name ' ' performance ' ' et_subtitle ' ' resident
-    old: '@et-name@ @performance@ @et-subtitle@ @resident@'
--
-    new: et_name ( en_name )
-    old: '@et-name@(@en-name@)'
--
-    new: et_name / en_name
-    old: '@et-name@/@en-name@'
--
-    new: et_supertitle ' / ' artist ' / ' et_name ' / ' et_subtitle
-    old: '@et-supertitle@ / @artist@ / @et-name@ / @et-subtitle@'
--
-    new: et_title
-    old: '@et-title@'
--
-    new: featured
-    old: '@featured@'
--
-    new: file
-    old: '@file@'
--
-    new: filename
-    old: '@filename@'
--
-    new: files COUNT
     old: '{COUNT(self.files)}'
+    new: COUNT(files)
 -
-    new: filter
-    old: '@filter@'
--
-    new: flavor ' / ' product
-    old: '@flavor@ / @product@'
--
-    new: forename ' ' surname
-    old: '@forename@ @surname@'
--
-    new: from - to
-    old: '@from@-@to@'
--
-    new: full_name_et
-    old: '@fullName-et@'
--
-    new: full_name
-    old: '@fullName@'
--
-    new: funding expenses SUBTRACT
-    old: '{self.funding - self.expenses}'
--
-    new: funding_hp expenses_hp SUBTRACT
-    old: '{self.funding-hp - self.expenses-hp}'
--
-    new: fw_name ' ' rv_name
-    old: '@fw-name@ @rv-name@'
--
-    new: geo
-    old: '@geo@'
--
-    new: grade ' ' ordinal
-    old: '@grade@ @ordinal@'
--
-    new: grade
-    old: '@grade@'
--
-    new: group ' - ' name
-    old: '@group@ - @name@'
--
-    new: group ' ' name
-    old: '@group@ @name@'
--
-    new: group
-    old: '@group@'
--
-    new: health
-    old: '@health@'
--
-    new: 'hours : minutes'
-    old: '@hours@:@minutes@'
--
-    new: 'https:// domain'
-    old: 'https://{self.domain}'
--
-    new: https://inventuur.entu.eu/#/eka/ _id /asset/asset-inventeerimisakt/ _id /vara-inventeerimisakt
-    old: http://inventuur.entu.eu/#/eka/{self.id}/asset/asset-inventeerimisakt/{self.id}/vara-inventeerimisakt
--
-    new: https://inventuur.entu.eu/#/eka/ _id /asset/asset-mahakandmisakt/ _id /vara-mahakandmisakt
-    old: http://inventuur.entu.eu/#/eka/{self.id}/asset/asset-mahakandmisakt/{self.id}/vara-mahakandmisakt
--
-    new: https://inventuur.entu.eu/#/okupatsioon/ _id /eksponaat/eksponaat-cl-asukoht/*/cl-asukoht
-    old: https://inventuur.entu.eu/#/okupatsioon/{self.id}/eksponaat/eksponaat-cl-asukoht/*/cl-asukoht
--
-    new: https://inventuur.entu.eu/#/okupatsioon/ _id /eksponaat/eksponaat-represseeritu_t/*/represseeritu
-    old: https://inventuur.entu.eu/#/okupatsioon/{self.id}/eksponaat/eksponaat-represseeritu-t/*/represseeritu
--
-    new: https://inventuur.entu.eu/#/okupatsioon/ _id /eksponaat/eksponaat-sari/*/sari
-    old: https://inventuur.entu.eu/#/okupatsioon/{self.id}/eksponaat/eksponaat-sari/*/sari
--
-    new: 'https://www.piletilevi.ee/mobile/est/#view=concert&concert= pl_id'
-    old: 'http://www.piletilevi.ee/mobile/est/#view=concert&concert={self.pl-id}'
--
-    new: info
-    old: '@info@'
--
-    new: inventeerimisakt.date
-    old: '{self.inventeerimisakt.date}'
--
-    new: inventory_number ' - ' name
-    old: '@inventory-number@ - @title@'
--
-    new: inventory_number ' ' barcode ' ' name
-    old: '@inventory-number@ @barcode@ @title@'
--
-    new: inventory_number ' ' name ' ' number
-    old: '@inventory-number@ @title@ @number@'
--
-    new: inventory_number ' ' name
-    old: '@inventory-number@ @title@'
--
-    new: isolate
-    old: '@isolate@'
--
-    new: issued_date ' … ' due_date
-    old: '@issued-date@ … @due-date@'
--
-    new: kirjekood
-    old: '@kirjekood@'
--
-    new: kuup2ev '<br/>' kirjeldus
-    old: '@kuup2ev@<br/>@kirjeldus@'
--
-    new: label ( dataproperty )
-    old: '@label@(@dataproperty@)'
--
-    new: label ( keyname )
-    old: '@label@(@keyname@)'
--
-    new: label_et
-    old: '@label-et@'
--
-    new: laenutaja ' ' erply
-    old: '@laenutaja@ @erply@'
--
-    new: lending_date ' - ' returning_date ' - ' returned_date
-    old: '@lending-date@ - @returning-date@ - @returned-date@'
--
-    new: lending_date ' - ' returning_date ' - ' returned_date
-    old: '@lending-date@..@returning-date@<br/>@returned-date@'
--
-    new: lending_date ' ' laenutaja
-    old: '@lending-date@, @laenutaja@'
--
-    new: library_name ' ' publishing_date
-    old: '@library-name@ @publishing-date@'
--
-    new: link
-    old: '@link@'
--
-    new: location ' ' year
-    old: '@location@, @year@'
--
-    new: media
-    old: '@media@'
--
-    new: molecul_name
-    old: '@molecul-name@'
--
-    new: name ' - ' description
-    old: '@name@ - @description@'
--
-    new: name ' ' customer
-    old: '@name@ @customer@'
--
-    new: name ' ' equipment ' ' eluent ' ' column ' ' detector ' ' sample ' ' created
-    old: '@name@ @equipment@ @eluent@ @column@ @detector@ @sample@ @created@'
--
-    new: name ' ' subtitle ' ' notes ' ' description
-    old: '@title@ @subtitle@ @notes@ @description@'
--
-    new: name ' (' author_lyrics / author_music )
-    old: '@name@ (@author-lyrics@/@author-music@)'
--
-    new: name ' (' code )
-    old: '@name@ (@code@)'
--
-    new: 'name '': '' ingredient'
-    old: '@name@: @ingredient@'
--
-    new: name '<br/>' contact_name '<br/>Aadress ' address
-    old: '@name@<br/>@contact-name@<br/>Aadress @address@'
--
-    new: name | manufacturer | purity
-    old: '@name@|@manufacturer@|@purity@'
--
-    new: name_et
-    old: '@name-et@'
--
-    new: name
-    old: '@name@'
--
-    new: name
-    old: '@title@'
--
-    new: nimetus ' ' date
-    old: '@nimetus@ @date@'
--
-    new: nimetus
-    old: '@nimetus@'
--
-    new: nimi
-    old: '@nimi@'
--
-    new: notes
-    old: '@notes@'
--
-    new: number - letter
-    old: '@number@-@letter@'
--
-    new: number ' - ' customerr ' ' customer
-    old: '@number@ - @customerr@ @customer@'
--
-    new: number ' - ' date
-    old: '@number@ - @date@'
--
-    new: number ' - ' issued_date ' … ' due_date ' - ' customer
-    old: '@number@ - @issued-date@ … @due-date@ - @customer@'
--
-    new: 'number '' - '' issued_date '' … '' due_date,'
-    old: '@number@ - @issued-date@ … @due-date@'
--
-    new: number ' ' company
-    old: '@number@ @company@'
--
-    new: number ' ' date
-    old: '@number@ @date@'
--
-    new: number ' ' issuer
-    old: '@number@ @issuer@'
--
-    new: number ' ' letter
-    old: '@number@ @letter@'
--
-    new: number ' ' name
-    old: '@number@ @name@'
--
-    new: number ' ' pealkiri
-    old: '@number@ @pealkiri@'
--
-    new: number letter
-    old: '@number@@letter@'
--
-    new: number prize candidate_name
-    old: '@number@ @prize@ @candidate-name@'
--
-    new: number
-    old: '@number@'
--
-    new: ordinal ' ' entu_user
-    old: '@ordinal@ @entu-user@'
--
-    new: ordinal '. ' name ' (' data_property )
-    old: '@ordinal@. @name@ (@data-property@)'
--
-    new: ordinal
-    old: '@ordinal@'
--
-    new: osakond
-    old: '@osakond@'
--
-    new: paragraph
-    old: '@paragraph@'
--
-    new: parent
-    old: '@parent@'
--
-    new: parentperson.email
-    old: '{self.parentperson.email}'
--
-    new: parentperson.idcode
-    old: '{self.parentperson.idcode}'
--
-    new: parentperson.phone
-    old: '{self.parentperson.phone}'
--
-    new: 'path ''<br/>Eksponaate: '' eksponaate'
-    old: '@path@<br/>Eksponaate: @eksponaate@'
--
-    new: path
-    old: '@path@'
--
-    new: performance ' ' en_subtitle ' ' resident
-    old: '@performance@ @en-subtitle@ @resident@'
--
-    new: 'performer '': '' name'
-    old: '@performer@: @title@'
--
-    new: period ' ' parentperson / childperson
-    old: '@period@ @parentperson@/@childperson@'
--
-    new: person ' - ' bubble
-    old: '@person@ - @bubble@'
--
-    new: person ' - ' copy
-    old: '@person@ - @copy@'
--
-    new: person ' - ' eksponaat
-    old: '@person@ - @eksponaat@'
--
-    new: person.name
-    old: '{self.person.name}'
--
-    new: person
-    old: '@person@'
--
-    new: phone ' ' address
-    old: '@phone@ @address@'
--
-    new: playlist
-    old: '@playlist@'
--
-    new: prefix
-    old: '@prefix@'
--
-    new: prefix
-    old: '@prefix@#n@suffix@'
--
-    new: premiere.start_time
-    old: '{self.premiere.start-time}'
--
-    new: pretitle ' ' name
-    old: '@pretitle@ @title@'
--
-    new: project
-    old: '@project@'
--
-    new: public_file COUNT
     old: '{COUNT(self.public-file)}'
+    new: COUNT(public_file)
 -
-    new: public_files COUNT
     old: '{COUNT(self.public-files)}'
+    new: COUNT(public_files)
 -
-    new: public
-    old: '@public@'
--
-    new: published ' ' responsible
-    old: '@published@ @responsible@'
--
-    new: publishing_date
-    old: '@publishing-date@'
--
-    new: question
-    old: '@question@'
--
-    new: reason
-    old: '@reason@'
--
-    new: referrer.asset._id COUNT
     old: '{COUNT(self.referrer.asset.id)}'
+    new: COUNT(referrer.asset._id)
 -
-    new: referrer.asset.value SUM
-    old: '{SUM(self.referrer.asset.value)}'
--
-    new: referrer.contract.childperson
-    old: '{self.referrer.contract.childperson}'
--
-    new: referrer.eksemplar.asukoht COUNT
     old: '{COUNT(self.referrer.eksemplar.asukoht)}'
+    new: COUNT(referrer.eksemplar.asukoht)
 -
-    new: referrer.eksponaat.asukoht COUNT
     old: '{COUNT(self.referrer.eksponaat.asukoht)}'
+    new: COUNT(referrer.eksponaat.asukoht)
 -
-    new: referrer.flavor.molecul_name
+    old: '{self._created}'
+    new: _created
+-
+    old: '{self.-contract.date}'
+    new: _contract.date
+-
+    old: '{self.-contract.enddate}'
+    new: _contract.enddate
+-
+    old: '{self.-contract.number}'
+    new: _contract.number
+-
+    old: '{self.author} {self.title} {self.journal} {self.pages} {self.year}'
+    new: CONCAT(author, ' ', name, ' ', journal, ' ', pages, ' ', year)
+-
+    old: '{self.author}, "{self.title}", {self.journal}, {self.volume}, {self.issue}, {self.page}, {self.date}'
+    new: CONCAT(author, ', "', name, '", ', journal, ', ', volume, ', ', issue, ', ', page, ', ', date)
+-
+    old: '{self.child.copy.barcode}'
+    new: _child.copy.barcode
+-
+    old: '{self.child.laenutuse-rida.barcode}'
+    new: _child.laenutuse_rida.barcode
+-
+    old: '{self.childperson.group}'
+    new: childperson.group
+-
+    old: '{self.funding - self.expenses}'
+    new: SUBTRACT(funding, expenses)
+-
+    old: '{self.funding-hp - self.expenses-hp}'
+    new: SUBTRACT(funding_hp, expenses_hp)
+-
+    old: '{self.inventeerimisakt.date}'
+    new: inventeerimisakt.date
+-
+    old: '{self.parent..author}'
+    new: _parent.*.author
+-
+    old: '{self.parent..name} / {self.name}'
+    new: CONCAT(_parent.*.name, ' / ', name)
+-
+    old: '{self.parent..name}'
+    new: _parent.*.name
+-
+    old: '{self.parent..path} / {self.name}'
+    new: CONCAT(_parent.*.path, ' / ', name)
+-
+    old: '{self.parent..path}/{self.name}'
+    new: CONCAT(_parent.*.path, '/', name)
+-
+    old: '{self.parent..publisher}'
+    new: _parent.*.publisher
+-
+    old: '{self.parent..publishing-date}'
+    new: _parent.*.publishing_date
+-
+    old: '{self.parent..title}'
+    new: _parent.*.name
+-
+    old: '{self.parent.*.color}'
+    new: _parent.*.color
+-
+    old: '{self.parent.*.parent} / {self.parent.*.title}'
+    new: CONCAT(_parent.*.parent, ' / ', _parent.*.name)
+-
+    old: '{self.parent.*.tag}'
+    new: _parent.*.tag
+-
+    old: '{self.parent.category.path}/{self.et-name}({self.en-name})'
+    new: CONCAT(_parent.category.path, '/', et_name, '(', en_name, ')')
+-
+    old: '{self.parent.chemical.name}'
+    new: _parent.chemical.name
+-
+    old: '{self.parent.cl-asukoht.path}/{self.name}'
+    new: CONCAT(_parent.cl_asukoht.path, '/', name)
+-
+    old: '{self.parent.cl-tag.fullname}/{self.name}'
+    new: CONCAT(_parent.cl_tag.fullname, '/', name)
+-
+    old: '{self.parent.class.number}{self.parent.class.letter}'
+    new: CONCAT(_parent.class.number, _parent.class.letter)
+-
+    old: '{self.parent.customer.name}'
+    new: _parent.customer.name
+-
+    old: '{self.parent.department.name}'
+    new: _parent.department.name
+-
+    old: '{self.parent.floor.address}'
+    new: _parent.floor.address
+-
+    old: '{self.parent.floor.code}'
+    new: _parent.floor.code
+-
+    old: '{self.parent.folder.description}'
+    new: _parent.folder.description
+-
+    old: '{self.parent.folder.path}{self.parent.partner.name} / {self.name}'
+    new: CONCAT(_parent.folder.path, _parent.partner.name, ' / ', name)
+-
+    old: '{self.parent.group.name}'
+    new: _parent.group.name
+-
+    old: '{self.parent.homepage-menu.path}{self.parent.homepage-item.path}/{self.name}'
+    new: CONCAT(_parent.homepage_menu.path, _parent.homepage_item.path, '/', name)
+-
+    old: '{self.parent.homepage-menu.path}/{self.name}'
+    new: CONCAT(_parent.homepage_menu.path, '/', name)
+-
+    old: '{self.parent.institution.name}{self.parent..path} / {self.name}'
+    new: CONCAT(_parent.institution.name, _parent.*.path, ' / ', name)
+-
+    old: '{self.parent.inventory.name}, inventeerimisakt seisuga {self.date}.'
+    new: CONCAT(_parent.inventory.name, ', inventeerimisakt seisuga ', date, '.')
+-
+    old: '{self.parent.inventory.name}, mahakandmisakt seisuga {self.date}.'
+    new: CONCAT(_parent.inventory.name, ', mahakandmisakt seisuga ', date, '.')
+-
+    old: '{self.parent.inventory.name}, üleandmisakt seisuga {self.date}.'
+    new: CONCAT(_parent.inventory.name, ', üleandmisakt seisuga ', date, '.')
+-
+    old: '{self.parent.location.address}'
+    new: _parent.location.address
+-
+    old: '{self.parent.location.code}'
+    new: _parent.location.code
+-
+    old: '{self.parent.location.path} / {self.name}'
+    new: CONCAT(_parent.location.path, ' / ', name)
+-
+    old: '{self.parent.person.forename} {self.parent.person.surname}'
+    new: CONCAT(_parent.person.forename, ' ', _parent.person.surname)
+-
+    old: '{self.parent.project.name}'
+    new: _parent.project.name
+-
+    old: '{self.parent.project.path}/{self.name}'
+    new: CONCAT(_parent.project.path, '/', name)
+-
+    old: '{self.parent.region.fullName}/{self.name}'
+    new: CONCAT(_parent.region.full_name, '/', name)
+-
+    old: '{self.parent.story.title}'
+    new: _parent.story.name
+-
+    old: '{self.parent.tag.fullName-en}/{self.name-en}'
+    new: CONCAT(_parent.tag.full_name_en, '/', name_en)
+-
+    old: '{self.parent.tag.fullName-et}/{self.name-et}'
+    new: CONCAT(_parent.tag.full_name_et, '/', name_et)
+-
+    old: '{self.parent.tag.fullName-ru}/{self.name-ru}'
+    new: CONCAT(_parent.tag.full_name_ru, '/', name_ru)
+-
+    old: '{self.parent.tag.path}/{self.name}'
+    new: CONCAT(_parent.tag.path, '/', name)
+-
+    old: '{self.parent.vastuv6tuakt.donator}'
+    new: _parent.vastuv6tuakt.donator
+-
+    old: '{self.parent.vastuv6tuakt.registry-number}'
+    new: _parent.vastuv6tuakt.registry_number
+-
+    old: '{self.parent.vastuv6tuakt.yleandmistingimus}'
+    new: _parent.vastuv6tuakt.yleandmistingimus
+-
+    old: '{self.parentperson.email}'
+    new: parentperson.email
+-
+    old: '{self.parentperson.idcode}'
+    new: parentperson.idcode
+-
+    old: '{self.parentperson.phone}'
+    new: parentperson.phone
+-
+    old: '{self.person.name}'
+    new: person.name
+-
+    old: '{self.premiere.start-time}'
+    new: premiere.start_time
+-
+    old: '{self.referrer.contract.childperson}'
+    new: referrer.contract.childperson
+-
     old: '{self.referrer.flavor.molecul-name}'
+    new: referrer.flavor.molecul_name
 -
-    new: referrer.invoice_in.total SUM
-    old: '{SUM(self.referrer.invoice-in.total)}'
--
-    new: referrer.invoice_in.vat SUM
-    old: '{SUM(self.referrer.invoice-in.vat)}'
--
-    new: referrer.invoice_out.total SUM
-    old: '{SUM(self.referrer.invoice-out.total)}'
--
-    new: referrer.invoice_out.vat SUM
-    old: '{SUM(self.referrer.invoice-out.vat)}'
--
-    new: "reg_time '<br/>' conv_direction ' : ' related_person ' : ' conv_other_party ' : ' conv_opdepartment"
-    old: "@reg-time@<br/>@conv-direction@ : @related-person@ : @conv-other-party@ : @conv-opdepartment@"
--
-    new: reg_time '<br/>' related_person ' ' start_datetime ' - ' end_datetime
-    old: '@reg-time@<br/>@related-person@, @start-datetime@ - @end-datetime@'
--
-    new: reg_time '<br/>' related_person '; ' document_kind '; ' document_issuer
-    old: '@reg-time@<br/>@related-person@; @document-kind@; @document-issuer@'
--
-    new: region.full_name
     old: '{self.region.fullName}'
+    new: region.full_name
 -
-    new: region
-    old: '@region@'
--
-    new: 'registry_number '' : '' name'
-    old: '@registry-number@ : @title@'
--
-    new: registry_number ' (' date )
-    old: '@registry-number@ (@date@)'
--
-    new: relation_type
-    old: '@relation-type@'
--
-    new: represseeritu_t.lisainfo
     old: '{self.represseeritu-t.lisainfo}'
+    new: represseeritu_t.lisainfo
 -
-    new: represseeritu_t.memento
     old: '{self.represseeritu-t.memento}'
+    new: represseeritu_t.memento
 -
-    new: represseeritu_t.mitteavalikLisainfo
     old: '{self.represseeritu-t.mitteavalikLisainfo}'
+    new: represseeritu_t.mitteavalikLisainfo
 -
-    new: represseeritu_t.syydistus
     old: '{self.represseeritu-t.syydistus}'
+    new: represseeritu_t.syydistus
 -
-    new: repressioonid
-    old: '@repressioonid@'
--
-    new: returning_date ' - ' returned_date
-    old: '@returning-date@ - @returned-date@'
--
-    new: room ' - ' person
-    old: '@room@ - @person@'
--
-    new: 'saaja '': '' eesmark'
-    old: '@saaja@: @eesmark@'
--
-    new: school
-    old: '@school@'
--
-    new: screen_group.published
     old: '{self.screen-group.published}'
+    new: screen_group.published
 -
-    new: seisukord
-    old: '@seisukord@'
--
-    new: self.child.budget_eki.expenses SUM
-    old: '{SUM(self.child.budget-eki.expenses)}'
--
-    new: self.child.budget_eki.expenses_eki SUM
-    old: '{SUM(self.child.budget-eki.expenses-eki)}'
--
-    new: self.child.budget_eki.sum SUM
-    old: '{SUM(self.child.budget-eki.sum)}'
--
-    new: self.child.budget_eki.sum_eki SUM
-    old: '{SUM(self.child.budget-eki.sum-eki)}'
--
-    new: self.child.expense_eki.sum SUM
-    old: '{SUM(self.child.expense-eki.sum)}'
--
-    new: self.child.expense_eki.sum_eki SUM
-    old: '{SUM(self.child.expense-eki.sum-eki)}'
--
-    new: self.child.funding_eki.actual_sum SUM
-    old: '{SUM(self.child.funding-eki.actual-sum)}'
--
-    new: self.child.funding.actual_sum SUM
-    old: '{SUM(self.child.funding.actual-sum)}'
--
-    new: self.funding_eki self.expenses_eki SUBTRACT
-    old: '{self.funding-eki - self.expenses-eki}'
--
-    new: self.sum_eki self.expenses_eki SUBTRACT
-    old: '{self.sum-eki - self.expenses-eki}'
--
-    new: series prefix
-    old: '@series@@prefix@'
--
-    new: source ' ' url
-    old: '@source@ @url@'
--
-    new: start - end
-    old: '@start@-@end@'
--
-    new: 'start ''..'' end '' '' type : ordinal'
-    old: '@start@..@end@ @type@:@ordinal@'
--
-    new: start_datetime ' - ' end_datetime
-    old: '@start-datetime@ - @end-datetime@'
--
-    new: start_time ' ' et_name
-    old: '@start-time@ @et-name@'
--
-    new: storyteller.birthYear
     old: '{self.storyteller.birthYear}'
+    new: storyteller.birthYear
 -
-    new: storyteller
-    old: '@storyteller@'
--
-    new: strain ' ' antibiotics
-    old: '@strain@ @antibiotics@'
--
-    new: strain
-    old: '@strain@'
--
-    new: subject.full_name_en
     old: '{self.subject.fullName-en}'
+    new: subject.full_name_en
 -
-    new: subject.full_name_et
     old: '{self.subject.fullName-et}'
+    new: subject.full_name_et
 -
-    new: subject.full_name_ru
     old: '{self.subject.fullName-ru}'
+    new: subject.full_name_ru
 -
-    new: subtitle
-    old: '@subtitle@'
--
-    new: sum expenses SUBTRACT
     old: '{self.sum - self.expenses}'
+    new: SUBTRACT(sum, expenses)
 -
-    new: sum_hp expenses_hp SUBTRACT
     old: '{self.sum-hp - self.expenses-hp}'
+    new: SUBTRACT(sum_hp, expenses_hp)
 -
-    new: surname ' ' forename
-    old: '@surname@, @forename@'
--
-    new: syydistus
-    old: '@syydistus@'
--
-    new: tag ' ' caption
-    old: '@tag@ @caption@'
--
-    new: tag.full_name_en
     old: '{self.tag.fullName-en}'
+    new: tag.full_name_en
 -
-    new: tag.full_name_et
     old: '{self.tag.fullName-et}'
+    new: tag.full_name_et
 -
-    new: tag.full_name_ru
     old: '{self.tag.fullName-ru}'
+    new: tag.full_name_ru
 -
-    new: tag
+    old: '{SUM(self.child.*.budget-hp)}'
+    new: SUM(_child.*.budget_hp)
+-
+    old: '{SUM(self.child.*.budget)}'
+    new: SUM(_child.*.budget)
+-
+    old: '{SUM(self.child.*.expenses-hp)}'
+    new: SUM(_child.*.expenses_hp)
+-
+    old: '{SUM(self.child.*.expenses)}'
+    new: SUM(_child.*.expenses)
+-
+    old: '{SUM(self.child.*.funding-hp)}'
+    new: SUM(_child.*.funding_hp)
+-
+    old: '{SUM(self.child.*.funding)}'
+    new: SUM(_child.*.funding)
+-
+    old: '{SUM(self.child.budget.expenses-hp)}'
+    new: SUM(_child.budget.expenses_hp)
+-
+    old: '{SUM(self.child.budget.expenses)}'
+    new: SUM(_child.budget.expenses)
+-
+    old: '{SUM(self.child.budget.sum-hp)}'
+    new: SUM(_child.budget.sum_hp)
+-
+    old: '{SUM(self.child.budget.sum)}'
+    new: SUM(_child.budget.sum)
+-
+    old: '{SUM(self.child.copy.price)}'
+    new: SUM(_child.copy.price)
+-
+    old: '{SUM(self.child.expense.sum-hp)}'
+    new: SUM(_child.expense.sum_hp)
+-
+    old: '{SUM(self.child.expense.sum)}'
+    new: SUM(_child.expense.sum)
+-
+    old: '{SUM(self.child.funding-hp.actual-sum)}'
+    new: SUM(_child.funding_hp.actual_sum)
+-
+    old: '{SUM(self.child.funding.actual-sum)+SUM(self.child.funding-hp.actual-sum)}'
+    new: SUM(_child.funding.actual_sum, _child.funding_hp.actual_sum)
+-
+    old: '{SUM(self.referrer.asset.value)}'
+    new: SUM(referrer.asset.value)
+-
+    old: '{SUM(self.referrer.invoice-in.total)}'
+    new: SUM(referrer.invoice_in.total)
+-
+    old: '{SUM(self.referrer.invoice-in.vat)}'
+    new: SUM(referrer.invoice_in.vat)
+-
+    old: '{SUM(self.referrer.invoice-out.total)}'
+    new: SUM(referrer.invoice_out.total)
+-
+    old: '{SUM(self.referrer.invoice-out.vat)}'
+    new: SUM(referrer.invoice_out.vat)
+-
+    old: '@aasta@ @kuu@'
+    new: CONCAT(aasta, ' ', kuu)
+-
+    old: '@address@'
+    new: address
+-
+    old: '@algus@ - @kestvus@'
+    new: CONCAT(algus, ' - ', kestvus)
+-
+    old: '@algus@+@tunde@. @coach@'
+    new: CONCAT(algus, '+', tunde, '. ', coach)
+-
+    old: '@applicant-name@'
+    new: applicant_name
+-
+    old: '@assignee@'
+    new: assignee
+-
+    old: '@asukoht@ @description@'
+    new: CONCAT(asukoht, ' ', description)
+-
+    old: '@asukoht@'
+    new: asukoht
+-
+    old: '@author@ - @title@'
+    new: CONCAT(author, ' - ', name)
+-
+    old: '@author@ @date@'
+    new: CONCAT(author, ' ', date)
+-
+    old: '@author@ @publishing-date@'
+    new: CONCAT(author, ' ', publishing_date)
+-
+    old: '@author@. @year@. @journal@'
+    new: CONCAT(author, '. ', year, '. ', journal)
+-
+    old: '@author@'
+    new: author
+-
+    old: '@barcode@ (@publishing-date@) @author@'
+    new: CONCAT(barcode, ' (', publishing_date, ') ', author)
+-
+    old: '@barcode@ @location@ (@publishing-date@) @author@'
+    new: CONCAT(barcode, ' ', location, ' (', publishing_date, ') ', author)
+-
+    old: '@barcode@ @number@ (@publishing-date@) @author@'
+    new: CONCAT(barcode, ' ', number, ' (', publishing_date, ') ', author)
+-
+    old: '@barcode@ @title@'
+    new: CONCAT(barcode, ' ', name)
+-
+    old: '@beer-name@'
+    new: beer_name
+-
+    old: '@begin@/@end@'
+    new: CONCAT(begin, '/', end)
+-
+    old: '@birthYear@'
+    new: birthYear
+-
+    old: '@bronnialgus@-@bronnil6pp@|@algus@-@l6pp@'
+    new: CONCAT(bronnialgus, '-', bronnil6pp, '|', algus, '-', l6pp)
+-
+    old: '@caption@'
+    new: caption
+-
+    old: '@cas-number@'
+    new: cas_number
+-
+    old: '@checkin@ (@start@)'
+    new: CONCAT(checkin, ' (', start, ')')
+-
+    old: '@chemical@'
+    new: chemical
+-
+    old: '@citation@'
+    new: citation
+-
+    old: '@city@ / @name@'
+    new: CONCAT(city, ' / ', name)
+-
+    old: '@class@'
+    new: class
+-
+    old: '@code@ @tag@'
+    new: CONCAT(code, ' ', tag)
+-
+    old: '@code@-@name@'
+    new: CONCAT(code, '-', name)
+-
+    old: '@color@'
+    new: color
+-
+    old: '@comment@'
+    new: comment
+-
+    old: '@company@ @department@ @forename@ @surname@'
+    new: CONCAT(company, ' ', department, ' ', forename, ' ', surname)
+-
+    old: '@company@ @forename@ @surname@'
+    new: CONCAT(company, ' ', forename, ' ', surname)
+-
+    old: '@company@'
+    new: company
+-
+    old: '@company@<br/>Reg.Nr. @regnr@<br/>Aadress @address@'
+    new: CONCAT(company, '<br/>Reg.Nr. ', regnr, '<br/>Aadress ', address)
+-
+    old: '@conference@, @year@'
+    new: CONCAT(conference, ', ', year)
+-
+    old: '@conv-direction@ : @related-person@ : @conv-other-party@ : @conv-opdepartment@'
+    new: "CONCAT(conv_direction, ' : ', related_person, ' : ', conv_other_party, ' : ', conv_opdepartment)"
+-
+    old: '@customer@'
+    new: customer
+-
+    old: '@cv-organisation@'
+    new: cv_organisation
+-
+    old: '@cv-start@ - @cv-to@'
+    new: CONCAT(cv_start, ' - ', cv_to)
+-
+    old: '@data-type@'
+    new: data_type
+-
+    old: '@date@ (@object@) @value@'
+    new:  CONCAT(date, ' (', object, ') ', value)
+-
+    old: '@date@ @author@'
+    new: CONCAT(date, ' ', author)
+-
+    old: '@date@ @esimees@; @liige@'
+    new: CONCAT(date, ' ', esimees, '; ', liige)
+-
+    old: '@date@ @liige@'
+    new: CONCAT(date, ' ', liige)
+-
+    old: '@date@ @number@'
+    new: CONCAT(date, ' ', number)
+-
+    old: '@date@ @title@'
+    new: CONCAT(date, ' ', name)
+-
+    old: '@date@ @total@; @liige@'
+    new: CONCAT(date, ' ', total, '; ', liige)
+-
+    old: '@date@ @vendor@'
+    new: CONCAT(date, ' ', vendor)
+-
+    old: '@date@'
+    new: date
+-
+    old: '@description@ (@equivalent@)'
+    new: CONCAT(description, ' (', equivalent, ')')
+-
+    old: '@description@'
+    new: description
+-
+    old: '@developed@'
+    new: developed
+-
+    old: '@domain@'
+    new: domain
+-
+    old: '@donator@ @date@'
+    new: CONCAT(donator, ' ', date)
+-
+    old: '@done@ @due-date@ @assignee@'
+    new: CONCAT(done, ' ', due_date, ' ', assignee)
+-
+    old: '@eesmark@'
+    new: eesmark
+-
+    old: '@email@ - @x-type@ - @confirmed@ @has-been-subsidised@'
+    new: CONCAT(email, ' - ', x_type, ' - ', confirmed, ' ', has_been_subsidised)
+-
+    old: '@email@ - @x-type@'
+    new: CONCAT(email, ' - ', x_type)
+-
+    old: '@email@ @phone@'
+    new: CONCAT(email, ' ', phone)
+-
+    old: '@email@'
+    new: email
+-
+    old: '@en-title@'
+    new: en_title
+-
+    old: '@entu-user@ @notes@'
+    new: CONCAT(entu_user, ' ', notes)
+-
+    old: '@entu-user@'
+    new: entu_user
+-
+    old: '@equipment@'
+    new: equipment
+-
+    old: '@esitaja@ arve nr. @number@'
+    new: CONCAT(esitaja, ' arve nr. ', number)
+-
+    old: '@et-name@ @performance@ @et-subtitle@ @resident@'
+    new: CONCAT(et_name, ' ', performance, ' ', et_subtitle, ' ', resident)
+-
+    old: '@et-name@(@en-name@)'
+    new: CONCAT(et_name, '(', en_name, ')')
+-
+    old: '@et-name@/@en-name@'
+    new: CONCAT(et_name, '/', en_name)
+-
+    old: '@et-supertitle@ / @artist@ / @et-name@ / @et-subtitle@'
+    new: CONCAT(et_supertitle, ' / ', artist, ' / ', et_name, ' / ', et_subtitle)
+-
+    old: '@et-title@'
+    new: et_title
+-
+    old: '@featured@'
+    new: featured
+-
+    old: '@file@'
+    new: file
+-
+    old: '@filename@'
+    new: filename
+-
+    old: '@filter@'
+    new: filter
+-
+    old: '@flavor@ / @product@'
+    new: CONCAT(flavor, ' / ', product)
+-
+    old: '@forename@ @surname@'
+    new: CONCAT(forename, ' ', surname)
+-
+    old: '@from@-@to@'
+    new: CONCAT(from, '-', to)
+-
+    old: '@fullName-et@'
+    new: full_name_et
+-
+    old: '@fullName@'
+    new: full_name
+-
+    old: '@fw-name@ @rv-name@'
+    new: CONCAT(fw_name, ' ', rv_name)
+-
+    old: '@geo@'
+    new: geo
+-
+    old: '@grade@ @ordinal@'
+    new: CONCAT(grade, ' ', ordinal)
+-
+    old: '@grade@'
+    new: grade
+-
+    old: '@group@ - @name@'
+    new: CONCAT(group, ' - ', name)
+-
+    old: '@group@ @name@'
+    new: CONCAT(group, ' ', name)
+-
+    old: '@group@'
+    new: group
+-
+    old: '@health@'
+    new: health
+-
+    old: '@hours@:@minutes@'
+    new: "CONCAT(hours, ':', minutes)"
+-
+    old: '@id@'
+    new: _id
+-
+    old: '@info@'
+    new: info
+-
+    old: '@inventory-number@ - @title@'
+    new: CONCAT(inventory_number, ' - ', name)
+-
+    old: '@inventory-number@ @barcode@ @title@'
+    new: CONCAT(inventory_number, ' ', barcode, ' ', name)
+-
+    old: '@inventory-number@ @title@ @number@'
+    new: CONCAT(inventory_number, ' ', name, ' ', number)
+-
+    old: '@inventory-number@ @title@'
+    new: CONCAT(inventory_number, ' ', name)
+-
+    old: '@issued-date@ … @due-date@'
+    new: CONCAT(issued_date, ' … ', due_date)
+-
+    old: '@kuup2ev@<br/>@kirjeldus@'
+    new: CONCAT(kuup2ev, '<br/>', kirjeldus)
+-
+    old: '@label-et@'
+    new: label_et
+-
+    old: '@label@(@dataproperty@)'
+    new: CONCAT(label, '(', dataproperty, ')')
+-
+    old: '@label@(@keyname@)'
+    new: CONCAT(label, '(', keyname, ')')
+-
+    old: '@laenutaja@ @erply@'
+    new: CONCAT(laenutaja, ' ', erply)
+-
+    old: '@lending-date@ - @returning-date@ - @returned-date@'
+    new: CONCAT(lending_date, ' - ', returning_date, ' - ', returned_date)
+-
+    old: '@lending-date@, @laenutaja@'
+    new: CONCAT(lending_date, ', ', laenutaja)
+-
+    old: '@lending-date@..@returning-date@<br/>@returned-date@'
+    new: CONCAT(lending_date, ' - ', returning_date, ' - ', returned_date)
+-
+    old: '@library-name@ @publishing-date@'
+    new: CONCAT(library_name, ' ', publishing_date)
+-
+    old: '@link@'
+    new: link
+-
+    old: '@location@, @year@'
+    new: CONCAT(location, ', ', year)
+-
+    old: '@media@'
+    new: media
+-
+    old: '@molecul-name@'
+    new: molecul_name
+-
+    old: '@name-et@'
+    new: name_et
+-
+    old: '@name@ - @description@'
+    new: CONCAT(name, ' - ', description)
+-
+    old: '@name@ (@author-lyrics@/@author-music@)'
+    new: CONCAT(name, ' (', author_lyrics, '/', author_music, ')')
+-
+    old: '@name@ (@code@)'
+    new: CONCAT(name, ' (', code, ')')
+-
+    old: '@name@ @customer@'
+    new: CONCAT(name, ' ', customer)
+-
+    old: '@name@ @equipment@ @eluent@ @column@ @detector@ @sample@ @created@'
+    new: CONCAT(name, ' ', equipment, ' ', eluent, ' ', column, ' ', detector, ' ', sample, ' ', created)
+-
+    old: '@name@: @ingredient@'
+    new: "CONCAT(name, ': ', ingredient)"
+-
+    old: '@name@'
+    new: name
+-
+    old: '@name@<br/>@contact-name@<br/>Aadress @address@'
+    new: CONCAT(name, '<br/>', contact_name, '<br/>Aadress ', address)
+-
+    old: '@name@|@manufacturer@|@purity@'
+    new: CONCAT(name, '|', manufacturer, '|', purity)
+-
+    old: '@nimetus@ @date@'
+    new: CONCAT(nimetus, ' ', date)
+-
+    old: '@nimetus@'
+    new: nimetus
+-
+    old: '@nimi@'
+    new: nimi
+-
+    old: '@notes@'
+    new: notes
+-
+    old: '@number@ - @customerr@ @customer@'
+    new: CONCAT(number, ' - ', customerr, ' ', customer)
+-
+    old: '@number@ - @date@'
+    new: CONCAT(number, ' - ', date)
+-
+    old: '@number@ - @issued-date@ … @due-date@ - @customer@'
+    new: CONCAT(number, ' - ', issued_date, ' … ', due_date, ' - ', customer)
+-
+    old: '@number@ - @issued-date@ … @due-date@'
+    new: CONCAT(number, ' - ', issued_date, ' … ', due_date,)
+-
+    old: '@number@ @company@'
+    new: CONCAT(number, ' ', company)
+-
+    old: '@number@ @date@'
+    new: CONCAT(number, ' ', date)
+-
+    old: '@number@ @issuer@'
+    new: CONCAT(number, ' ', issuer)
+-
+    old: '@number@ @letter@'
+    new: CONCAT(number, ' ', letter)
+-
+    old: '@number@ @name@'
+    new: CONCAT(number, ' ', name)
+-
+    old: '@number@ @pealkiri@'
+    new: CONCAT(number, ' ', pealkiri)
+-
+    old: '@number@-@letter@'
+    new: CONCAT(number, '-', letter)
+-
+    old: '@number@'
+    new: number
+-
+    old: '@number@@letter@'
+    new: CONCAT(number, letter)
+-
+    old: '@ordinal@ @entu-user@'
+    new: CONCAT(ordinal, ' ', entu_user)
+-
+    old: '@ordinal@. @name@ (@data-property@)'
+    new: CONCAT(ordinal, '. ', name, ' (', data_property, ')')
+-
+    old: '@ordinal@'
+    new: ordinal
+-
+    old: '@osakond@'
+    new: osakond
+-
+    old: '@paragraph@'
+    new: paragraph
+-
+    old: '@parent@'
+    new: parent
+-
+    old: '@path@'
+    new: path
+-
+    old: '@path@<br/>Eksponaate: @eksponaate@'
+    new: "CONCAT(path, '<br/>Eksponaate: ', eksponaate)"
+-
+    old: '@performance@ @en-subtitle@ @resident@'
+    new: CONCAT(performance, ' ', en_subtitle, ' ', resident)
+-
+    old: '@performer@: @title@'
+    new: "CONCAT(performer, ': ', name)"
+-
+    old: '@period@ @parentperson@/@childperson@'
+    new: CONCAT(period, ' ', parentperson, '/', childperson)
+-
+    old: '@person@ - @bubble@'
+    new: CONCAT(person, ' - ', bubble)
+-
+    old: '@person@ - @copy@'
+    new: CONCAT(person, ' - ', copy)
+-
+    old: '@person@ - @eksponaat@'
+    new: CONCAT(person, ' - ', eksponaat)
+-
+    old: '@person@'
+    new: person
+-
+    old: '@phone@ @address@'
+    new: CONCAT(phone, ' ', address)
+-
+    old: '@playlist@'
+    new: playlist
+-
+    old: '@prefix@'
+    new: prefix
+-
+    old: '@prefix@#n@suffix@'
+    new: CONCAT(prefix, '#n', suffix)
+-
+    old: '@pretitle@ @title@'
+    new: CONCAT(pretitle, ' ', name)
+-
+    old: '@project@'
+    new: project
+-
+    old: '@public@'
+    new: public
+-
+    old: '@published@ @responsible@'
+    new: CONCAT(published, ' ', responsible)
+-
+    old: '@publishing-date@'
+    new: publishing_date
+-
+    old: '@question@'
+    new: question
+-
+    old: '@reason@'
+    new: reason
+-
+    old: '@reg-time@<br/>@conv-direction@ : @related-person@ : @conv-other-party@ : @conv-opdepartment@'
+    new: "CONCAT(reg_time, '<br/>', conv_direction, ' : ', related_person, ' : ', conv_other_party, ' : ', conv_opdepartment)"
+-
+    old: '@reg-time@<br/>@related-person@, @start-datetime@ - @end-datetime@'
+    new: CONCAT(reg_time, '<br/>', related_person, ', ', start_datetime, ' - ', end_datetime)
+-
+    old: '@reg-time@<br/>@related-person@; @document-kind@; @document-issuer@'
+    new: CONCAT(reg_time, '<br/>', related_person, '; ', document_kind, '; ', document_issuer)
+-
+    old: '@region@'
+    new: region
+-
+    old: '@registry-number@ : @title@'
+    new: "CONCAT(registry_number, ' : ', name)"
+-
+    old: '@registry-number@ (@date@)'
+    new: CONCAT(registry_number, ' (', date, ')')
+-
+    old: '@relation-type@'
+    new: relation_type
+-
+    old: '@repressioonid@'
+    new: repressioonid
+-
+    old: '@returning-date@ - @returned-date@'
+    new: CONCAT(returning_date, ' - ', returned_date)
+-
+    old: '@room@ - @person@'
+    new: CONCAT(room, ' - ', person)
+-
+    old: '@saaja@: @eesmark@'
+    new: "CONCAT(saaja, ': ', eesmark)"
+-
+    old: '@school@'
+    new: school
+-
+    old: '@seisukord@'
+    new: seisukord
+-
+    old: '@series@@prefix@'
+    new: CONCAT(series, prefix)
+-
+    old: '@source@ @url@'
+    new: CONCAT(source, ' ', url)
+-
+    old: '@start-datetime@ - @end-datetime@'
+    new: CONCAT(start_datetime, ' - ', end_datetime)
+-
+    old: '@start-time@ @et-name@'
+    new: CONCAT(start_time, ' ', et_name)
+-
+    old: '@start@-@end@'
+    new: CONCAT(start, '-', end)
+-
+    old: '@start@..@end@ @type@:@ordinal@'
+    new: "CONCAT(start, '..', end, ' ', type, ':', ordinal)"
+-
+    old: '@storyteller@'
+    new: storyteller
+-
+    old: '@strain@'
+    new: strain
+-
+    old: '@subtitle@'
+    new: subtitle
+-
+    old: '@surname@, @forename@'
+    new: CONCAT(surname, ', ', forename)
+-
+    old: '@syydistus@'
+    new: syydistus
+-
+    old: '@tag@ @caption@'
+    new: CONCAT(tag, ' ', caption)
+-
     old: '@tag@'
+    new: tag
 -
-    new: target_region_name
     old: '@target-region-name@'
+    new: target_region_name
 -
-    new: teenus
     old: '@teenus@'
+    new: teenus
 -
-    new: time
     old: '@time@'
+    new: time
 -
-    new: title_et
     old: '@title-et@'
+    new: title_et
 -
-    new: tootegrupp ' ' suurus ' ' nimetus
+    old: '@title@ @subtitle@ @notes@ @description@'
+    new: CONCAT(name, ' ', subtitle, ' ', notes, ' ', description)
+-
+    old: '@title@'
+    new: name
+-
     old: '@tootegrupp@ @suurus@ @nimetus@'
+    new: CONCAT(tootegrupp, ' ', suurus, ' ', nimetus)
 -
-    new: type ' ' value
     old: '@type@ @value@'
+    new: CONCAT(type, ' ', value)
 -
-    new: type ' for ' definition
     old: '@type@ for @definition@'
+    new: CONCAT(type, ' for ', definition)
 -
-    new: url
     old: '@url@'
+    new: url
 -
-    new: valid_from '…' valid_to
     old: '@valid-from@...@valid-to@'
+    new: CONCAT(valid_from, '…', valid_to)
 -
-    new: varustus
     old: '@varustus@'
+    new: varustus
 -
-    new: width x height
     old: '@width@x@height@'
+    new: CONCAT(width, 'x', height)
 -
-    new: year ' ' author
     old: '@year@ @author@'
+    new: CONCAT(year, ' ', author)
 -
-    new: year
     old: '@year@'
+    new: year
+-
+    old: 'http://inventuur.entu.eu/#/eka/{self.id}/asset/asset-inventeerimisakt/{self.id}/vara-inventeerimisakt'
+    new: CONCAT('http://inventuur.entu.eu/#/eka/', _id, '/asset/asset-inventeerimisakt/', _id, '/vara-inventeerimisakt')
+-
+    old: 'http://inventuur.entu.eu/#/eka/{self.id}/asset/asset-mahakandmisakt/{self.id}/vara-mahakandmisakt'
+    new: CONCAT('http://inventuur.entu.eu/#/eka/', _id, '/asset/asset-mahakandmisakt/', _id, '/vara-mahakandmisakt')
+-
+    old: 'http://www.piletilevi.ee/mobile/est/#view=concert&concert={self.pl-id}'
+    new: CONCAT('http://www.piletilevi.ee/mobile/est/#view=concert&concert=', pl_id)
+-
+    old: 'https://{self.domain}'
+    new: CONCAT('https://', domain)
+-
+    old: 'https://inventuur.entu.eu/#/okupatsioon/{self.id}/eksponaat/eksponaat-cl-asukoht/*/cl-asukoht'
+    new: CONCAT('https://inventuur.entu.eu/#/okupatsioon/', _id, '/eksponaat/eksponaat-cl-asukoht/*/cl-asukoht')
+-
+    old: 'https://inventuur.entu.eu/#/okupatsioon/{self.id}/eksponaat/eksponaat-represseeritu-t/*/represseeritu'
+    new: CONCAT('https://inventuur.entu.eu/#/okupatsioon/', _id, '/eksponaat/eksponaat-represseeritu_t/*/represseeritu')
+-
+    old: 'https://inventuur.entu.eu/#/okupatsioon/{self.id}/eksponaat/eksponaat-sari/*/sari'
+    new: CONCAT('https://inventuur.entu.eu/#/okupatsioon/', _id, '/eksponaat/eksponaat-sari/*/sari')
+-
+    old: 'Museaale: @eksponaate@<br/>Teavikuid: @eksemplare@'
+    new: "CONCAT('Museaale: ', eksponaate, '<br/>Teavikuid: ', eksemplare)"
+-
+    old: 'Schedule: @layout@'
+    new: "CONCAT('Schedule: ', layout)"
+-
+    old: '@eesnimi@ @perenimi@'
+    new: CONCAT(eesnimi, ' ', perenimi)
+-
+    old: '@kirjekood@'
+    new: kirjekood
+-
+    old: '@strain@ @antibiotics@'
+    new: CONCAT(strain, ' ', antibiotics)
+-
+    old: '@date@ @method@'
+    new: CONCAT(date, ' ', method)
+-
+    old: '@isolate@'
+    new: isolate
+-
+    old: '{self.funding-eki - self.expenses-eki}'
+    new: SUBTRACT(self.funding_eki, self.expenses_eki)
+-
+    old: '{self.sum-eki - self.expenses-eki}'
+    new: SUBTRACT(self.sum_eki, self.expenses_eki)
+-
+    old: '{SUM(self.child.budget-eki.expenses-eki)}'
+    new: SUM(self.child.budget_eki.expenses_eki)
+-
+    old: '{SUM(self.child.budget-eki.expenses)}'
+    new: SUM(self.child.budget_eki.expenses)
+-
+    old: '{SUM(self.child.budget-eki.sum-eki)}'
+    new: SUM(self.child.budget_eki.sum_eki)
+-
+    old: '{SUM(self.child.budget-eki.sum)}'
+    new: SUM(self.child.budget_eki.sum)
+-
+    old: '{SUM(self.child.expense-eki.sum-eki)}'
+    new: SUM(self.child.expense_eki.sum_eki)
+-
+    old: '{SUM(self.child.expense-eki.sum)}'
+    new: SUM(self.child.expense_eki.sum)
+-
+    old: '{SUM(self.child.funding-eki.actual-sum)}'
+    new: SUM(self.child.funding_eki.actual_sum)
+-
+    old: '{SUM(self.child.funding.actual-sum)}'
+    new: SUM(self.child.funding.actual_sum)
+-
+    old: '@number@ @prize@ @candidate-name@'
+    new: CONCAT(number, prize, candidate_name)
