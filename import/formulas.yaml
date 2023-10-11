@@ -5,19 +5,19 @@
 
 -
     old: ';{self.varustus.triipkood};{self.varustus.invnr};'
-    new: ';' varustus.triipkood ';' varustus.invnr ';'
+    new: "';' varustus.triipkood ';' varustus.invnr ';'"
 -
     old: '(@inkmd@) @description@'
-    new: '(' inkmd ') ' description
+    new: "'(' inkmd ') ' description"
 -
     old: '(@kuup2ev@) @maksja@'
-    new: '(' kuup2ev ') ' maksja
+    new: "'(' kuup2ev ') ' maksja"
 -
     old: '(@outkmd@) @description@'
-    new: '(' outkmd ') ' description
+    new: "'(' outkmd ') ' description"
 -
     old: '[{self.registry-number}]'
-    new: '[' registry_number ']'
+    new: "'[' registry_number ']'"
 -
     old: '{COUNT(self.child.copy.id)}'
     new: _child.copy._id COUNT
@@ -938,25 +938,25 @@
     new: year
 -
     old: 'http://inventuur.entu.eu/#/eka/{self.id}/asset/asset-inventeerimisakt/{self.id}/vara-inventeerimisakt'
-    new: 'https://inventuur.entu.eu/#/eka/' _id '/asset/asset-inventeerimisakt/' _id '/vara-inventeerimisakt'
+    new: "'https://inventuur.entu.eu/#/eka/' _id '/asset/asset-inventeerimisakt/' _id '/vara-inventeerimisakt'"
 -
     old: 'http://inventuur.entu.eu/#/eka/{self.id}/asset/asset-mahakandmisakt/{self.id}/vara-mahakandmisakt'
-    new: 'https://inventuur.entu.eu/#/eka/' _id '/asset/asset-mahakandmisakt/' _id '/vara-mahakandmisakt'
+    new: "'https://inventuur.entu.eu/#/eka/' _id '/asset/asset-mahakandmisakt/' _id '/vara-mahakandmisakt'"
 -
     old: 'http://www.piletilevi.ee/mobile/est/#view=concert&concert={self.pl-id}'
-    new: 'https://www.piletilevi.ee/mobile/est/#view=concert&concert=' pl_id
+    new: "'https://www.piletilevi.ee/mobile/est/#view=concert&concert=' pl_id"
 -
     old: 'https://{self.domain}'
-    new: 'https://' domain
+    new: "'https://' domain"
 -
     old: 'https://inventuur.entu.eu/#/okupatsioon/{self.id}/eksponaat/eksponaat-cl-asukoht/*/cl-asukoht'
-    new: 'https://inventuur.entu.eu/#/okupatsioon/' _id '/eksponaat/eksponaat-cl-asukoht/*/cl-asukoht'
+    new: "'https://inventuur.entu.eu/#/okupatsioon/' _id '/eksponaat/eksponaat-cl-asukoht/*/cl-asukoht'"
 -
     old: 'https://inventuur.entu.eu/#/okupatsioon/{self.id}/eksponaat/eksponaat-represseeritu-t/*/represseeritu'
-    new: 'https://inventuur.entu.eu/#/okupatsioon/' _id '/eksponaat/eksponaat-represseeritu_t/*/represseeritu'
+    new: "'https://inventuur.entu.eu/#/okupatsioon/' _id '/eksponaat/eksponaat-represseeritu_t/*/represseeritu'"
 -
     old: 'https://inventuur.entu.eu/#/okupatsioon/{self.id}/eksponaat/eksponaat-sari/*/sari'
-    new: 'https://inventuur.entu.eu/#/okupatsioon/' _id '/eksponaat/eksponaat-sari/*/sari'
+    new: "'https://inventuur.entu.eu/#/okupatsioon/' _id '/eksponaat/eksponaat-sari/*/sari'"
 -
     old: 'Museaale: @eksponaate@<br/>Teavikuid: @eksemplare@'
     new: "'Museaale: ' eksponaate '<br/>Teavikuid: ' eksemplare"
