@@ -227,16 +227,6 @@ INSERT INTO mongo (
     ('property_table', 'type', NULL, 'string', 'boolean', NULL, NULL, 1),
     ('property_table', 'ordinal', NULL, 'integer', NULL, 130, NULL, 1),
 
-    ('property_classifier', '_mid', NULL, 'string', 'property_classifier', NULL, NULL, 1),
-    ('property_classifier', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
-    ('property_classifier', '_parent', NULL, 'reference', NULL, NULL, 'property', 1),
-    ('property_classifier', 'name', NULL, 'string', 'classifier', NULL, NULL, 1),
-    ('property_classifier', 'label', 'en', 'string', 'Classifier', NULL, NULL, 1),
-    ('property_classifier', 'label', 'et', 'string', 'Klassifikaator', NULL, NULL, 1),
-    ('property_classifier', 'label_plural', 'en', 'string', 'Classifierss', NULL, NULL, 1),
-    ('property_classifier', 'type', NULL, 'string', 'reference', NULL, NULL, 1),
-    ('property_classifier', 'ordinal', NULL, 'integer', NULL, 140, NULL, 1),
-
     ('property_decimals', '_mid', NULL, 'string', 'property_decimals', NULL, NULL, 1),
     ('property_decimals', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
     ('property_decimals', '_parent', NULL, 'reference', NULL, NULL, 'property', 1),
@@ -255,6 +245,15 @@ INSERT INTO mongo (
     ('property_formula', 'label', 'et', 'string', 'Valem', NULL, NULL, 1),
     ('property_formula', 'type', NULL, 'string', 'string', NULL, NULL, 1),
     ('property_formula', 'ordinal', NULL, 'integer', NULL, 150, NULL, 1),
+
+    ('property_set_query', '_mid', NULL, 'string', 'property_set_query', NULL, NULL, 1),
+    ('property_set_query', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
+    ('property_set_query', '_parent', NULL, 'reference', NULL, NULL, 'property', 1),
+    ('property_set_query', 'name', NULL, 'string', 'set_query', NULL, NULL, 1),
+    ('property_set_query', 'label', 'en', 'string', 'Set query', NULL, NULL, 1),
+    ('property_set_query', 'label', 'et', 'string', 'Hulga päring', NULL, NULL, 1),
+    ('property_set_query', 'type', NULL, 'string', 'string', NULL, NULL, 1),
+    ('property_set_query', 'ordinal', NULL, 'integer', NULL, 160, NULL, 1),
 
     ('property_set', '_mid', NULL, 'string', 'property_set', NULL, NULL, 1),
     ('property_set', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
@@ -313,6 +312,7 @@ INSERT INTO mongo (
     ('menu_query', 'label', 'et', 'string', 'Päring', NULL, NULL, 1),
     ('menu_query', 'type', NULL, 'string', 'string', NULL, NULL, 1),
     ('menu_query', 'ordinal', NULL, 'integer', NULL, 4, NULL, 1),
+    ('menu_query', 'search', NULL, 'boolean', NULL, 1, NULL, 1),
 
     ('menu_text', '_mid', NULL, 'string', 'menu_text', NULL, NULL, 1),
     ('menu_text', '_type', NULL, 'reference', NULL, NULL, 'property', 1),

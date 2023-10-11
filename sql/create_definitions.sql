@@ -518,7 +518,7 @@ AND pd.keyname IN (SELECT keyname FROM mongo_property_keyname)
 AND pd.entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
-/* property has classifier (reference property) */
+/* property has set_query (reference property) */
 INSERT INTO mongo (
     entity,
     type,
@@ -526,9 +526,9 @@ INSERT INTO mongo (
     value_reference
 ) SELECT DISTINCT
     NULLIF(CONCAT(LOWER(TRIM(REPLACE(entity_definition_keyname, '-', '_'))), '_', LOWER(TRIM(REPLACE(dataproperty, '-', '_')))), '_'),
-    'classifier',
+    'set_query',
     'reference',
-    NULLIF(LOWER(TRIM(REPLACE(classifying_entity_definition_keyname, '-', '_'))), '')
+    CONCAT('_type.string=', LOWER(TRIM(REPLACE(classifying_entity_definition_keyname, '-', '_'))), '&sort=name.string')
 FROM property_definition
 WHERE classifying_entity_definition_keyname IS NOT NULL
 AND keyname IN (SELECT keyname FROM mongo_property_keyname)
