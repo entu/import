@@ -28,6 +28,7 @@ INSERT INTO mongo (
     ('entity_name', 'type', NULL, 'string', 'string', NULL, NULL, 1),
     ('entity_name', 'ordinal', NULL, 'integer', NULL, 10, NULL, 1),
     ('entity_name', 'search', NULL, 'boolean', NULL, 1, NULL, 1),
+    ('entity_name', 'mandatory', NULL, 'boolean', NULL, 1, NULL, 1),
 
     ('entity_label', '_mid', NULL, 'string', 'entity_label', NULL, NULL, 1),
     ('entity_label', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
@@ -39,6 +40,7 @@ INSERT INTO mongo (
     ('entity_label', 'ordinal', NULL, 'integer', NULL, 20, NULL, 1),
     ('entity_label', 'multilingual', NULL, 'boolean', NULL, 1, NULL, 1),
     ('entity_label', 'search', NULL, 'boolean', NULL, 1, NULL, 1),
+    ('entity_label', 'mandatory', NULL, 'boolean', NULL, 1, NULL, 1),
 
     ('entity_label_plural', '_mid', NULL, 'string', 'entity_label_plural', NULL, NULL, 1),
     ('entity_label_plural', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
@@ -50,6 +52,17 @@ INSERT INTO mongo (
     ('entity_label_plural', 'ordinal', NULL, 'integer', NULL, 30, NULL, 1),
     ('entity_label_plural', 'multilingual', NULL, 'boolean', NULL, 1, NULL, 1),
     ('entity_label_plural', 'search', NULL, 'boolean', NULL, 1, NULL, 1),
+
+    ('entity_description', '_mid', NULL, 'string', 'entity_description', NULL, NULL, 1),
+    ('entity_description', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
+    ('entity_description', '_parent', NULL, 'reference', NULL, NULL, 'entity', 1),
+    ('entity_description', 'name', NULL, 'string', 'description', NULL, NULL, 1),
+    ('entity_description', 'label', 'en', 'string', 'Description (help text)', NULL, NULL, 1),
+    ('entity_description', 'label', 'et', 'string', 'Kirjeldus (abi tekst)', NULL, NULL, 1),
+    ('entity_description', 'type', NULL, 'string', 'text', NULL, NULL, 1),
+    ('entity_description', 'ordinal', NULL, 'integer', NULL, 50, NULL, 1),
+    ('entity_description', 'multilingual', NULL, 'boolean', NULL, 1, NULL, 1),
+    ('entity_description', 'markdown', NULL, 'boolean', NULL, 1, NULL, 1),
 
     ('entity_add_from', '_mid', NULL, 'string', 'entity_add_from', NULL, NULL, 1),
     ('entity_add_from', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
@@ -88,6 +101,7 @@ INSERT INTO mongo (
     ('property_name', 'ordinal', NULL, 'integer', NULL, 10, NULL, 1),
     ('property_name', 'table', NULL, 'boolean', NULL, 1, NULL, 1),
     ('property_name', 'search', NULL, 'boolean', NULL, 1, NULL, 1),
+    ('property_name', 'mandatory', NULL, 'boolean', NULL, 1, NULL, 1),
 
     ('property_type', '_mid', NULL, 'string', 'property_type', NULL, NULL, 1),
     ('property_type', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
@@ -107,6 +121,8 @@ INSERT INTO mongo (
     ('property_type', 'set', NULL, 'string', 'string', NULL, NULL, 1),
     ('property_type', 'set', NULL, 'string', 'text', NULL, NULL, 1),
     ('property_type', 'table', NULL, 'boolean', NULL, 1, NULL, 1),
+    ('property_type', 'search', NULL, 'boolean', NULL, 1, NULL, 1),
+    ('property_type', 'mandatory', NULL, 'boolean', NULL, 1, NULL, 1),
 
     ('property_label', '_mid', NULL, 'string', 'property_label', NULL, NULL, 1),
     ('property_label', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
@@ -119,6 +135,7 @@ INSERT INTO mongo (
     ('property_label', 'multilingual', NULL, 'boolean', NULL, 1, NULL, 1),
     ('property_label', 'table', NULL, 'boolean', NULL, 1, NULL, 1),
     ('property_label', 'search', NULL, 'boolean', NULL, 1, NULL, 1),
+    ('property_label', 'mandatory', NULL, 'boolean', NULL, 1, NULL, 1),
 
     ('property_label_plural', '_mid', NULL, 'string', 'property_label_plural', NULL, NULL, 1),
     ('property_label_plural', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
@@ -130,6 +147,17 @@ INSERT INTO mongo (
     ('property_label_plural', 'ordinal', NULL, 'integer', NULL, 30, NULL, 1),
     ('property_label_plural', 'multilingual', NULL, 'boolean', NULL, 1, NULL, 1),
     ('property_label_plural', 'search', NULL, 'boolean', NULL, 1, NULL, 1),
+
+    ('property_description', '_mid', NULL, 'string', 'property_description', NULL, NULL, 1),
+    ('property_description', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
+    ('property_description', '_parent', NULL, 'reference', NULL, NULL, 'property', 1),
+    ('property_description', 'name', NULL, 'string', 'description', NULL, NULL, 1),
+    ('property_description', 'label', 'en', 'string', 'Description (help text)', NULL, NULL, 1),
+    ('property_description', 'label', 'et', 'string', 'Kirjeldus (abi tekst)', NULL, NULL, 1),
+    ('property_description', 'type', NULL, 'string', 'text', NULL, NULL, 1),
+    ('property_description', 'ordinal', NULL, 'integer', NULL, 35, NULL, 1),
+    ('property_description', 'multilingual', NULL, 'boolean', NULL, 1, NULL, 1),
+    ('property_description', 'markdown', NULL, 'boolean', NULL, 1, NULL, 1),
 
     ('property_group', '_mid', NULL, 'string', 'property_group', NULL, NULL, 1),
     ('property_group', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
@@ -234,7 +262,7 @@ INSERT INTO mongo (
     ('property_decimals', 'label', 'en', 'string', 'Decimal places', NULL, NULL, 1),
     ('property_decimals', 'label', 'et', 'string', 'Kümnendkohti', NULL, NULL, 1),
     ('property_decimals', 'type', NULL, 'string', 'number', NULL, NULL, 1),
-    ('property_decimals', 'ordinal', NULL, 'integer', NULL, 150, NULL, 1),
+    ('property_decimals', 'ordinal', NULL, 'integer', NULL, 140, NULL, 1),
     ('property_decimals', 'decimals', NULL, 'integer', NULL, 0, NULL, 1),
 
     ('property_formula', '_mid', NULL, 'string', 'property_formula', NULL, NULL, 1),
@@ -254,6 +282,8 @@ INSERT INTO mongo (
     ('property_set_query', 'label', 'et', 'string', 'Hulga päring', NULL, NULL, 1),
     ('property_set_query', 'type', NULL, 'string', 'string', NULL, NULL, 1),
     ('property_set_query', 'ordinal', NULL, 'integer', NULL, 160, NULL, 1),
+    ('property_set_query', 'description', 'en', 'string', 'Entu API query to find the objects that can be referenced in this parameter. For example "_type.string=person&sort=name.string"', NULL, NULL, 1),
+    ('property_set_query', 'description', 'et', 'string', 'Entu API päring objektide leidmiseks, millele saab selles parameetris viidata. Näiteks "_type.string=person&sort=name.string"', NULL, NULL, 1),
 
     ('property_set', '_mid', NULL, 'string', 'property_set', NULL, NULL, 1),
     ('property_set', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
@@ -262,7 +292,7 @@ INSERT INTO mongo (
     ('property_set', 'label', 'en', 'string', 'Set', NULL, NULL, 1),
     ('property_set', 'label', 'et', 'string', 'Hulk', NULL, NULL, 1),
     ('property_set', 'type', NULL, 'string', 'string', NULL, NULL, 1),
-    ('property_set', 'ordinal', NULL, 'integer', NULL, 150, NULL, 1),
+    ('property_set', 'ordinal', NULL, 'integer', NULL, 170, NULL, 1),
     ('property_set', 'list', NULL, 'boolean', NULL, 1, NULL, 1),
 
     ('menu', '_mid', NULL, 'string', 'menu', NULL, NULL, 1),
@@ -283,6 +313,7 @@ INSERT INTO mongo (
     ('menu_name', 'ordinal', NULL, 'integer', NULL, 1, NULL, 1),
     ('menu_name', 'multilingual', NULL, 'boolean', NULL, 1, NULL, 1),
     ('menu_name', 'search', NULL, 'boolean', NULL, 1, NULL, 1),
+    ('menu_name', 'mandatory', NULL, 'boolean', NULL, 1, NULL, 1),
 
     ('menu_group', '_mid', NULL, 'string', 'menu_group', NULL, NULL, 1),
     ('menu_group', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
@@ -294,6 +325,7 @@ INSERT INTO mongo (
     ('menu_group', 'ordinal', NULL, 'integer', NULL, 2, NULL, 1),
     ('menu_group', 'multilingual', NULL, 'boolean', NULL, 1, NULL, 1),
     ('menu_group', 'search', NULL, 'boolean', NULL, 1, NULL, 1),
+    ('menu_group', 'mandatory', NULL, 'boolean', NULL, 1, NULL, 1),
 
     ('menu_ordinal', '_mid', NULL, 'string', 'menu_ordinal', NULL, NULL, 1),
     ('menu_ordinal', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
@@ -313,16 +345,20 @@ INSERT INTO mongo (
     ('menu_query', 'type', NULL, 'string', 'string', NULL, NULL, 1),
     ('menu_query', 'ordinal', NULL, 'integer', NULL, 4, NULL, 1),
     ('menu_query', 'search', NULL, 'boolean', NULL, 1, NULL, 1),
+    ('menu_query', 'mandatory', NULL, 'boolean', NULL, 1, NULL, 1),
+    ('menu_query', 'description', 'en', 'string', 'Entu API query. For example "_type.string=person&sort=name.string"', NULL, NULL, 1),
+    ('menu_query', 'description', 'et', 'string', 'Entu API päring. Näiteks "_type.string=person&sort=name.string"', NULL, NULL, 1),
 
-    ('menu_text', '_mid', NULL, 'string', 'menu_text', NULL, NULL, 1),
-    ('menu_text', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
-    ('menu_text', '_parent', NULL, 'reference', NULL, NULL, 'menu', 1),
-    ('menu_text', 'name', NULL, 'string', 'text', NULL, NULL, 1),
-    ('menu_text', 'label', 'en', 'string', 'Text', NULL, NULL, 1),
-    ('menu_text', 'label', 'et', 'string', 'Tekst', NULL, NULL, 1),
-    ('menu_text', 'type', NULL, 'string', 'text', NULL, NULL, 1),
-    ('menu_text', 'ordinal', NULL, 'integer', NULL, 5, NULL, 1),
-    ('menu_text', 'multilingual', NULL, 'boolean', NULL, 1, NULL, 1);
+    ('menu_description', '_mid', NULL, 'string', 'menu_description', NULL, NULL, 1),
+    ('menu_description', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
+    ('menu_description', '_parent', NULL, 'reference', NULL, NULL, 'menu', 1),
+    ('menu_description', 'name', NULL, 'string', 'text', NULL, NULL, 1),
+    ('menu_description', 'label', 'en', 'string', 'Description', NULL, NULL, 1),
+    ('menu_description', 'label', 'et', 'string', 'Kirjeldus', NULL, NULL, 1),
+    ('menu_description', 'type', NULL, 'string', 'text', NULL, NULL, 1),
+    ('menu_description', 'ordinal', NULL, 'integer', NULL, 5, NULL, 1),
+    ('menu_description', 'multilingual', NULL, 'boolean', NULL, 1, NULL, 1);
+    ('menu_description', 'markdown', NULL, 'boolean', NULL, 1, NULL, 1);
 
 
 /* conf rights */
