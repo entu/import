@@ -43,6 +43,21 @@ FROM entity_definition
 WHERE keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
+/* public */
+INSERT INTO mongo (
+    entity,
+    type,
+    datatype,
+    value_integer
+) SELECT DISTINCT
+    NULLIF(LOWER(TRIM(REPLACE(keyname, '-', '_'))), ''),
+    '_public',
+    'boolean',
+    1
+FROM entity_definition
+WHERE keyname IN (SELECT keyname FROM mongo_entity_keyname);
+
+
 /* rights */
 INSERT INTO mongo (
     entity,
@@ -51,11 +66,7 @@ INSERT INTO mongo (
     value_reference
 ) SELECT DISTINCT
     NULLIF(LOWER(TRIM(REPLACE(keyname, '-', '_'))), ''),
-    CASE TRIM(users.user)
-        WHEN 'argoroots@gmail.com' THEN '_owner'
-        WHEN 'mihkel.putrinsh@gmail.com' THEN '_owner'
-        ELSE '_viewer'
-    END,
+    '_owner',
     'reference',
     users.id
 FROM
@@ -73,6 +84,7 @@ FROM
         AND property.is_deleted = 0
         AND entity.is_deleted = 0
         AND property_definition.dataproperty = 'entu-user'
+        AND property.value_string IN ('argoroots@gmail.com', 'mihkel.putrinsh@gmail.com')
     ) AS users
 WHERE keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
@@ -216,6 +228,22 @@ WHERE keyname IN (SELECT keyname FROM mongo_property_keyname)
 AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
+/* property public */
+INSERT INTO mongo (
+    entity,
+    type,
+    datatype,
+    value_integer
+) SELECT DISTINCT
+    NULLIF(CONCAT(LOWER(TRIM(REPLACE(entity_definition_keyname, '-', '_'))), '_', LOWER(TRIM(REPLACE(dataproperty, '-', '_')))), '_'),
+    '_public',
+    'boolean',
+    1
+FROM property_definition
+WHERE keyname IN (SELECT keyname FROM mongo_property_keyname)
+AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
+
+
 /* property rights */
 INSERT INTO mongo (
     entity,
@@ -224,11 +252,7 @@ INSERT INTO mongo (
     value_reference
 ) SELECT DISTINCT
     NULLIF(CONCAT(LOWER(TRIM(REPLACE(entity_definition_keyname, '-', '_'))), '_', LOWER(TRIM(REPLACE(dataproperty, '-', '_')))), '_'),
-    CASE TRIM(users.user)
-        WHEN 'argoroots@gmail.com' THEN '_owner'
-        WHEN 'mihkel.putrinsh@gmail.com' THEN '_owner'
-        ELSE '_viewer'
-    END,
+    '_owner',
     'reference',
     users.id
 FROM
@@ -246,6 +270,7 @@ FROM
         AND property.is_deleted = 0
         AND entity.is_deleted = 0
         AND property_definition.dataproperty = 'entu-user'
+        AND property.value_string IN ('argoroots@gmail.com', 'mihkel.putrinsh@gmail.com')
     ) AS users
 WHERE keyname IN (SELECT keyname FROM mongo_property_keyname)
 AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
