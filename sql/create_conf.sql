@@ -274,16 +274,16 @@ INSERT INTO mongo (
     ('property_formula', 'type', NULL, 'string', 'string', NULL, NULL, 1),
     ('property_formula', 'ordinal', NULL, 'integer', NULL, 150, NULL, 1),
 
-    ('property_set_query', '_mid', NULL, 'string', 'property_set_query', NULL, NULL, 1),
-    ('property_set_query', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
-    ('property_set_query', '_parent', NULL, 'reference', NULL, NULL, 'property', 1),
-    ('property_set_query', 'name', NULL, 'string', 'set_query', NULL, NULL, 1),
-    ('property_set_query', 'label', 'en', 'string', 'Set query', NULL, NULL, 1),
-    ('property_set_query', 'label', 'et', 'string', 'Hulga päring', NULL, NULL, 1),
-    ('property_set_query', 'type', NULL, 'string', 'string', NULL, NULL, 1),
-    ('property_set_query', 'ordinal', NULL, 'integer', NULL, 160, NULL, 1),
-    ('property_set_query', 'description', 'en', 'string', 'Entu API query to find the objects that can be referenced in this parameter. For example "_type.string=person&sort=name.string"', NULL, NULL, 1),
-    ('property_set_query', 'description', 'et', 'string', 'Entu API päring objektide leidmiseks, millele saab selles parameetris viidata. Näiteks "_type.string=person&sort=name.string"', NULL, NULL, 1),
+    ('property_reference_query', '_mid', NULL, 'string', 'property_reference_query', NULL, NULL, 1),
+    ('property_reference_query', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
+    ('property_reference_query', '_parent', NULL, 'reference', NULL, NULL, 'property', 1),
+    ('property_reference_query', 'name', NULL, 'string', 'reference_query', NULL, NULL, 1),
+    ('property_reference_query', 'label', 'en', 'string', 'Reference query', NULL, NULL, 1),
+    ('property_reference_query', 'label', 'et', 'string', 'Viidatavate päring', NULL, NULL, 1),
+    ('property_reference_query', 'type', NULL, 'string', 'string', NULL, NULL, 1),
+    ('property_reference_query', 'ordinal', NULL, 'integer', NULL, 160, NULL, 1),
+    ('property_reference_query', 'description', 'en', 'string', 'Entu API query to find the objects that can be referenced in this parameter. For example "_type.string=person&sort=name.string"', NULL, NULL, 1),
+    ('property_reference_query', 'description', 'et', 'string', 'Entu API päring objektide leidmiseks, millele saab selles parameetris viidata. Näiteks "_type.string=person&sort=name.string"', NULL, NULL, 1),
 
     ('property_set', '_mid', NULL, 'string', 'property_set', NULL, NULL, 1),
     ('property_set', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
@@ -357,7 +357,7 @@ INSERT INTO mongo (
     ('menu_description', 'label', 'et', 'string', 'Kirjeldus', NULL, NULL, 1),
     ('menu_description', 'type', NULL, 'string', 'text', NULL, NULL, 1),
     ('menu_description', 'ordinal', NULL, 'integer', NULL, 5, NULL, 1),
-    ('menu_description', 'multilingual', NULL, 'boolean', NULL, 1, NULL, 1);
+    ('menu_description', 'multilingual', NULL, 'boolean', NULL, 1, NULL, 1),
     ('menu_description', 'markdown', NULL, 'boolean', NULL, 1, NULL, 1);
 
 
