@@ -11,20 +11,20 @@
       "import:entities": "node ./import/entities.js"
     },
     "devDependencies": {
-      "@aws-sdk/client-lambda": "3.481.0",
-      "@aws-sdk/client-sqs": "3.481.0",
-      "aws-sdk": "2.1525.0",
+      "@aws-sdk/client-lambda": "3.499.0",
+      "@aws-sdk/client-sqs": "3.499.0",
+      "aws-sdk": "2.1544.0",
       "camelcase": "8.0.0",
       "decamelize": "6.0.0",
-      "dotenv": "16.3.1",
+      "dotenv": "16.4.1",
       "eslint": "8.56.0",
       "eslint-config-standard": "17.1.0",
       "eslint-plugin-import": "2.29.1",
-      "eslint-plugin-n": "16.5.0",
+      "eslint-plugin-n": "16.6.2",
       "eslint-plugin-promise": "6.1.1",
       "js-yaml": "4.1.0",
       "lodash": "4.17.21",
       "mongodb": "6.3.0",
-      "mysql2": "3.6.5"
+      "mysql2": "3.9.0"
     }
 }
