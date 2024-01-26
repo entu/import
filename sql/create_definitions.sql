@@ -89,22 +89,6 @@ FROM
 WHERE keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
-/* open-after-add properties */
-INSERT INTO mongo (
-    entity,
-    type,
-    datatype,
-    value_integer
-) SELECT DISTINCT
-    NULLIF(LOWER(TRIM(REPLACE(keyname, '-', '_'))), ''),
-    'open_after_add',
-    'boolean',
-    1
-FROM entity_definition
-WHERE open_after_add = 1
-AND keyname IN (SELECT keyname FROM mongo_entity_keyname);
-
-
 /* translation (label, label_plural, ...) fields */
 INSERT INTO mongo (
     entity,

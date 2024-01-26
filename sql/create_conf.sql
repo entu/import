@@ -17,7 +17,6 @@ INSERT INTO mongo (
     ('entity', 'label_plural', 'en', 'string', 'Entities', NULL, NULL, 1),
     ('entity', 'label_plural', 'et', 'string', 'Objektid', NULL, NULL, 1),
     ('entity', 'add_from', NULL, 'reference', NULL, NULL, 'menu_conf_entity', 1),
-    ('entity', 'open_after_add', NULL, 'boolean', NULL, 1, NULL, 1),
 
     ('entity_name', '_mid', NULL, 'string', 'entity_name', NULL, NULL, 1),
     ('entity_name', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
@@ -72,15 +71,6 @@ INSERT INTO mongo (
     ('entity_add_from', 'label', 'et', 'string', 'Lisa menüüst/objektist', NULL, NULL, 1),
     ('entity_add_from', 'type', NULL, 'string', 'reference', NULL, NULL, 1),
     ('entity_add_from', 'ordinal', NULL, 'integer', NULL, 60, NULL, 1),
-
-    ('entity_open_after_add', '_mid', NULL, 'string', 'entity_open_after_add', NULL, NULL, 1),
-    ('entity_open_after_add', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
-    ('entity_open_after_add', '_parent', NULL, 'reference', NULL, NULL, 'entity', 1),
-    ('entity_open_after_add', 'name', NULL, 'string', 'open_after_add', NULL, NULL, 1),
-    ('entity_open_after_add', 'label', 'en', 'string', 'Open after add', NULL, NULL, 1),
-    ('entity_open_after_add', 'label', 'et', 'string', 'Ava peale lisamist', NULL, NULL, 1),
-    ('entity_open_after_add', 'type', NULL, 'string', 'boolean', NULL, NULL, 1),
-    ('entity_open_after_add', 'ordinal', NULL, 'integer', NULL, 70, NULL, 1),
 
     ('property', '_mid', NULL, 'string', 'property', NULL, NULL, 1),
     ('property', '_type', NULL, 'reference', NULL, NULL, 'property', 1),

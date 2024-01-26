@@ -23,11 +23,9 @@ importEntities()
 async function importEntities () {
   const databases = await executeSql('get_databases')
 
-  log(`Databases: ${databases.map(x => x.db).join(', ')}`)
+  log(`Databases: ${dbList.join(', ')}`)
   console.log('')
   console.log('')
-
-  const dbList = databases.map(x => x.db)
 
   for (let i = 0; i < dbList.length; i++) {
     const database = dbList[i]
