@@ -11,9 +11,9 @@
       "import:entities": "node ./import/entities.js"
     },
     "devDependencies": {
-      "@aws-sdk/client-lambda": "3.499.0",
-      "@aws-sdk/client-sqs": "3.499.0",
-      "aws-sdk": "2.1544.0",
+      "@aws-sdk/client-lambda": "3.504.0",
+      "@aws-sdk/client-sqs": "3.504.0",
+      "aws-sdk": "2.1548.0",
       "camelcase": "8.0.0",
       "decamelize": "6.0.0",
       "dotenv": "16.4.1",
@@ -25,6 +25,6 @@
       "js-yaml": "4.1.0",
       "lodash": "4.17.21",
       "mongodb": "6.3.0",
-      "mysql2": "3.9.0"
+      "mysql2": "3.9.1"
     }
 }
