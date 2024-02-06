@@ -103,6 +103,12 @@ async function prepareMongoDb (database) {
     { key: { 'deleted.by': 1 } }
   ])
 
+  log('Add stats indexes to MongoDB')
+  await mongo.db(database).collection('stats').createIndex(
+    { date: 1, function: 1 },
+    { unique: true }
+  )
+
   await mongoClient.close()
 }
 

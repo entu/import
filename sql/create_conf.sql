@@ -71,6 +71,7 @@ INSERT INTO mongo (
     ('entity_add_from', 'label', 'et', 'string', 'Lisa menüüst/objektist', NULL, NULL, 1),
     ('entity_add_from', 'type', NULL, 'string', 'reference', NULL, NULL, 1),
     ('entity_add_from', 'ordinal', NULL, 'integer', NULL, 60, NULL, 1),
+    ('entity_add_from', 'list', NULL, 'boolean', NULL, 1, NULL, 1),
 
     ('property', '_mid', NULL, 'string', 'property', NULL, NULL, 1),
     ('property', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
