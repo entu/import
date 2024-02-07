@@ -140,5 +140,7 @@ WHERE keyname NOT IN (
     'entu-changed-by',
     'entu-created-at',
     'entu-created-by'
+) AND datatype NOT IN (
+    'counter'
 )
 AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
