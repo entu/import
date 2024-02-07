@@ -42,6 +42,7 @@ INSERT INTO mongo (
                 IFNULL(filesize, '')
             )) FROM file WHERE id = p.value_file LIMIT 1
         )
+        WHEN 'counter-value' THEN TRIM(p.value_string)
         ELSE NULL
     END,
     CASE pd.datatype
