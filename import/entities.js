@@ -228,6 +228,7 @@ async function createSqsQueue (database) {
     QueueName: `${process.env.AWS_STACK}-entity-aggregate-${database}`,
     // QueueName: `${process.env.AWS_STACK}-entity-aggregate-${database}.fifo`,
     Attributes: {
+      MessageRetentionPeriod: '3600',
       VisibilityTimeout: '600'
       // FifoQueue: 'true',
       // ContentBasedDeduplication: 'true'
