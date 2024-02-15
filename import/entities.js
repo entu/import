@@ -85,6 +85,7 @@ async function prepareMongoDb (database) {
     { key: { access: 1 } },
     { key: { 'private._parent.reference': 1 } },
     { key: { 'private._type.string': 1 } },
+    { key: { 'private.add_from.reference': 1 } },
     { key: { 'private.entu_api_key.string': 1 } },
     { key: { 'private.entu_user.string': 1 } },
     { key: { 'private.name.string': 1 } },
@@ -108,6 +109,11 @@ async function prepareMongoDb (database) {
     { date: 1, function: 1 },
     { unique: true }
   )
+
+  log('Add text index to MongoDB')
+  await mongo.db(database).collection('entity').createIndex({
+    'search.private': 'text'
+  })
 
   await mongoClient.close()
 }

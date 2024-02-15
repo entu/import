@@ -1,5 +1,9 @@
 # a b c
+# a b c AVERAGE
+# a b c CONCAT
 # a b c COUNT
+# a b c MAX
+# a b c MIN
 # a b c SUBTRACT
 # a b c SUM
 
@@ -980,34 +984,34 @@
     new: isolate
 -
     old: '{self.funding-eki - self.expenses-eki}'
-    new: self.funding_eki self.expenses_eki SUBTRACT
+    new: funding_eki expenses_eki SUBTRACT
 -
     old: '{self.sum-eki - self.expenses-eki}'
-    new: self.sum_eki self.expenses_eki SUBTRACT
+    new: sum_eki expenses_eki SUBTRACT
 -
     old: '{SUM(self.child.budget-eki.expenses-eki)}'
-    new: self.child.budget_eki.expenses_eki SUM
+    new: _child.budget_eki.expenses_eki SUM
 -
     old: '{SUM(self.child.budget-eki.expenses)}'
-    new: self.child.budget_eki.expenses SUM
+    new: _child.budget_eki.expenses SUM
 -
     old: '{SUM(self.child.budget-eki.sum-eki)}'
-    new: self.child.budget_eki.sum_eki SUM
+    new: _child.budget_eki.sum_eki SUM
 -
     old: '{SUM(self.child.budget-eki.sum)}'
-    new: self.child.budget_eki.sum SUM
+    new: _child.budget_eki.sum SUM
 -
     old: '{SUM(self.child.expense-eki.sum-eki)}'
-    new: self.child.expense_eki.sum_eki SUM
+    new: _child.expense_eki.sum_eki SUM
 -
     old: '{SUM(self.child.expense-eki.sum)}'
-    new: self.child.expense_eki.sum SUM
+    new: _child.expense_eki.sum SUM
 -
     old: '{SUM(self.child.funding-eki.actual-sum)}'
-    new: self.child.funding_eki.actual_sum SUM
+    new: _child.funding_eki.actual_sum SUM
 -
     old: '{SUM(self.child.funding.actual-sum)}'
-    new: self.child.funding.actual_sum SUM
+    new: _child.funding.actual_sum SUM
 -
     old: '@number@ @prize@ @candidate-name@'
     new: number prize candidate_name
