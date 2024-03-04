@@ -9,8 +9,6 @@ import _ from 'lodash'
 import yaml from 'js-yaml'
 import camelize from 'camelcase'
 import decamelize from 'decamelize'
-import { SQSClient, CreateQueueCommand, GetQueueAttributesCommand } from '@aws-sdk/client-sqs'
-import { LambdaClient, CreateEventSourceMappingCommand } from '@aws-sdk/client-lambda'
 
 dotenv.config()
 
@@ -37,7 +35,6 @@ async function importEntities () {
     await insertProperties(database)
     await cleanupMySql(database)
     await replaceIds(database)
-    await createSqsQueue(database)
     await aggregateNewEntities(database)
     await aggregateAllEntities(database)
 
@@ -228,51 +225,6 @@ async function replaceIds (database) {
   }
 
   await mongoClient.close()
-}
-
-async function createSqsQueue (database) {
-  log('Create AWS SQS Queue')
-
-  const sqs = new SQSClient({
-    region: process.env.AWS_REGION,
-    credentials: {
-      accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
-    }
-  })
-  const lambda = new LambdaClient({
-    region: process.env.AWS_REGION,
-    credentials: {
-      accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
-    }
-  })
-
-  const { QueueUrl } = await sqs.send(new CreateQueueCommand({
-    QueueName: `${process.env.AWS_STACK}-entity-aggregate-${database}`,
-    // QueueName: `${process.env.AWS_STACK}-entity-aggregate-${database}.fifo`,
-    Attributes: {
-      MessageRetentionPeriod: '3600',
-      VisibilityTimeout: '600'
-      // FifoQueue: 'true',
-      // ContentBasedDeduplication: 'true'
-    }
-  }))
-
-  const { Attributes } = await sqs.send(new GetQueueAttributesCommand({
-    QueueUrl,
-    AttributeNames: ['QueueArn']
-  }))
-
-  try {
-    await lambda.send(new CreateEventSourceMappingCommand({
-      EventSourceArn: Attributes.QueueArn,
-      FunctionName: `${process.env.AWS_STACK}-entity-aggregate-get`,
-      BatchSize: 1
-    }))
-  } catch (error) {
-    // Mapping is done
-  }
 }
 
 async function aggregateNewEntities (database) {
