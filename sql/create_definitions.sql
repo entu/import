@@ -289,6 +289,7 @@ INSERT INTO mongo (
         WHEN 'decimal' THEN 'number'
         WHEN 'integer' THEN 'number'
         WHEN 'text' THEN 'string'
+        WHEN 'counter_value' THEN 'string'
         ELSE NULLIF(LOWER(TRIM(REPLACE(datatype, '-', '_'))), '')
     END
 FROM property_definition
