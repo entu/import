@@ -128,6 +128,7 @@ FROM
     entity AS e,
     mongo_entity_keyname AS mek
 WHERE e.id = r.entity_id
+AND r.related_entity_id IS NOT NULL
 AND mek.keyname = e.entity_definition_keyname
 AND r.relationship_definition_keyname IN ('editor', 'expander', 'owner', 'viewer');
 

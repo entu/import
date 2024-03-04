@@ -73,6 +73,16 @@ INSERT INTO mongo (
     ('entity_add_from', 'ordinal', NULL, 'integer', NULL, 60, NULL, 1),
     ('entity_add_from', 'list', NULL, 'boolean', NULL, 1, NULL, 1),
 
+    ('entity_default_parent', '_mid', NULL, 'string', 'entity_default_parent', NULL, NULL, 1),
+    ('entity_default_parent', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
+    ('entity_default_parent', '_parent', NULL, 'reference', NULL, NULL, 'entity', 1),
+    ('entity_default_parent', 'name', NULL, 'string', 'default_parent', NULL, NULL, 1),
+    ('entity_default_parent', 'label', 'en', 'string', 'Default parent', NULL, NULL, 1),
+    ('entity_default_parent', 'label', 'et', 'string', 'Lisa objekti alla', NULL, NULL, 1),
+    ('entity_default_parent', 'type', NULL, 'string', 'reference', NULL, NULL, 1),
+    ('entity_default_parent', 'ordinal', NULL, 'integer', NULL, 60, NULL, 1),
+    ('entity_default_parent', 'list', NULL, 'boolean', NULL, 1, NULL, 1),
+
     ('property', '_mid', NULL, 'string', 'property', NULL, NULL, 1),
     ('property', '_type', NULL, 'reference', NULL, NULL, 'property', 1),
     ('property', 'name', NULL, 'string', 'property', NULL, NULL, 1),
