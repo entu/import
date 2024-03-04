@@ -67,16 +67,38 @@ async function prepareMySql (database) {
 
 async function prepareMongoDb (database) {
   const mongo = await mongoClient.connect()
-  const entityTables = await mongo.db(database).listCollections({ name: 'entity' }).toArray()
-  const propertyTables = await mongo.db(database).listCollections({ name: 'property' }).toArray()
 
+  const accountTables = await mongo.db(database).listCollections({ name: 'account' }).toArray()
+  if (accountTables.length > 0) {
+    await mongo.db(database).dropCollection('account')
+    await mongo.db(database).collection('account').insertOne({
+      created: new Date(),
+      name: database,
+      limit: {
+        entities: 1000,
+        files: 100000000,
+        requestsMonth: 1000000
+      }
+    })
+    log('Deleted account collection in MongoDB')
+  }
+
+  const entityTables = await mongo.db(database).listCollections({ name: 'entity' }).toArray()
   if (entityTables.length > 0) {
     await mongo.db(database).dropCollection('entity')
     log('Deleted entity collection from MongoDB')
   }
+
+  const propertyTables = await mongo.db(database).listCollections({ name: 'property' }).toArray()
   if (propertyTables.length > 0) {
     await mongo.db(database).dropCollection('property')
     log('Deleted property collection from MongoDB')
+  }
+
+  const statsTables = await mongo.db(database).listCollections({ name: 'stats' }).toArray()
+  if (statsTables.length > 0) {
+    await mongo.db(database).dropCollection('stats')
+    log('Deleted stats collection from MongoDB')
   }
 
   log('Add entity indexes to MongoDB')
@@ -92,6 +114,13 @@ async function prepareMongoDb (database) {
     { key: { 'search.private': 1 } },
     { key: { 'search.public': 1 } }
   ])
+
+  log('Add entity search index to MongoDB')
+  await mongo.db(database).collection('entity').createIndex({
+    'search.private': 'text'
+  }, {
+    name: 'search'
+  })
 
   log('Add property indexes to MongoDB')
   await mongo.db(database).collection('property').createIndexes([
@@ -109,11 +138,6 @@ async function prepareMongoDb (database) {
     { date: 1, function: 1 },
     { unique: true }
   )
-
-  log('Add text index to MongoDB')
-  await mongo.db(database).collection('entity').createIndex({
-    'search.private': 'text'
-  })
 
   await mongoClient.close()
 }
