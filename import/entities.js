@@ -213,7 +213,7 @@ async function replaceIds (database) {
     }
   }).sort({ oid: 1 }).toArray()
 
-  const start = new Date().getTime() / 1000
+  const start = Date.now() / 1000
   const entityTotal = entities.length
   let entityCount = entities.length
 
@@ -228,7 +228,7 @@ async function replaceIds (database) {
 
     entityCount--
     if (entityCount % 1000 === 0 && entityCount > 0) {
-      const end = new Date().getTime() / 1000
+      const end = Date.now() / 1000
       const speed = (entityTotal - entityCount) / (end - start)
       const timeLeft = getTimeLeft(entityCount / speed)
 
@@ -246,7 +246,7 @@ async function aggregateNewEntities (database) {
 
   const entities = await mongo.db(database).collection('entity').find({ aggregated: { $exists: false } }).sort({ _id: 1 }).toArray()
 
-  const start = new Date().getTime() / 1000
+  const start = Date.now() / 1000
   const entityTotal = entities.length
   let entityCount = entities.length
 
@@ -257,7 +257,7 @@ async function aggregateNewEntities (database) {
 
     entityCount--
     if (entityCount % 1000 === 0 && entityCount > 0) {
-      const end = new Date().getTime() / 1000
+      const end = Date.now() / 1000
       const speed = (entityTotal - entityCount) / (end - start)
       const timeLeft = getTimeLeft(entityCount / speed)
 
@@ -275,7 +275,7 @@ async function aggregateAllEntities (database) {
 
   const entities = await mongo.db(database).collection('entity').find().sort({ _id: 1 }).toArray()
 
-  const start = new Date().getTime() / 1000
+  const start = Date.now() / 1000
   const entityTotal = entities.length
   let entityCount = entities.length
 
@@ -286,7 +286,7 @@ async function aggregateAllEntities (database) {
 
     entityCount--
     if (entityCount % 1000 === 0 && entityCount > 0) {
-      const end = new Date().getTime() / 1000
+      const end = Date.now() / 1000
       const speed = (entityTotal - entityCount) / (end - start)
       const timeLeft = getTimeLeft(entityCount / speed)
 
