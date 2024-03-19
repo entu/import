@@ -69,7 +69,6 @@ async function prepareMySql (database) {
     '^-?[0-9]+$',
     '^-?[0-9]+$',
     '^-?[0-9]+$',
-    '^-?[0-9]+$',
     database
   ])
 }

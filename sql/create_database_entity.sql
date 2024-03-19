@@ -7,9 +7,7 @@ INSERT INTO mongo (
     value_decimal,
     value_reference,
     created_at,
-    created_by,
-    deleted_at,
-    deleted_by
+    deleted_at
 ) SELECT DISTINCT
     CONCAT('database_entity_', ?),
     u.type,
@@ -19,9 +17,7 @@ INSERT INTO mongo (
     u.value_decimal,
     u.value_reference,
     IFNULL(IF(u.created >= '2000-01-01', u.created, NULL), IF(e.created >= '2000-01-01', e.created, NULL)) AS created_at,
-    IF(TRIM(u.created_by) REGEXP ?, TRIM(u.created_by), IF(TRIM(e.created_by) REGEXP ?, TRIM(e.created_by), NULL)) AS created_by,
-    IF(u.is_deleted = 1, IF(u.deleted >= '2000-01-01', u.deleted, NOW()), NULL) AS deleted_at,
-    IF(u.is_deleted = 1, IF(TRIM(u.deleted_by) REGEXP ?, TRIM(u.deleted_by), IF(TRIM(e.deleted_by) REGEXP ?, TRIM(e.deleted_by), NULL)), NULL) AS deleted_by
+    IF(u.is_deleted = 1, IF(u.deleted >= '2000-01-01', u.deleted, NOW()), NULL) AS deleted_at
 FROM (
 
     SELECT
@@ -32,11 +28,9 @@ FROM (
         NULL AS value_decimal,
         NULL AS value_reference,
         NULL AS created,
-        NULL AS created_by,
-        entity_id,
-        is_deleted,
         deleted,
-        deleted_by
+        is_deleted,
+        entity_id
     FROM entu.property
     WHERE property_definition_keyname = 'customer-database-name'
     AND is_deleted = 0
@@ -49,11 +43,9 @@ FROM (
         NULL AS value_decimal,
         'database' AS value_reference,
         NULL AS created,
-        NULL AS created_by,
-        entity_id,
-        is_deleted,
         deleted,
-        deleted_by
+        is_deleted,
+        entity_id
     FROM entu.property
     WHERE property_definition_keyname = 'customer-database-name'
     AND is_deleted = 0
@@ -66,11 +58,9 @@ FROM (
         NULL AS value_decimal,
         NULL AS value_reference,
         created AS created,
-        IF(TRIM(created_by) REGEXP ?, TRIM(created_by), NULL) AS created_by,
-        id AS entity_id,
-        NULL AS is_deleted,
         NULL AS deleted,
-        NULL AS deleted_by
+        NULL AS is_deleted,
+        id AS entity_id
     FROM entu.entity
     WHERE entity_definition_keyname = 'customer'
     AND (created IS NOT NULL OR IF(TRIM(created_by) REGEXP ?, TRIM(created_by), NULL) IS NOT NULL)
@@ -83,11 +73,9 @@ FROM (
         NULL AS value_decimal,
         property.entity_id AS value_reference,
         NULL AS created,
-        NULL AS created_by,
-        -1 AS entity_id,
-        NULL AS is_deleted,
         NULL AS deleted,
-        NULL AS deleted_by
+        NULL AS is_deleted,
+        -1 AS entity_id
     FROM
         property,
         entity,
@@ -107,11 +95,9 @@ FROM (
         NULL AS value_decimal,
         NULL AS value_reference,
         created,
-        created_by,
-        entity_id,
-        is_deleted,
         deleted,
-        deleted_by
+        is_deleted,
+        entity_id
     FROM entu.property
     WHERE property_definition_keyname = 'customer-database-name'
 
@@ -123,11 +109,9 @@ FROM (
         NULL AS value_decimal,
         NULL AS value_reference,
         created,
-        created_by,
-        entity_id,
-        is_deleted,
         deleted,
-        deleted_by
+        is_deleted,
+        entity_id
     FROM entu.property
     WHERE property_definition_keyname = 'customer-name'
 
@@ -139,11 +123,9 @@ FROM (
         NULL AS value_decimal,
         NULL AS value_reference,
         created,
-        created_by,
-        entity_id,
-        is_deleted,
         deleted,
-        deleted_by
+        is_deleted,
+        entity_id
     FROM entu.property
     WHERE property_definition_keyname = 'customer-address'
 
@@ -155,11 +137,9 @@ FROM (
         NULL AS value_decimal,
         NULL AS value_reference,
         created,
-        created_by,
-        entity_id,
-        is_deleted,
         deleted,
-        deleted_by
+        is_deleted,
+        entity_id
     FROM entu.property
     WHERE property_definition_keyname = 'customer-billing-email'
 
@@ -184,11 +164,9 @@ FROM (
         NULL AS value_decimal,
         NULL AS value_reference,
         created,
-        created_by,
-        entity_id,
-        is_deleted,
         deleted,
-        deleted_by
+        is_deleted,
+        entity_id
     FROM entu.property
     WHERE property_definition_keyname = 'customer-photo'
 
@@ -200,11 +178,9 @@ FROM (
         NULL AS value_decimal,
         value_integer AS value_reference,
         created,
-        created_by,
-        entity_id,
-        is_deleted,
         deleted,
-        deleted_by
+        is_deleted,
+        entity_id
     FROM entu.property
     WHERE property_definition_keyname = 'customer-user-parent'
 
@@ -216,11 +192,9 @@ FROM (
         NULL AS value_decimal,
         NULL AS value_reference,
         created,
-        created_by,
-        entity_id,
-        is_deleted,
         deleted,
-        deleted_by
+        is_deleted,
+        entity_id
     FROM entu.property
     WHERE property_definition_keyname = 'customer-quota-entities'
 
@@ -232,11 +206,9 @@ FROM (
         value_decimal AS value_decimal,
         NULL AS value_reference,
         created,
-        created_by,
-        entity_id,
-        is_deleted,
         deleted,
-        deleted_by
+        is_deleted,
+        entity_id
     FROM entu.property
     WHERE property_definition_keyname = 'customer-quota-data'
 
@@ -248,11 +220,9 @@ FROM (
         value_decimal AS value_decimal,
         NULL AS value_reference,
         created,
-        created_by,
-        entity_id,
-        is_deleted,
         deleted,
-        deleted_by
+        is_deleted,
+        entity_id
     FROM entu.property
     WHERE property_definition_keyname = 'customer-monthly-fee'
 
