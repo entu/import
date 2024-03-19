@@ -76,21 +76,6 @@ async function prepareMySql (database) {
 async function prepareMongoDb (database) {
   const mongo = await mongoClient.connect()
 
-  const accountTables = await mongo.db(database).listCollections({ name: 'account' }).toArray()
-  if (accountTables.length > 0) {
-    await mongo.db(database).dropCollection('account')
-    await mongo.db(database).collection('account').insertOne({
-      created: new Date(),
-      name: database,
-      limit: {
-        entities: 1000,
-        files: 100000000,
-        requestsMonth: 1000000
-      }
-    })
-    log('Deleted account collection in MongoDB')
-  }
-
   const entityTables = await mongo.db(database).listCollections({ name: 'entity' }).toArray()
   if (entityTables.length > 0) {
     await mongo.db(database).dropCollection('entity')
