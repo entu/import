@@ -180,9 +180,10 @@ async function insertProperties (database) {
 
     const cleanProperties = properties.map(cleanProperty)
 
-    await mongo.db(database).collection('property').insertMany(cleanProperties)
-
-    await executeSql('update_property', database, [properties.map(x => x.id)])
+    await Promise.all([
+      mongo.db(database).collection('property').insertMany(cleanProperties),
+      executeSql('update_property', database, [properties.map(x => x.id)])
+    ])
 
     count = properties.length
     offset = offset + count
@@ -220,11 +221,13 @@ async function replaceIds (database) {
   for (let i = 0; i < entities.length; i++) {
     const entity = entities[i]
 
-    await mongo.db(database).collection('property').updateMany({ entity: entity.oid }, { $set: { entity: entity._id } })
-    await mongo.db(database).collection('property').updateMany({ reference: entity.oid }, { $set: { reference: entity._id } })
-    await mongo.db(database).collection('property').updateMany({ 'created.by': entity.oid }, { $set: { 'created.by': entity._id } })
-    await mongo.db(database).collection('property').updateMany({ 'deleted.by': entity.oid }, { $set: { 'deleted.by': entity._id } })
-    await mongo.db(database).collection('entity').updateOne({ _id: entity._id }, { $set: { propsOk: true } })
+    await Promise.all([
+      mongo.db(database).collection('property').updateMany({ entity: entity.oid }, { $set: { entity: entity._id } }),
+      mongo.db(database).collection('property').updateMany({ reference: entity.oid }, { $set: { reference: entity._id } }),
+      mongo.db(database).collection('property').updateMany({ 'created.by': entity.oid }, { $set: { 'created.by': entity._id } }),
+      mongo.db(database).collection('property').updateMany({ 'deleted.by': entity.oid }, { $set: { 'deleted.by': entity._id } }),
+      mongo.db(database).collection('entity').updateOne({ _id: entity._id }, { $set: { propsOk: true } })
+    ])
 
     entityCount--
     if (entityCount % 1000 === 0 && entityCount > 0) {
