@@ -420,7 +420,7 @@ function cleanProperty (property) {
 
 const sendAggregateToApi = async (database, entityId) => {
   return new Promise((resolve, reject) => {
-    https.get(`${process.env.ENTU_API_URL}/entity/${entityId}/aggregate?account=${database}`, response => {
+    https.get(`${process.env.ENTU_API_URL}/${database}/entity/${entityId}/aggregate`, response => {
       let body = ''
 
       response.on('data', function (d) {
