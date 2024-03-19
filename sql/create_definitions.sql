@@ -532,11 +532,11 @@ INSERT INTO mongo (
     entity,
     type,
     datatype,
-    value_reference
+    value_string
 ) SELECT DISTINCT
     NULLIF(CONCAT(LOWER(TRIM(REPLACE(entity_definition_keyname, '-', '_'))), '_', LOWER(TRIM(REPLACE(dataproperty, '-', '_')))), '_'),
     'reference_query',
-    'reference',
+    'string',
     CONCAT('_type.string=', LOWER(TRIM(REPLACE(classifying_entity_definition_keyname, '-', '_'))), '&sort=name.string')
 FROM property_definition
 WHERE classifying_entity_definition_keyname IS NOT NULL
