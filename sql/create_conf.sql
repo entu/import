@@ -414,6 +414,7 @@ INSERT INTO mongo (
     ('menu', 'label', 'en', 'string', 'Menu', NULL, NULL, 1),
     ('menu', 'label', 'et', 'string', 'Menüü', NULL, NULL, 1),
     ('menu', 'label_plural', 'en', 'string', 'Menus', NULL, NULL, 1),
+    ('menu', 'label_plural', 'et', 'string', 'Menüüd', NULL, NULL, 1),
     ('menu', 'add_from', NULL, 'reference', NULL, NULL, 'menu_conf_menu', 1),
 
     ('menu_name', '_mid', NULL, 'string', 'menu_name', NULL, NULL, 1),
