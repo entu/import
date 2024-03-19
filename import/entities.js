@@ -60,6 +60,18 @@ async function prepareMySql (database) {
     log(`Run ${sqls[i]}.sql in MySQL`)
     await executeSql(sqls[i], database)
   }
+
+  log('Run create_database_entity.sql in MySQL')
+  await executeSql('create_database_entity', database, [
+    database,
+    '^-?[0-9]+$',
+    '^-?[0-9]+$',
+    '^-?[0-9]+$',
+    '^-?[0-9]+$',
+    '^-?[0-9]+$',
+    '^-?[0-9]+$',
+    database
+  ])
 }
 
 async function prepareMongoDb (database) {
