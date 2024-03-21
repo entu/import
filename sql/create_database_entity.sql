@@ -23,7 +23,7 @@ FROM (
     SELECT
         '_mid' AS type,
         'string' AS datatype,
-        'database' AS value_string,
+        CONCAT('database_entity_', ?) AS value_string,
         NULL AS value_integer,
         NULL AS value_decimal,
         NULL AS value_reference,
@@ -42,6 +42,36 @@ FROM (
         NULL AS value_integer,
         NULL AS value_decimal,
         'database' AS value_reference,
+        NULL AS created,
+        deleted,
+        is_deleted,
+        entity_id
+    FROM entu.property
+    WHERE property_definition_keyname = 'customer-database-name'
+    AND is_deleted = 0
+
+    UNION SELECT
+        '_inheritrights' AS type,
+        'boolean' AS datatype,
+        NULL AS value_string,
+        1 AS value_integer,
+        NULL AS value_decimal,
+        NULL AS value_reference,
+        NULL AS created,
+        deleted,
+        is_deleted,
+        entity_id
+    FROM entu.property
+    WHERE property_definition_keyname = 'customer-database-name'
+    AND is_deleted = 0
+
+    UNION SELECT
+        '_sharing' AS type,
+        'string' AS datatype,
+        'domain' AS value_string,
+        NULL AS value_integer,
+        NULL AS value_decimal,
+        NULL AS value_reference,
         NULL AS created,
         deleted,
         is_deleted,

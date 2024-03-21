@@ -47,27 +47,39 @@ async function importEntities () {
 }
 
 async function prepareMySql (database) {
-  const sqls = [
-    'create_mongo_tables',
-    'create_entities',
-    'create_properties',
-    'create_definitions',
-    'create_menu',
-    'create_conf'
-  ]
+  log('Run create_mongo_tables.sql in MySQL')
+  await executeSql('create_mongo_tables', database)
 
-  for (let i = 0; i < sqls.length; i++) {
-    log(`Run ${sqls[i]}.sql in MySQL`)
-    await executeSql(sqls[i], database)
-  }
+  log('Run create_entities.sql in MySQL')
+  await executeSql('create_entities', database)
+
+  log('Run create_properties.sql in MySQL')
+  await executeSql('create_properties', database)
+
+  log('Run create_menu.sql in MySQL')
+  await executeSql('create_menu', database, [
+    database,
+    database,
+    database
+  ])
+
+  log('Run create_definitions.sql in MySQL')
+  await executeSql('create_definitions', database, [
+    database
+  ])
+
+  log('Run create_conf.sql in MySQL')
+  await executeSql('create_conf', database, [
+    database,
+    database,
+    database,
+    database
+  ])
 
   log('Run create_database_entity.sql in MySQL')
   await executeSql('create_database_entity', database, [
     database,
-    '^-?[0-9]+$',
-    '^-?[0-9]+$',
-    '^-?[0-9]+$',
-    '^-?[0-9]+$',
+    database,
     '^-?[0-9]+$',
     database
   ])

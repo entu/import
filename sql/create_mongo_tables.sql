@@ -31,14 +31,12 @@ CREATE TABLE `mongo` (
     `created_by` varchar(64) DEFAULT NULL,
     `deleted_at` datetime DEFAULT NULL,
     `deleted_by` varchar(64) DEFAULT NULL,
-    `conf` tinyint(1) NOT NULL DEFAULT 0,
     `imported` tinyint(1) NOT NULL DEFAULT 0,
     PRIMARY KEY (`id`),
     KEY `entity` (`entity`),
     KEY `type` (`type`),
     KEY `language` (`language`),
     KEY `datatype` (`datatype`),
-    KEY `conf` (`conf`),
     KEY `imported` (`imported`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

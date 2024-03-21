@@ -43,22 +43,7 @@ FROM entity_definition
 WHERE keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
-/* public */
-INSERT INTO mongo (
-    entity,
-    type,
-    datatype,
-    value_integer
-) SELECT DISTINCT
-    NULLIF(LOWER(TRIM(REPLACE(keyname, '-', '_'))), ''),
-    '_public',
-    'boolean',
-    1
-FROM entity_definition
-WHERE keyname IN (SELECT keyname FROM mongo_entity_keyname);
-
-
-/* rights */
+/* parent (database) */
 INSERT INTO mongo (
     entity,
     type,
@@ -66,26 +51,40 @@ INSERT INTO mongo (
     value_reference
 ) SELECT DISTINCT
     NULLIF(LOWER(TRIM(REPLACE(keyname, '-', '_'))), ''),
-    '_owner',
+    '_parent',
     'reference',
-    users.id
-FROM
-    entity_definition,
-    (
-        SELECT
-            entity.id,
-            property.value_string AS user
-        FROM
-            property,
-            entity,
-            property_definition
-        WHERE entity.id = property.entity_id
-        AND property_definition.keyname = property_definition_keyname
-        AND property.is_deleted = 0
-        AND entity.is_deleted = 0
-        AND property_definition.dataproperty = 'entu-user'
-        AND property.value_string IN ('argoroots@gmail.com', 'mihkel.putrinsh@gmail.com')
-    ) AS users
+    CONCAT('database_entity_', ?)
+FROM entity_definition
+WHERE keyname IN (SELECT keyname FROM mongo_entity_keyname);
+
+
+/* inherit rights */
+INSERT INTO mongo (
+    entity,
+    type,
+    datatype,
+    value_integer
+) SELECT DISTINCT
+    NULLIF(LOWER(TRIM(REPLACE(keyname, '-', '_'))), ''),
+    '_inheritrights',
+    'boolean',
+    1
+FROM entity_definition
+WHERE keyname IN (SELECT keyname FROM mongo_entity_keyname);
+
+
+/* sharing - domain */
+INSERT INTO mongo (
+    entity,
+    type,
+    datatype,
+    value_string
+) SELECT DISTINCT
+    NULLIF(LOWER(TRIM(REPLACE(keyname, '-', '_'))), ''),
+    '_sharing',
+    'string',
+    'domain'
+FROM entity_definition
 WHERE keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
@@ -211,7 +210,23 @@ WHERE keyname IN (SELECT keyname FROM mongo_property_keyname)
 AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
-/* property public */
+/* property sharing - domain */
+INSERT INTO mongo (
+    entity,
+    type,
+    datatype,
+    value_string
+) SELECT DISTINCT
+    NULLIF(CONCAT(LOWER(TRIM(REPLACE(entity_definition_keyname, '-', '_'))), '_', LOWER(TRIM(REPLACE(dataproperty, '-', '_')))), '_'),
+    '_sharing',
+    'string',
+    'domain'
+FROM property_definition
+WHERE keyname IN (SELECT keyname FROM mongo_property_keyname)
+AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
+
+
+/* property inherit rights */
 INSERT INTO mongo (
     entity,
     type,
@@ -219,42 +234,10 @@ INSERT INTO mongo (
     value_integer
 ) SELECT DISTINCT
     NULLIF(CONCAT(LOWER(TRIM(REPLACE(entity_definition_keyname, '-', '_'))), '_', LOWER(TRIM(REPLACE(dataproperty, '-', '_')))), '_'),
-    '_public',
+    '_inheritrights',
     'boolean',
     1
 FROM property_definition
-WHERE keyname IN (SELECT keyname FROM mongo_property_keyname)
-AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
-
-
-/* property rights */
-INSERT INTO mongo (
-    entity,
-    type,
-    datatype,
-    value_reference
-) SELECT DISTINCT
-    NULLIF(CONCAT(LOWER(TRIM(REPLACE(entity_definition_keyname, '-', '_'))), '_', LOWER(TRIM(REPLACE(dataproperty, '-', '_')))), '_'),
-    '_owner',
-    'reference',
-    users.id
-FROM
-    property_definition,
-    (
-        SELECT
-            entity.id,
-            property.value_string AS user
-        FROM
-            property,
-            entity,
-            property_definition
-        WHERE entity.id = property.entity_id
-        AND property_definition.keyname = property_definition_keyname
-        AND property.is_deleted = 0
-        AND entity.is_deleted = 0
-        AND property_definition.dataproperty = 'entu-user'
-        AND property.value_string IN ('argoroots@gmail.com', 'mihkel.putrinsh@gmail.com')
-    ) AS users
 WHERE keyname IN (SELECT keyname FROM mongo_property_keyname)
 AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
@@ -618,45 +601,3 @@ AND t.entity_definition_keyname NOT IN (
     WHERE TRIM(LOWER(dataproperty)) IN ('name', 'title')
 )
 AND t.entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
-
-
-/* missing name (formula) rights */
-INSERT INTO mongo (
-    entity,
-    type,
-    datatype,
-    value_reference
-) SELECT DISTINCT
-    CONCAT(LOWER(TRIM(REPLACE(entities.entity_definition_keyname, '-', '_'))), '_name'),
-    CASE TRIM(users.user)
-        WHEN 'argoroots@gmail.com' THEN '_owner'
-        WHEN 'mihkel.putrinsh@gmail.com' THEN '_owner'
-        ELSE '_viewer'
-    END,
-    'reference',
-    users.id
-FROM (
-    SELECT DISTINCT entity_definition_keyname
-    FROM translation
-    WHERE field = 'displayname'
-    AND entity_definition_keyname NOT IN (
-        SELECT entity_definition_keyname
-        FROM property_definition
-        WHERE TRIM(LOWER(dataproperty)) IN ('name', 'title')
-    )
-    AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname)
-) AS entities,
-(
-    SELECT
-        entity.id,
-        property.value_string AS user
-    FROM
-        property,
-        entity,
-        property_definition
-    WHERE entity.id = property.entity_id
-    AND property_definition.keyname = property_definition_keyname
-    AND property.is_deleted = 0
-    AND entity.is_deleted = 0
-    AND property_definition.dataproperty = 'entu-user'
-) AS users;

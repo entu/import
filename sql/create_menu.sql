@@ -14,6 +14,54 @@ WHERE field = 'menu'
 AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
 
 
+/* parent (database) */
+INSERT INTO mongo (
+    entity,
+    type,
+    datatype,
+    value_reference
+) SELECT DISTINCT
+    CONCAT('menu_', LOWER(TRIM(REPLACE(entity_definition_keyname, '-', '_')))),
+    '_parent',
+    'reference',
+    CONCAT('database_entity_', ?)
+FROM translation
+WHERE field = 'menu'
+AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
+
+
+/* sharing - domain */
+INSERT INTO mongo (
+    entity,
+    type,
+    datatype,
+    value_string
+) SELECT DISTINCT
+    CONCAT('menu_', LOWER(TRIM(REPLACE(entity_definition_keyname, '-', '_')))),
+    '_sharing',
+    'string',
+    'domain'
+FROM translation
+WHERE field = 'menu'
+AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
+
+
+/* inherit rights */
+INSERT INTO mongo (
+    entity,
+    type,
+    datatype,
+    value_integer
+) SELECT DISTINCT
+    CONCAT('menu_', LOWER(TRIM(REPLACE(entity_definition_keyname, '-', '_')))),
+    '_inheritrights',
+    'boolean',
+    1
+FROM translation
+WHERE field = 'menu'
+AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
+
+
 /* name */
 INSERT INTO mongo (
     entity,
@@ -84,41 +132,6 @@ GROUP BY
     entity_definition_keyname;
 
 
-/* rights */
-INSERT INTO mongo (
-    entity,
-    type,
-    datatype,
-    value_reference
-) SELECT DISTINCT
-    CONCAT('menu_', LOWER(TRIM(REPLACE(entity_definition_keyname, '-', '_')))),
-    CASE TRIM(users.user)
-        WHEN 'argoroots@gmail.com' THEN '_owner'
-        WHEN 'mihkel.putrinsh@gmail.com' THEN '_owner'
-        ELSE '_viewer'
-    END,
-    'reference',
-    users.id
-FROM
-    translation,
-    (
-        SELECT
-            entity.id,
-            property.value_string AS user
-        FROM
-            property,
-            entity,
-            property_definition
-        WHERE entity.id = property.entity_id
-        AND property_definition.keyname = property_definition_keyname
-        AND property.is_deleted = 0
-        AND entity.is_deleted = 0
-        AND property_definition.dataproperty = 'entu-user'
-    ) AS users
-WHERE field = 'menu'
-AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname);
-
-
 /* conf menu */
 INSERT INTO mongo (
     entity,
@@ -130,6 +143,9 @@ INSERT INTO mongo (
     value_reference
 ) VALUES
     ('menu_conf_menu', '_type', NULL, 'reference', NULL, NULL, 'menu'),
+    ('menu_conf_menu', '_parent', NULL, 'reference', NULL, NULL, CONCAT('database_entity_', ?)),
+    ('menu_conf_menu', '_sharing', NULL, 'string', NULL, 1, 'domain'),
+    ('menu_conf_menu', '_inheritrights', NULL, 'boolean', NULL, 1, NULL),
     ('menu_conf_menu', 'name', 'et', 'string', 'Menüü', NULL, NULL),
     ('menu_conf_menu', 'name', 'en', 'string', 'Menu', NULL, NULL),
     ('menu_conf_menu', 'group', 'et', 'string', 'Seaded', NULL, NULL),
@@ -138,44 +154,12 @@ INSERT INTO mongo (
     ('menu_conf_menu', 'ordinal', NULL, 'integer', NULL, 1000, NULL),
 
     ('menu_conf_entity', '_type', NULL, 'reference', NULL, NULL, 'menu'),
+    ('menu_conf_entity', '_parent', NULL, 'reference', NULL, NULL, CONCAT('database_entity_', ?)),
+    ('menu_conf_entity', '_sharing', NULL, 'string', NULL, 1, 'domain'),
+    ('menu_conf_entity', '_inheritrights', NULL, 'boolean', NULL, 1, NULL),
     ('menu_conf_entity', 'name', 'et', 'string', 'Objektid', NULL, NULL),
     ('menu_conf_entity', 'name', 'en', 'string', 'Entities', NULL, NULL),
     ('menu_conf_entity', 'group', 'et', 'string', 'Seaded', NULL, NULL),
     ('menu_conf_entity', 'group', 'en', 'string', 'Configuration', NULL, NULL),
     ('menu_conf_entity', 'query', NULL, 'string', '_type.string=entity&sort=name.string', NULL, NULL),
     ('menu_conf_entity', 'ordinal', NULL, 'integer', NULL, 1000, NULL);
-
-
-/* conf menu rights */
-INSERT INTO mongo (
-    entity,
-    type,
-    datatype,
-    value_reference
-) SELECT DISTINCT
-    entities.entity,
-    CASE TRIM(users.user)
-        WHEN 'argoroots@gmail.com' THEN '_owner'
-        WHEN 'mihkel.putrinsh@gmail.com' THEN '_owner'
-        ELSE '_viewer'
-    END,
-    'reference',
-    users.id
-FROM (
-    SELECT 'menu_conf_menu' AS entity
-    UNION SELECT 'menu_conf_entity'
-) AS entities,
-(
-    SELECT
-        entity.id,
-        property.value_string AS user
-    FROM
-        property,
-        entity,
-        property_definition
-    WHERE entity.id = property.entity_id
-    AND property_definition.keyname = property_definition_keyname
-    AND property.is_deleted = 0
-    AND entity.is_deleted = 0
-    AND property_definition.dataproperty = 'entu-user'
-) AS users;

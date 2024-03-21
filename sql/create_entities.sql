@@ -138,14 +138,14 @@ INSERT INTO mongo (
     entity,
     type,
     datatype,
-    value_integer
+    value_string
 ) SELECT DISTINCT
     e.id,
-    '_public',
-    'boolean',
-    1
+    '_sharing',
+    'string',
+    TRIM(LOWER(e.sharing))
 FROM
     entity AS e,
     mongo_entity_keyname AS mek
 WHERE mek.keyname = e.entity_definition_keyname
-AND TRIM(LOWER(e.sharing)) = 'public';
+AND TRIM(LOWER(e.sharing)) IN ('domain', 'public');
