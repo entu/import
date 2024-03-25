@@ -161,5 +161,5 @@ INSERT INTO mongo (
     ('menu_conf_entity', 'name', 'en', 'string', 'Entities', NULL, NULL),
     ('menu_conf_entity', 'group', 'et', 'string', 'Seaded', NULL, NULL),
     ('menu_conf_entity', 'group', 'en', 'string', 'Configuration', NULL, NULL),
-    ('menu_conf_entity', 'query', NULL, 'string', '_type.string=entity&sort=name.string', NULL, NULL),
+    ('menu_conf_entity', 'query', NULL, 'string', '_type.string=entity&system._id.exists=false&sort=name.string', NULL, NULL),
     ('menu_conf_entity', 'ordinal', NULL, 'integer', NULL, 1000, NULL);

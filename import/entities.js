@@ -71,8 +71,6 @@ async function prepareMySql (database) {
   log('Run create_conf.sql in MySQL')
   await executeSql('create_conf', database, [
     database,
-    database,
-    database,
     database
   ])
 
