@@ -144,7 +144,7 @@ INSERT INTO mongo (
 ) VALUES
     ('menu_conf_menu', '_type', NULL, 'reference', NULL, NULL, 'menu'),
     ('menu_conf_menu', '_parent', NULL, 'reference', NULL, NULL, CONCAT('database_entity_', ?)),
-    ('menu_conf_menu', '_sharing', NULL, 'string', NULL, 1, 'domain'),
+    ('menu_conf_menu', '_sharing', NULL, 'string', 'domain', NULL, NULL),
     ('menu_conf_menu', '_inheritrights', NULL, 'boolean', NULL, 1, NULL),
     ('menu_conf_menu', 'name', 'et', 'string', 'Menüü', NULL, NULL),
     ('menu_conf_menu', 'name', 'en', 'string', 'Menu', NULL, NULL),
@@ -155,7 +155,7 @@ INSERT INTO mongo (
 
     ('menu_conf_entity', '_type', NULL, 'reference', NULL, NULL, 'menu'),
     ('menu_conf_entity', '_parent', NULL, 'reference', NULL, NULL, CONCAT('database_entity_', ?)),
-    ('menu_conf_entity', '_sharing', NULL, 'string', NULL, 1, 'domain'),
+    ('menu_conf_entity', '_sharing', NULL, 'string', 'domain', NULL, NULL),
     ('menu_conf_entity', '_inheritrights', NULL, 'boolean', NULL, 1, NULL),
     ('menu_conf_entity', 'name', 'et', 'string', 'Objektid', NULL, NULL),
     ('menu_conf_entity', 'name', 'en', 'string', 'Entities', NULL, NULL),
