@@ -301,9 +301,7 @@ async function copyFiles (database) {
 
   const mongo = await mongoClient.connect()
 
-  const properties = await mongo.db(database).collection('property').find({ s3: { $exists: true } }).toArray()
-
-  await mongoClient.close()
+  const properties = await mongo.db(database).collection('property').find({ s3: { $exists: true } }).sort({ entity: 1, _id: 1 }).toArray()
 
   const s3Client = new S3Client({
     endpoint: process.env.S3_ENDPOINT,
@@ -320,6 +318,10 @@ async function copyFiles (database) {
       secretAccessKey: process.env.DO_SECRET
     }
   })
+
+  const start = Date.now() / 1000
+  const filesTotal = properties.length
+  let filesCount = properties.length
 
   for (let i = 0; i < properties.length; i++) {
     const { _id, entity, filename, s3 } = properties[i]
@@ -354,10 +356,23 @@ async function copyFiles (database) {
       })
 
       await spacesClient.send(putCommand)
+      await mongo.db(database).collection('property').updateOne({ _id }, { $unset: { s3: '' } })
     } else {
-      log(`Not found - ${s3}`)
+      log(`Not found - ${s3} - ${filename}`)
+      await mongo.db(database).collection('property').deleteOne({ _id })
+    }
+
+    filesCount--
+    if (filesCount % 100 === 0 && filesCount > 0) {
+      const end = Date.now() / 1000
+      const speed = (filesTotal - filesCount) / (end - start)
+      const timeLeft = getTimeLeft(filesCount / speed)
+
+      log(`  ${filesCount} files (${timeLeft}) to go`)
     }
   }
+
+  await mongoClient.close()
 }
 
 async function mysqlDb (database) {
