@@ -349,7 +349,7 @@ async function copyFiles (database) {
 
       const putCommand = new PutObjectCommand({
         Bucket: process.env.DO_BUCKET,
-        Key: `${database}/${entity.toString().substring(0, 4)}/${entity.toString().substring(4)}/${_id}`,
+        Key: `${database}/${entity}/${_id}`,
         ContentDisposition: `inline;filename="${encodeURI(filename.replace('"', '\"'))}"`,
         ContentType: mime.lookup(filename) || 'application/octet-stream',
         Body: fileBuffer
