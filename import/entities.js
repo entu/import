@@ -9,6 +9,8 @@ import _ from 'lodash'
 import yaml from 'js-yaml'
 import camelize from 'camelcase'
 import decamelize from 'decamelize'
+import mime from 'mime-types'
+import { S3Client, GetObjectCommand, PutObjectCommand } from '@aws-sdk/client-s3'
 
 dotenv.config()
 
@@ -292,6 +294,70 @@ async function aggregateAllEntities (database) {
   }
 
   await mongoClient.close()
+}
+
+async function copyFiles (database) {
+  log('Copy files to DO Spaces')
+
+  const mongo = await mongoClient.connect()
+
+  const properties = await mongo.db(database).collection('property').find({ s3: { $exists: true } }).toArray()
+
+  await mongoClient.close()
+
+  const s3Client = new S3Client({
+    endpoint: process.env.S3_ENDPOINT,
+    credentials: {
+      accessKeyId: process.env.S3_KEY,
+      secretAccessKey: process.env.S3_SECRET
+    }
+  })
+
+  const spacesClient = new S3Client({
+    endpoint: process.env.DO_ENDPOINT,
+    credentials: {
+      accessKeyId: process.env.DO_KEY,
+      secretAccessKey: process.env.DO_SECRET
+    }
+  })
+
+  for (let i = 0; i < properties.length; i++) {
+    const { _id, entity, filename, s3 } = properties[i]
+
+    const getCommand = new GetObjectCommand({
+      Bucket: process.env.S3_BUCKET,
+      Key: s3
+    })
+
+    let s3item
+
+    try {
+      s3item = await s3Client.send(getCommand)
+    } catch (error) {
+
+    }
+
+    if (s3item) {
+      const chunks = []
+      for await (const chunk of s3item.Body) {
+        chunks.push(chunk)
+      }
+
+      const fileBuffer = Buffer.concat(chunks)
+
+      const putCommand = new PutObjectCommand({
+        Bucket: process.env.DO_BUCKET,
+        Key: `${database}/${entity.toString().substring(0, 4)}/${entity.toString().substring(4)}/${_id}`,
+        ContentDisposition: `inline; filename*=UTF-8''${filename}`,
+        ContentType: mime.lookup(filename) || 'application/octet-stream',
+        Body: fileBuffer
+      })
+
+      await spacesClient.send(putCommand)
+    } else {
+      log(`Not found - ${s3}`)
+    }
+  }
 }
 
 async function mysqlDb (database) {
