@@ -6,6 +6,10 @@ WHERE TABLE_SCHEMA NOT IN (
     'information_schema',
     'mysql',
     'performance_schema',
-    'sys'
+    'sys',
+
+    'estdev',
+    'emi',
+    'roots'
 )
 ORDER BY TABLE_SCHEMA;
