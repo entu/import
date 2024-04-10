@@ -37,6 +37,7 @@ async function importEntities () {
     await insertProperties(database)
     await cleanupMySql(database)
     await replaceIds(database)
+    await copyFiles(database)
     await aggregateNewEntities(database)
     await aggregateAllEntities(database)
 
@@ -301,7 +302,7 @@ async function copyFiles (database) {
 
   const mongo = await mongoClient.connect()
 
-  const properties = await mongo.db(database).collection('property').find({ s3: { $exists: true } }).sort({ entity: 1, _id: 1 }).toArray()
+  const properties = await mongo.db(database).collection('property').find({ s3: { $exists: true }, filename: { $exists: true } }).sort({ entity: 1, _id: 1 }).toArray()
 
   const s3Client = new S3Client({
     endpoint: process.env.S3_ENDPOINT,
@@ -340,25 +341,29 @@ async function copyFiles (database) {
     }
 
     if (s3item) {
-      const chunks = []
-      for await (const chunk of s3item.Body) {
-        chunks.push(chunk)
+      try {
+        const chunks = []
+        for await (const chunk of s3item.Body) {
+          chunks.push(chunk)
+        }
+
+        const fileBuffer = Buffer.concat(chunks)
+
+        const putCommand = new PutObjectCommand({
+          Bucket: process.env.DO_BUCKET,
+          Key: `${database}/${entity}/${_id}`,
+          ContentDisposition: `inline;filename="${encodeURI(filename.replace('"', '\"'))}"`,
+          ContentType: mime.lookup(filename) || 'application/octet-stream',
+          Body: fileBuffer
+        })
+
+        await spacesClient.send(putCommand)
+        await mongo.db(database).collection('property').updateOne({ _id }, { $unset: { s3: '' } })
+      } catch (error) {
+        log(`  Error - ${s3} - ${filename}`)
       }
-
-      const fileBuffer = Buffer.concat(chunks)
-
-      const putCommand = new PutObjectCommand({
-        Bucket: process.env.DO_BUCKET,
-        Key: `${database}/${entity}/${_id}`,
-        ContentDisposition: `inline;filename="${encodeURI(filename.replace('"', '\"'))}"`,
-        ContentType: mime.lookup(filename) || 'application/octet-stream',
-        Body: fileBuffer
-      })
-
-      await spacesClient.send(putCommand)
-      await mongo.db(database).collection('property').updateOne({ _id }, { $unset: { s3: '' } })
     } else {
-      log(`Not found - ${s3} - ${filename}`)
+      log(`  Not found - ${s3} - ${filename}`)
       await mongo.db(database).collection('property').deleteOne({ _id })
     }
 
