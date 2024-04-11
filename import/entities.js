@@ -239,64 +239,6 @@ async function replaceIds (database) {
   await mongoClient.close()
 }
 
-async function aggregateNewEntities (database) {
-  log('Aggregate New Entities')
-
-  const mongo = await mongoClient.connect()
-
-  const entities = await mongo.db(database).collection('entity').find({ aggregated: { $exists: false } }).sort({ _id: 1 }).toArray()
-
-  const start = Date.now() / 1000
-  const entityTotal = entities.length
-  let entityCount = entities.length
-
-  for (let i = 0; i < entities.length; i++) {
-    const entity = entities[i]
-
-    await sendAggregateToApi(database, entity._id)
-
-    entityCount--
-    if (entityCount % 1000 === 0 && entityCount > 0) {
-      const end = Date.now() / 1000
-      const speed = (entityTotal - entityCount) / (end - start)
-      const timeLeft = getTimeLeft(entityCount / speed)
-
-      log(`  ${entityCount} entities (${timeLeft}) to go`)
-    }
-  }
-
-  await mongoClient.close()
-}
-
-async function aggregateAllEntities (database) {
-  log('Aggregate All Entities')
-
-  const mongo = await mongoClient.connect()
-
-  const entities = await mongo.db(database).collection('entity').find().sort({ _id: 1 }).toArray()
-
-  const start = Date.now() / 1000
-  const entityTotal = entities.length
-  let entityCount = entities.length
-
-  for (let i = 0; i < entities.length; i++) {
-    const entity = entities[i]
-
-    await sendAggregateToApi(database, entity._id)
-
-    entityCount--
-    if (entityCount % 1000 === 0 && entityCount > 0) {
-      const end = Date.now() / 1000
-      const speed = (entityTotal - entityCount) / (end - start)
-      const timeLeft = getTimeLeft(entityCount / speed)
-
-      log(`  ${entityCount} entities (${timeLeft}) to go`)
-    }
-  }
-
-  await mongoClient.close()
-}
-
 async function copyFiles (database) {
   log('Copy files to DO Spaces')
 
@@ -364,7 +306,6 @@ async function copyFiles (database) {
       }
     } else {
       log(`  Not found - ${s3} - ${filename}`)
-      await mongo.db(database).collection('property').deleteOne({ _id })
     }
 
     filesCount--
@@ -374,6 +315,64 @@ async function copyFiles (database) {
       const timeLeft = getTimeLeft(filesCount / speed)
 
       log(`  ${filesCount} files (${timeLeft}) to go`)
+    }
+  }
+
+  await mongoClient.close()
+}
+
+async function aggregateNewEntities (database) {
+  log('Aggregate New Entities')
+
+  const mongo = await mongoClient.connect()
+
+  const entities = await mongo.db(database).collection('entity').find({ aggregated: { $exists: false } }).sort({ _id: 1 }).toArray()
+
+  const start = Date.now() / 1000
+  const entityTotal = entities.length
+  let entityCount = entities.length
+
+  for (let i = 0; i < entities.length; i++) {
+    const entity = entities[i]
+
+    await sendAggregateToApi(database, entity._id)
+
+    entityCount--
+    if (entityCount % 1000 === 0 && entityCount > 0) {
+      const end = Date.now() / 1000
+      const speed = (entityTotal - entityCount) / (end - start)
+      const timeLeft = getTimeLeft(entityCount / speed)
+
+      log(`  ${entityCount} entities (${timeLeft}) to go`)
+    }
+  }
+
+  await mongoClient.close()
+}
+
+async function aggregateAllEntities (database) {
+  log('Aggregate All Entities')
+
+  const mongo = await mongoClient.connect()
+
+  const entities = await mongo.db(database).collection('entity').find().sort({ _id: 1 }).toArray()
+
+  const start = Date.now() / 1000
+  const entityTotal = entities.length
+  let entityCount = entities.length
+
+  for (let i = 0; i < entities.length; i++) {
+    const entity = entities[i]
+
+    await sendAggregateToApi(database, entity._id)
+
+    entityCount--
+    if (entityCount % 1000 === 0 && entityCount > 0) {
+      const end = Date.now() / 1000
+      const speed = (entityTotal - entityCount) / (end - start)
+      const timeLeft = getTimeLeft(entityCount / speed)
+
+      log(`  ${entityCount} entities (${timeLeft}) to go`)
     }
   }
 
