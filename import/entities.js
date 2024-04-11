@@ -10,7 +10,8 @@ import yaml from 'js-yaml'
 import camelize from 'camelcase'
 import decamelize from 'decamelize'
 import mime from 'mime-types'
-import { S3Client, GetObjectCommand, PutObjectCommand } from '@aws-sdk/client-s3'
+import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3'
+import { Upload } from '@aws-sdk/lib-storage'
 
 dotenv.config()
 
@@ -284,25 +285,21 @@ async function copyFiles (database) {
 
     if (s3item) {
       try {
-        const chunks = []
-        for await (const chunk of s3item.Body) {
-          chunks.push(chunk)
-        }
-
-        const fileBuffer = Buffer.concat(chunks)
-
-        const putCommand = new PutObjectCommand({
-          Bucket: process.env.DO_BUCKET,
-          Key: `${database}/${entity}/${_id}`,
-          ContentDisposition: `inline;filename="${encodeURI(filename.replace('"', '\"'))}"`,
-          ContentType: mime.lookup(filename) || 'application/octet-stream',
-          Body: fileBuffer
+        const upload = new Upload({
+          client: spacesClient,
+          params: {
+            Bucket: process.env.DO_BUCKET,
+            Key: `${database}/${entity}/${_id}`,
+            ContentDisposition: `inline;filename="${encodeURI(filename.replace('"', '\"'))}"`,
+            ContentType: mime.lookup(filename) || 'application/octet-stream',
+            Body: s3item.Body
+          }
         })
 
-        await spacesClient.send(putCommand)
+        await upload.done()
         await mongo.db(database).collection('property').updateOne({ _id }, { $unset: { s3: '' } })
       } catch (error) {
-        log(`  Error - ${s3} - ${filename}`)
+        log(`  ${error.code} - ${s3} - ${filename}`)
       }
     } else {
       log(`  Not found - ${s3} - ${filename}`)
