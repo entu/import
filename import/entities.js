@@ -245,7 +245,7 @@ async function copyFiles (database) {
 
   const mongo = await mongoClient.connect()
 
-  const properties = await mongo.db(database).collection('property').find({ s3: { $exists: true }, filename: { $exists: true } }).sort({ entity: 1, _id: 1 }).toArray()
+  const properties = await mongo.db(database).collection('property').find({ s3: { $exists: true }, filename: { $exists: true } }).sort({ entity: -1, _id: -1 }).toArray()
 
   const s3Client = new S3Client({
     endpoint: process.env.S3_ENDPOINT,
