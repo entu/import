@@ -10,7 +10,7 @@ import yaml from 'js-yaml'
 import camelize from 'camelcase'
 import decamelize from 'decamelize'
 import mime from 'mime-types'
-import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3'
+import { S3Client, GetObjectCommand, ListObjectVersionsCommand } from '@aws-sdk/client-s3'
 import { Upload } from '@aws-sdk/lib-storage'
 
 dotenv.config()
@@ -280,7 +280,28 @@ async function copyFiles (database) {
     try {
       s3item = await s3Client.send(getCommand)
     } catch (error) {
+      const listVersionsCommand = new ListObjectVersionsCommand({
+        Bucket: process.env.S3_BUCKET,
+        Prefix: s3
+      })
 
+      const { Versions: versions } = await s3Client.send(listVersionsCommand)
+
+      if (versions?.length > 0) {
+        const { VersionId } = versions.sort((a, b) => b.LastModified - a.LastModified).at(-1)
+
+        if (VersionId) {
+          const getDeletedVesionCommand = new GetObjectCommand({
+            Bucket: process.env.S3_BUCKET,
+            Key: s3,
+            VersionId
+          })
+
+          s3item = await s3Client.send(getDeletedVesionCommand)
+
+          log(`  Found deleted - ${s3} - ${filename}`)
+        }
+      }
     }
 
     if (s3item) {
