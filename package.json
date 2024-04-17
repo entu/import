@@ -11,9 +11,8 @@
         "import:entities": "node ./import/entities.js"
     },
     "devDependencies": {
-        "@aws-sdk/client-s3": "3.550.0",
-        "@aws-sdk/lib-storage": "3.550.0",
-        "aws-sdk": "2.1579.0",
+        "@aws-sdk/client-s3": "3.556.0",
+        "@aws-sdk/lib-storage": "3.556.0",
         "camelcase": "8.0.0",
         "decamelize": "6.0.0",
         "dotenv": "16.4.5",
@@ -26,6 +25,6 @@
         "lodash": "4.17.21",
         "mime-types": "2.1.35",
         "mongodb": "6.5.0",
-        "mysql2": "3.9.2"
+        "mysql2": "3.9.4"
     }
 }
