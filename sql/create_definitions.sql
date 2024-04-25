@@ -565,13 +565,15 @@ INSERT INTO mongo (
     type,
     datatype,
     value_string,
-    value_reference
+    value_reference,
+    value_integer
 ) SELECT DISTINCT
     CONCAT(LOWER(TRIM(REPLACE(t.entity_definition_keyname, '-', '_'))), '_name'),
     x.type,
     x.datatype,
     CASE x.type
         WHEN '_mid' THEN CONCAT(LOWER(TRIM(REPLACE(t.entity_definition_keyname, '-', '_'))), '_name')
+        WHEN '_sharing' THEN 'domain'
         WHEN 'name' THEN 'name'
         WHEN 'label' THEN 'Name'
         WHEN 'type' THEN 'string'
@@ -582,6 +584,10 @@ INSERT INTO mongo (
         WHEN '_type' THEN 'property'
         WHEN '_parent' THEN LOWER(TRIM(REPLACE(t.entity_definition_keyname, '-', '_')))
         ELSE NULL
+    END,
+    CASE x.type
+        WHEN '_inheritrights' THEN 1
+        ELSE NULL
     END
 FROM
     translation AS t,
@@ -589,6 +595,8 @@ FROM
               SELECT '_mid' AS type, 'string' AS datatype
         UNION SELECT '_type', 'reference'
         UNION SELECT '_parent', 'reference'
+        UNION SELECT '_sharing', 'string'
+        UNION SELECT '_inheritrights', 'boolean'
         UNION SELECT 'name', 'string'
         UNION SELECT 'label', 'string'
         UNION SELECT 'type', 'string'
