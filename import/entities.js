@@ -85,6 +85,9 @@ async function prepareMySql (database) {
     '^-?[0-9]+$',
     database
   ])
+
+  log('Run delete_references.sql in MySQL')
+  await executeSql('delete_references', database)
 }
 
 async function prepareMongoDb (database) {
