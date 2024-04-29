@@ -23,6 +23,7 @@ importEntities()
 
 async function importEntities () {
   const databases = await executeSql('get_databases')
+  const dbList = databases.map(x => x.db)
 
   log(`Databases: ${dbList.join(', ')}`)
   console.log('')
@@ -376,7 +377,7 @@ async function aggregateAllEntities (database) {
 
   const mongo = await mongoClient.connect()
 
-  const entities = await mongo.db(database).collection('entity').find().sort({ _id: 1 }).toArray()
+  const entities = await mongo.db(database).collection('entity').find().sort({ _id: -1 }).toArray()
 
   const start = Date.now() / 1000
   const entityTotal = entities.length
