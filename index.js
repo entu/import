@@ -15,7 +15,7 @@ import { Upload } from '@aws-sdk/lib-storage'
 
 dotenv.config()
 
-const formulas = yaml.load(fs.readFileSync(path.resolve(path.dirname(''), 'import', 'formulas.yaml'), 'utf8'))
+const formulas = yaml.load(fs.readFileSync(path.resolve(path.dirname(''), 'formulas.yaml'), 'utf8'))
 const mongoClient = new MongoClient(process.env.MONGODB)
 const mysqlConnections = {}
 
