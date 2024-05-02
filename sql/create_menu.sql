@@ -162,4 +162,15 @@ INSERT INTO mongo (
     ('menu_conf_entity', 'group', 'et', 'string', 'Seaded', NULL, NULL),
     ('menu_conf_entity', 'group', 'en', 'string', 'Configuration', NULL, NULL),
     ('menu_conf_entity', 'query', NULL, 'string', '_type.string=entity&system._id.exists=false&sort=name.string', NULL, NULL),
-    ('menu_conf_entity', 'ordinal', NULL, 'integer', NULL, 1000, NULL);
+    ('menu_conf_entity', 'ordinal', NULL, 'integer', NULL, 1100, NULL),
+
+    ('menu_conf_plugin', '_type', NULL, 'reference', NULL, NULL, 'menu'),
+    ('menu_conf_plugin', '_parent', NULL, 'reference', NULL, NULL, CONCAT('database_entity_', ?)),
+    ('menu_conf_plugin', '_sharing', NULL, 'string', 'domain', NULL, NULL),
+    ('menu_conf_plugin', '_inheritrights', NULL, 'boolean', NULL, 1, NULL),
+    ('menu_conf_plugin', 'name', 'et', 'string', 'Pistikprogrammid', NULL, NULL),
+    ('menu_conf_plugin', 'name', 'en', 'string', 'Plugins', NULL, NULL),
+    ('menu_conf_plugin', 'group', 'et', 'string', 'Seaded', NULL, NULL),
+    ('menu_conf_plugin', 'group', 'en', 'string', 'Configuration', NULL, NULL),
+    ('menu_conf_plugin', 'query', NULL, 'string', '_type.string=plugin&sort=name.string', NULL, NULL),
+    ('menu_conf_plugin', 'ordinal', NULL, 'integer', NULL, 1200, NULL);

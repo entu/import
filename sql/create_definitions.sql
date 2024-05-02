@@ -178,6 +178,38 @@ AND entity_definition_keyname IN (SELECT keyname FROM mongo_entity_keyname)
 GROUP BY entity_definition_keyname;
 
 
+/* ester plugin */
+INSERT INTO mongo (
+    entity,
+    type,
+    datatype,
+    value_reference
+) SELECT DISTINCT
+    NULLIF(LOWER(TRIM(REPLACE(keyname, '-', '_'))), ''),
+    'plugin',
+    'reference',
+    'plugin_ester'
+FROM entity_definition
+WHERE actions_add LIKE '%ester%'
+AND keyname IN (SELECT keyname FROM mongo_entity_keyname);
+
+
+/* csv plugin */
+INSERT INTO mongo (
+    entity,
+    type,
+    datatype,
+    value_reference
+) SELECT DISTINCT
+    NULLIF(LOWER(TRIM(REPLACE(keyname, '-', '_'))), ''),
+    'plugin',
+    'reference',
+    'plugin_csv'
+FROM entity_definition
+WHERE actions_add LIKE '%csv%'
+AND keyname IN (SELECT keyname FROM mongo_entity_keyname);
+
+
 /* property key */
 INSERT INTO mongo (
     entity,

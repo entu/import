@@ -65,6 +65,13 @@ async function prepareMySql (database) {
   await executeSql('create_menu', database, [
     database,
     database,
+    database,
+    database
+  ])
+
+  log('Run create_plugins.sql in MySQL')
+  await executeSql('create_plugins', database, [
+    database,
     database
   ])
 
@@ -75,6 +82,7 @@ async function prepareMySql (database) {
 
   log('Run create_conf.sql in MySQL')
   await executeSql('create_conf', database, [
+    database,
     database,
     database
   ])
