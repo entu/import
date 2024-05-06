@@ -22,7 +22,7 @@ INSERT INTO mongo (
     UNION SELECT 'plugin_ester', 'name', 'et', 'string', 'ESTER kataloog', NULL, NULL
     UNION SELECT 'plugin_ester', 'name', 'en', 'string', 'ESTER catalogue', NULL, NULL
     UNION SELECT 'plugin_ester', 'type', NULL, 'string', 'entity-add', NULL, NULL
-    UNION SELECT 'plugin_ester', 'url', NULL, 'string', 'https://plugin.entu.app/ester', NULL, NULL
+    UNION SELECT 'plugin_ester', 'url', NULL, 'string', 'https://plugins.entu.app/ester', NULL, NULL
 
     UNION SELECT 'plugin_csv', '_type', NULL, 'reference', NULL, NULL, 'plugin'
     UNION SELECT 'plugin_csv', '_parent', NULL, 'reference', NULL, NULL, CONCAT('database_entity_', ?)
@@ -31,7 +31,7 @@ INSERT INTO mongo (
     UNION SELECT 'plugin_csv', 'name', 'et', 'string', 'CSV fail', NULL, NULL
     UNION SELECT 'plugin_csv', 'name', 'en', 'string', 'CSV file', NULL, NULL
     UNION SELECT 'plugin_csv', 'type', NULL, 'string', 'entity-add', NULL, NULL
-    UNION SELECT 'plugin_csv', 'url', NULL, 'string', 'https://plugin.entu.app/csv', NULL, NULL
+    UNION SELECT 'plugin_csv', 'url', NULL, 'string', 'https://plugins.entu.app/csv', NULL, NULL
 ) conf,
 (
   SELECT DISTINCT 'plugin_ester' AS entity
