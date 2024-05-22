@@ -66,6 +66,7 @@ async function prepareMySql (database) {
     database,
     database,
     database,
+    database,
     database
   ])
 
