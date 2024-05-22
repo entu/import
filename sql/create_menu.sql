@@ -173,4 +173,15 @@ INSERT INTO mongo (
     ('menu_conf_plugin', 'group', 'et', 'string', 'Seaded', NULL, NULL),
     ('menu_conf_plugin', 'group', 'en', 'string', 'Configuration', NULL, NULL),
     ('menu_conf_plugin', 'query', NULL, 'string', '_type.string=plugin&sort=name.string', NULL, NULL),
-    ('menu_conf_plugin', 'ordinal', NULL, 'integer', NULL, 1200, NULL);
+    ('menu_conf_plugin', 'ordinal', NULL, 'integer', NULL, 1200, NULL),
+
+    ('menu_conf_billing', '_type', NULL, 'reference', NULL, NULL, 'menu'),
+    ('menu_conf_billing', '_parent', NULL, 'reference', NULL, NULL, CONCAT('database_entity_', ?)),
+    ('menu_conf_billing', '_sharing', NULL, 'string', 'domain', NULL, NULL),
+    ('menu_conf_billing', '_inheritrights', NULL, 'boolean', NULL, 1, NULL),
+    ('menu_conf_billing', 'name', 'et', 'string', 'Arveldus', NULL, NULL),
+    ('menu_conf_billing', 'name', 'en', 'string', 'Billing', NULL, NULL),
+    ('menu_conf_billing', 'group', 'et', 'string', 'Seaded', NULL, NULL),
+    ('menu_conf_billing', 'group', 'en', 'string', 'Configuration', NULL, NULL),
+    ('menu_conf_billing', 'query', NULL, 'string', '/api/{DATABASE}/billing?locale={LOCALE}', NULL, NULL),
+    ('menu_conf_billing', 'ordinal', NULL, 'integer', NULL, 9999, NULL);
