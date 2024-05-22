@@ -215,7 +215,7 @@ FROM (
     WHERE property_definition_keyname = 'customer-user-parent'
 
     UNION SELECT
-        'quota_entities' AS type,
+        'billing_entities_limit' AS type,
         'integer' AS datatype,
         NULL AS value_string,
         value_integer AS value_integer,
@@ -229,7 +229,7 @@ FROM (
     WHERE property_definition_keyname = 'customer-quota-entities'
 
     UNION SELECT
-        'quota_data' AS type,
+        'billing_data_limit' AS type,
         'decimal' AS datatype,
         NULL AS value_string,
         NULL AS value_integer,
