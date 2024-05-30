@@ -183,5 +183,5 @@ INSERT INTO mongo (
     ('menu_conf_billing', 'name', 'en', 'string', 'Billing', NULL, NULL),
     ('menu_conf_billing', 'group', 'et', 'string', 'Seaded', NULL, NULL),
     ('menu_conf_billing', 'group', 'en', 'string', 'Configuration', NULL, NULL),
-    ('menu_conf_billing', 'query', NULL, 'string', '/api/{DATABASE}/billing?locale={LOCALE}', NULL, NULL),
+    ('menu_conf_billing', 'query', NULL, 'string', '/{DATABASE}/billing', NULL, NULL),
     ('menu_conf_billing', 'ordinal', NULL, 'integer', NULL, 9999, NULL);
