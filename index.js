@@ -550,12 +550,32 @@ const sendAggregateToApi = async (database, entityId) => {
         try {
           resolve(JSON.parse(body))
         } catch (e) {
-          console.error(e)
-          reject(new Error(e))
+          log(`Error ${response.statusCode}: ${entityId}`)
+
+          const bodyText = getBodyText(body)
+          if (bodyText) {
+            console.error(bodyText)
+          }
+
+          resolve()
         }
       })
     })
   })
+}
+
+function getBodyText (body) {
+  const match = body.match(/<body[^>]*>([\s\S]*?)<\/body>/i)
+
+  return match?.at(1)
+    ? match.at(1)
+      .replace(/<[^>]*>/g, '')
+      .replace(/  +/g, ' ')
+      .split('\n')
+      .map(x => x.trim())
+      .filter(x => !!x)
+      .join('\n')
+    : undefined
 }
 
 function log (message) {
