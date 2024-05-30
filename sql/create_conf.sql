@@ -295,6 +295,7 @@ INSERT INTO mongo (
     ('property_type', 'type', NULL, 'string', 'string', NULL, NULL),
     ('property_type', 'ordinal', NULL, 'integer', NULL, 15, NULL),
     ('property_type', 'set', NULL, 'string', 'boolean', NULL, NULL),
+    ('property_type', 'set', NULL, 'string', 'counter', NULL, NULL),
     ('property_type', 'set', NULL, 'string', 'date', NULL, NULL),
     ('property_type', 'set', NULL, 'string', 'datetime', NULL, NULL),
     ('property_type', 'set', NULL, 'string', 'file', NULL, NULL),

@@ -522,6 +522,15 @@ function cleanProperty (property) {
     newProperty.string = crypto.createHash('sha256').update(newProperty.string).digest('hex')
   }
 
+  if (newProperty.datatype === 'counter_value') {
+    const regex = /\d+(?!.*\d)/
+    const match = newProperty.string.match(regex)
+
+    if (match) {
+      newProperty.number = parseInt(match.at(0), 10)
+    }
+  }
+
   _.unset(newProperty, 'id')
   _.unset(newProperty, 'datatype')
 
