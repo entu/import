@@ -215,15 +215,19 @@ async function replaceIds (database) {
 
   const mongo = await mongoClient.connect()
 
-  const entities = await mongo.db(database).collection('entity').find({
-    oid: { $exists: true },
-    propsOk: { $exists: false }
-  }, {
-    collation: {
-      locale: 'et',
-      numericOrdering: true
-    }
-  }).sort({ oid: 1 }).toArray()
+  const entities = await mongo.db(database).collection('entity')
+    .find(
+      {
+        oid: { $exists: true },
+        propsOk: { $exists: false }
+      },
+      {
+        projection: { _id: true, oid: true },
+        collation: { locale: 'et', numericOrdering: true }
+      }
+    )
+    .sort({ oid: 1 })
+    .toArray()
 
   const start = Date.now() / 1000
   const entityTotal = entities.length
@@ -258,7 +262,10 @@ async function copyFiles (database) {
 
   const mongo = await mongoClient.connect()
 
-  const properties = await mongo.db(database).collection('property').find({ s3: { $exists: true }, filename: { $exists: true } }).sort({ entity: -1, _id: -1 }).toArray()
+  const properties = await mongo.db(database).collection('property')
+    .find({ s3: { $exists: true }, filename: { $exists: true } })
+    .sort({ entity: -1, _id: -1 })
+    .toArray()
 
   const s3Client = new S3Client({
     endpoint: process.env.S3_ENDPOINT,
@@ -357,7 +364,13 @@ async function aggregateNewEntities (database) {
 
   const mongo = await mongoClient.connect()
 
-  const entities = await mongo.db(database).collection('entity').find({ aggregated: { $exists: false } }).sort({ _id: 1 }).toArray()
+  const entities = await mongo.db(database).collection('entity')
+    .find(
+      { aggregated: { $exists: false } },
+      { projection: { _id: true } }
+    )
+    .sort({ _id: 1 })
+    .toArray()
 
   const start = Date.now() / 1000
   const entityTotal = entities.length
@@ -386,7 +399,13 @@ async function aggregateAllEntities (database) {
 
   const mongo = await mongoClient.connect()
 
-  const entities = await mongo.db(database).collection('entity').find().sort({ _id: -1 }).toArray()
+  const entities = await mongo.db(database).collection('entity')
+    .find(
+      {},
+      { projection: { _id: true } }
+    )
+    .sort({ _id: -1 })
+    .toArray()
 
   const start = Date.now() / 1000
   const entityTotal = entities.length
