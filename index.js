@@ -41,6 +41,7 @@ async function importEntities () {
     await replaceIds(database)
     await copyFiles(database)
     await aggregateNewEntities(database)
+    await addInheritRights(database)
     await aggregateAllEntities(database)
 
     log(`End database ${database} import`)
@@ -388,6 +389,54 @@ async function aggregateNewEntities (database) {
     const entity = entities[i]
 
     await sendAggregateToApi(database, entity._id)
+
+    entityCount--
+    if (entityCount % 1000 === 0 && entityCount > 0) {
+      const end = Date.now() / 1000
+      const speed = (entityTotal - entityCount) / (end - start)
+      const timeLeft = getTimeLeft(entityCount / speed)
+
+      log(`  ${entityCount} entities (${timeLeft}) to go`)
+    }
+  }
+
+  await mongoClient.close()
+}
+
+async function addInheritRights (database) {
+  log('Add Inherit Rights to Entities')
+
+  const mongo = await mongoClient.connect()
+
+  const entities = await mongo.db(database).collection('entity')
+    .find(
+      { 'private._inheritrights': { $exists: false } },
+      { projection: { _id: true } }
+    )
+    .sort({ _id: 1 })
+    .toArray()
+
+  const start = Date.now() / 1000
+  const entityTotal = entities.length
+  let entityCount = entities.length
+
+  for (let i = 0; i < entities.length; i++) {
+    const entity = entities[i]
+
+    const existing = await mongo.db(database).collection('property').findOne({
+      entity: entity._id,
+      type: '_inheritrights',
+      deleted: { $exists: false }
+    }, { projection: { _id: true } })
+
+    if (existing) continue
+
+    await mongo.db(database).collection('property').insertOne({
+      entity: entity._id,
+      type: '_inheritrights',
+      boolean: true,
+      created: { at: new Date() }
+    })
 
     entityCount--
     if (entityCount % 1000 === 0 && entityCount > 0) {
