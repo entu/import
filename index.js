@@ -263,7 +263,7 @@ async function copyFiles (database) {
   const mongo = await mongoClient.connect()
 
   const properties = await mongo.db(database).collection('property')
-    .find({ s3: { $exists: true }, filename: { $exists: true } })
+    .find({ s3: { $exists: true } })
     .sort({ entity: -1, _id: -1 })
     .toArray()
 
@@ -326,15 +326,23 @@ async function copyFiles (database) {
 
     if (s3item) {
       try {
+        const params = {
+          Bucket: process.env.DO_BUCKET,
+          Key: `${database}/${entity}/${_id}`,
+          Body: s3item.Body,
+          ContentType: 'application/octet-stream'
+        }
+
+        if (filename) {
+          params.ContentDisposition = `inline;filename="${encodeURI(filename.replace('"', '\"'))}"`
+          params.ContentType = mime.lookup(filename) || 'application/octet-stream'
+        } else {
+          log(`  No filename - ${s3} - ${_id}`)
+        }
+
         const upload = new Upload({
           client: spacesClient,
-          params: {
-            Bucket: process.env.DO_BUCKET,
-            Key: `${database}/${entity}/${_id}`,
-            ContentDisposition: `inline;filename="${encodeURI(filename.replace('"', '\"'))}"`,
-            ContentType: mime.lookup(filename) || 'application/octet-stream',
-            Body: s3item.Body
-          }
+          params
         })
 
         await upload.done()
