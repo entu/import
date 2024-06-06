@@ -10,7 +10,7 @@ import yaml from 'js-yaml'
 import camelize from 'camelcase'
 import decamelize from 'decamelize'
 import mime from 'mime-types'
-import { S3Client, GetObjectCommand, ListObjectVersionsCommand } from '@aws-sdk/client-s3'
+import { S3Client, GetObjectCommand, HeadObjectCommand, ListObjectVersionsCommand } from '@aws-sdk/client-s3'
 import { Upload } from '@aws-sdk/lib-storage'
 
 dotenv.config()
