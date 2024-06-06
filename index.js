@@ -368,6 +368,63 @@ async function copyFiles (database) {
   await mongoClient.close()
 }
 
+async function checkFileSizes (database) {
+  log('Check file sizes')
+
+  const mongo = await mongoClient.connect()
+
+  const properties = await mongo.db(database).collection('property')
+    .find({ filesize: { $exists: true } })
+    .sort({ entity: -1, _id: -1 })
+    .toArray()
+
+  const spacesClient = new S3Client({
+    endpoint: process.env.DO_ENDPOINT,
+    credentials: {
+      accessKeyId: process.env.DO_KEY,
+      secretAccessKey: process.env.DO_SECRET
+    }
+  })
+
+  const start = Date.now() / 1000
+  const filesTotal = properties.length
+  let filesCount = properties.length
+
+  for (let i = 0; i < properties.length; i++) {
+    const { _id, entity, filename, filesize, md5 } = properties[i]
+
+    const headCommand = new HeadObjectCommand({
+      Bucket: process.env.S3_BUCKET,
+      Key: `${database}/${entity}/${_id}`
+    })
+
+    try {
+      const metadata = await spacesClient.send(headCommand)
+
+      if (filesize && metadata.ContentLength !== filesize) {
+        log(`  ${entity}/${_id} - ${metadata.ContentLength} - ${filesize}`)
+      }
+
+      if (md5 && metadata.ETag.substring(1, metadata.ETag.length - 1) !== md5) {
+        log(`  ${entity}/${_id} - ${metadata.ETag} - ${md5}`)
+      }
+    } catch (error) {
+      log(`  Not found - ${entity}/${_id} - ${filename}`)
+    }
+
+    filesCount--
+    if (filesCount % 1000 === 0 && filesCount > 0) {
+      const end = Date.now() / 1000
+      const speed = (filesTotal - filesCount) / (end - start)
+      const timeLeft = getTimeLeft(filesCount / speed)
+
+      log(`  ${filesCount} files (${timeLeft}) to go`)
+    }
+  }
+
+  await mongoClient.close()
+}
+
 async function aggregateNewEntities (database) {
   log('Aggregate New Entities')
 
