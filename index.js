@@ -22,8 +22,8 @@ const mysqlConnections = {}
 importEntities()
 
 async function importEntities () {
-  const databases = await executeSql('get_databases')
-  const dbList = databases.map(x => x.db)
+  const mongoDbList = await mongoClient.db().admin().listDatabases()
+  const dbList1 = mongoDbList.databases.filter(db => !['admin', 'config', 'local'].includes(db.name)).map(db => db.name)
 
   log(`Databases: ${dbList.join(', ')}`)
   console.log('')
