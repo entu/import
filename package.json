@@ -14,8 +14,8 @@
     "set-db-owner": "node src/setDbOwner.js"
   },
   "devDependencies": {
-    "@aws-sdk/client-s3": "3.955.0",
-    "@aws-sdk/lib-storage": "3.955.0",
+    "@aws-sdk/client-s3": "3.958.0",
+    "@aws-sdk/lib-storage": "3.958.0",
     "@eslint/js": "9.39.2",
     "@json2csv/node": "7.0.6",
     "@stylistic/eslint-plugin": "5.6.1",
