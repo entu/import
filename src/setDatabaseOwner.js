@@ -118,6 +118,4 @@ async function setDatabaseAsOwner (database) {
       }
     }))
   }
-
-  await mongoClient.close()
 }

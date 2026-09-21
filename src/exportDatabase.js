@@ -217,66 +217,6 @@ async function streamEntitiesToFile (database, query = {}, filename) {
   log(`Completed: ${totalProcessed} entities written to ${filename}`)
 }
 
-async function entitiesToFile (entities, filename) {
-  fs.mkdirSync(path.dirname(filename), { recursive: true })
-
-  // Save all entities to yaml
-  fs.writeFileSync(filename.replace('.csv', '.yaml'), yaml.stringify(entities, { lineWidth: -1, sortMapEntries }))
-
-  const entityType = path.basename(path.dirname(filename))
-
-  // First pass: collect all possible field names
-  const allFields = new Set(['_id'])
-
-  for (let i = 0; i < entities.length; i++) {
-    const entity = entities[i]
-
-    if (entity._parent) {
-      allFields.add('_parent')
-    }
-
-    for (const propertyName in entity) {
-      if (propertyName.startsWith('_') || skipProperties.includes(propertyName)) continue
-      allFields.add(propertyName)
-    }
-  }
-
-  // Second pass: process entities and ensure all fields exist
-  for (let i = 0; i < entities.length; i++) {
-    const entity = entities[i]
-    const newEntity = { _id: entity._id }
-
-    const parent = entity._parent?.map((x) => x.reference).join('')
-    if (parent) {
-      newEntity._parent = parent
-    }
-
-    for (const propertyName in entity) {
-      if (propertyName.startsWith('_') || skipProperties.includes(propertyName)) continue
-
-      const element = entity[propertyName]
-      newEntity[propertyName] = await getValues(element, entity._id, entityType, propertyName)
-    }
-
-    // Ensure all fields exist in this entity (set to null if missing)
-    for (const field of allFields) {
-      if (!(field in newEntity)) {
-        newEntity[field] = null
-      }
-    }
-
-    entities[i] = newEntity
-  }
-
-  if (entities.length === 0) return
-
-  // Explicitly specify the fields for the CSV parser
-  const parser = new AsyncParser({ fields: Array.from(allFields).sort(compareFields) })
-  const csv = await parser.parse(entities).promise()
-
-  fs.writeFileSync(filename, csv)
-}
-
 // Orders CSV columns: _id first, then _parent, the rest alphabetically.
 function compareFields (a, b) {
   const first = ['_id', '_parent']

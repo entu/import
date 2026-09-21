@@ -121,7 +121,7 @@ for (let i = 0; i < dbList.length; i++) {
   const database = dbList[i]
   log(`${database} - Start`)
 
-  await importPlugins(database)
+  await syncPlugins(database)
 
   log(`${database} - End`)
   console.log('')
@@ -129,7 +129,7 @@ for (let i = 0; i < dbList.length; i++) {
 
 process.exit()
 
-async function importPlugins (database) {
+async function syncPlugins (database) {
   const db = mongo.db(database)
 
   // Get plugin entity type

@@ -84,6 +84,4 @@ async function aggregateAllEntities (database, filter = {}) {
       log(`  ${entityCount} entities (${timeLeft}) to go`)
     }
   }
-
-  await mongoClient.close()
 }

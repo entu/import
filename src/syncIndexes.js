@@ -22,7 +22,7 @@ for (let i = 0; i < dbList.length; i++) {
   const database = dbList[i]
   log(`${database} - Start`)
 
-  await setIndexes(database)
+  await syncIndexes(database)
 
   log(`${database} - End`)
   console.log('')
@@ -30,7 +30,7 @@ for (let i = 0; i < dbList.length; i++) {
 
 process.exit()
 
-async function setIndexes (database) {
+async function syncIndexes (database) {
   log('Setting indexes')
 
   const mongo = await mongoClient.connect()

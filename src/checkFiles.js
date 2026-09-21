@@ -2,7 +2,7 @@ import dotenv from 'dotenv/config'
 
 import { MongoClient } from 'mongodb'
 import { S3Client, HeadObjectCommand } from '@aws-sdk/client-s3'
-import { appendFileSync, writeFileSync } from 'fs'
+import { appendFileSync, mkdirSync, writeFileSync } from 'fs'
 import { log } from './helpers.js'
 
 const filesPath = './export'
@@ -42,6 +42,7 @@ for (let i = 0; i < dbList.length; i++) {
   const csvFile = `${filesPath}/${dbName}/files.csv`
 
   // Initialize CSV file with header for this database
+  mkdirSync(`${filesPath}/${dbName}`, { recursive: true })
   writeFileSync(csvFile, 'STATUS;DATABASE;KEY;DB_SIZE;DO_SIZE;S3_SIZE;DELETED\n')
 
   const files = await mongoClient
@@ -109,10 +110,10 @@ for (let i = 0; i < dbList.length; i++) {
       appendFileSync(csvFile, `MISSING_BOTH;${dbName};${key};${f.filesize || ''};;;${isDeleted}\n`)
     }
     else if (!doFound && s3Found) {
-      appendFileSync(csvFile, `MISSING_DO;${dbName};${key};${f.filesize || ''};${s3FileInfo.ContentLength};${isDeleted}\n`)
+      appendFileSync(csvFile, `MISSING_DO;${dbName};${key};${f.filesize || ''};;${s3FileInfo.ContentLength};${isDeleted}\n`)
     }
     else if (doFound && !s3Found) {
-      appendFileSync(csvFile, `MISSING_S3;${dbName};${key};${f.filesize || ''};${doFileInfo.ContentLength};${isDeleted}\n`)
+      appendFileSync(csvFile, `MISSING_S3;${dbName};${key};${f.filesize || ''};${doFileInfo.ContentLength};;${isDeleted}\n`)
     }
     else if (doFound && s3Found) {
       // Both files exist, check sizes

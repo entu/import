@@ -22,7 +22,7 @@ for (let i = 0; i < dbList.length; i++) {
   const database = dbList[i]
   log(`${database} - Start`)
 
-  await deleteExpiredInvites(database)
+  await cleanExpiredInvites(database)
 
   log(`${database} - End`)
   console.log('')
@@ -30,7 +30,7 @@ for (let i = 0; i < dbList.length; i++) {
 
 process.exit()
 
-async function deleteExpiredInvites (database) {
+async function cleanExpiredInvites (database) {
   const mongo = await mongoClient.connect()
 
   const query = {

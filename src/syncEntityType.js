@@ -473,7 +473,7 @@ async function getDestinationReference (templateDb, destDb, database, templateRe
     return referenceCache.get(cacheKey)
   }
 
-  // Plugins receive user tokens, so they match by url (as importPlugins does) - a same-named plugin pointing elsewhere is never linked
+  // Plugins receive user tokens, so they match by url (as syncPlugins does) - a same-named plugin pointing elsewhere is never linked
   const matchFilter = type === 'plugin' ? { 'private.url.string': { $in: [url] } } : { 'private.name.string': { $in: names } }
 
   // Find destination entity with same type and name (any language) or url

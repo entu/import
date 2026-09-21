@@ -27,7 +27,7 @@ for (let i = 0; i < dbList.length; i++) {
   const database = dbList[i]
   log(`${database} - Start`)
 
-  await removeDuplicateProps(database)
+  await cleanProperties(database)
 
   log(`${database} - End`)
   console.log('')
@@ -35,7 +35,7 @@ for (let i = 0; i < dbList.length; i++) {
 
 process.exit()
 
-async function removeDuplicateProps (database) {
+async function cleanProperties (database) {
   const mongo = await mongoClient.connect()
   const collection = mongo.db(database).collection('property')
 
