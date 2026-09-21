@@ -15,6 +15,7 @@
     "export": "node src/export.js",
     "import-plugins": "node src/importPlugins.js",
     "remove-duplicate-props": "node src/removeDuplicateProps.js",
+    "set-database-parent": "node src/setDatabaseParent.js",
     "set-db-owner": "node src/setDbOwner.js",
     "set-indexes": "node src/setIndexes.js"
   },

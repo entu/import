@@ -113,31 +113,7 @@ async function copyEntityDefinition (database, entityType, overwrite) {
     'entity'
   )
 
-  // Add _parent property with reference to database entity (only if not already set)
-  const destDatabase = await destDb.collection('entity').findOne(
-    { 'private._type.string': 'database' },
-    { projection: { _id: true } }
-  )
-
-  if (destDatabase) {
-    const hasParent = await destDb.collection('property').findOne({
-      entity: destEntity._id,
-      type: '_parent',
-      reference: destDatabase._id,
-      deleted: { $exists: false }
-    })
-
-    if (!hasParent) {
-      newProperties.push({
-        entity: destEntity._id,
-        type: '_parent',
-        reference: destDatabase._id,
-        created: {
-          at: new Date()
-        }
-      })
-    }
-  }
+  newProperties.push(...await getDatabaseParentProperties(destDb, destEntity._id))
 
   if (newProperties.length > 0) {
     await destDb.collection('property').insertMany(newProperties)
@@ -512,6 +488,14 @@ async function getDestinationReference (templateDb, destDb, database, templateRe
   if (destReference) {
     referenceCache.set(cacheKey, destReference._id)
 
+    // Existing menus and plugins must have the database entity as parent too
+    const parentProperties = await getDatabaseParentProperties(destDb, destReference._id)
+
+    if (parentProperties.length > 0) {
+      await destDb.collection('property').insertMany(parentProperties)
+      await sendAggregateToApi(database, destReference._id)
+    }
+
     return destReference._id
   }
 
@@ -528,22 +512,7 @@ async function getDestinationReference (templateDb, destDb, database, templateRe
     type
   )
 
-  // Add _parent property with reference to database entity
-  const destDatabase = await destDb.collection('entity').findOne(
-    { 'private._type.string': 'database' },
-    { projection: { _id: true } }
-  )
-
-  if (destDatabase) {
-    newProperties.push({
-      entity: result.insertedId,
-      type: '_parent',
-      reference: destDatabase._id,
-      created: {
-        at: new Date()
-      }
-    })
-  }
+  newProperties.push(...await getDatabaseParentProperties(destDb, result.insertedId))
 
   await destDb.collection('property').insertMany(newProperties)
 
@@ -551,4 +520,38 @@ async function getDestinationReference (templateDb, destDb, database, templateRe
   await sendAggregateToApi(database, result.insertedId)
 
   return result.insertedId
+}
+
+// Returns the _parent property linking the entity to the database entity, or nothing when it is already set
+async function getDatabaseParentProperties (destDb, entityId) {
+  const destDatabase = await destDb.collection('entity').findOne(
+    { 'private._type.string': 'database' },
+    { projection: { _id: true } }
+  )
+
+  if (!destDatabase) {
+    log('  Database entity not found - _parent not set')
+
+    return []
+  }
+
+  const hasParent = await destDb.collection('property').findOne({
+    entity: entityId,
+    type: '_parent',
+    reference: destDatabase._id,
+    deleted: { $exists: false }
+  })
+
+  if (hasParent) {
+    return []
+  }
+
+  return [{
+    entity: entityId,
+    type: '_parent',
+    reference: destDatabase._id,
+    created: {
+      at: new Date()
+    }
+  }]
 }

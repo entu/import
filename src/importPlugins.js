@@ -186,10 +186,13 @@ async function upsertPlugin (db, database, plugin, pluginTypeId) {
 
     pluginEntity = { _id: result.insertedId }
 
-    newProperties.push(...await getNewEntityProperties(db, pluginEntity._id, pluginTypeId))
+    newProperties.push(...getNewEntityProperties(pluginEntity._id, pluginTypeId))
   }
 
-  newProperties.push(...await syncProperties(db, plugin.properties, pluginEntity._id))
+  newProperties.push(
+    ...await getDatabaseParentProperties(db, pluginEntity._id),
+    ...await syncProperties(db, plugin.properties, pluginEntity._id)
+  )
 
   if (newProperties.length > 0) {
     await db.collection('property').insertMany(newProperties)
@@ -201,9 +204,9 @@ async function upsertPlugin (db, database, plugin, pluginTypeId) {
   return pluginEntity._id
 }
 
-// Returns the _type, _created and _parent (database entity) properties of a newly created entity
-async function getNewEntityProperties (db, entityId, typeId) {
-  const newProperties = [
+// Returns the _type and _created properties of a newly created entity
+function getNewEntityProperties (entityId, typeId) {
+  return [
     {
       entity: entityId,
       type: '_type',
@@ -221,25 +224,40 @@ async function getNewEntityProperties (db, entityId, typeId) {
       }
     }
   ]
+}
 
-  // Add _parent property with reference to database entity
+// Returns the _parent property linking the entity to the database entity, or nothing when it is already set
+async function getDatabaseParentProperties (db, entityId) {
   const databaseEntity = await db.collection('entity').findOne(
     { 'private._type.string': 'database' },
     { projection: { _id: true } }
   )
 
-  if (databaseEntity) {
-    newProperties.push({
-      entity: entityId,
-      type: '_parent',
-      reference: databaseEntity._id,
-      created: {
-        at: new Date()
-      }
-    })
+  if (!databaseEntity) {
+    log('  Database entity not found - _parent not set')
+
+    return []
   }
 
-  return newProperties
+  const hasParent = await db.collection('property').findOne({
+    entity: entityId,
+    type: '_parent',
+    reference: databaseEntity._id,
+    deleted: { $exists: false }
+  })
+
+  if (hasParent) {
+    return []
+  }
+
+  return [{
+    entity: entityId,
+    type: '_parent',
+    reference: databaseEntity._id,
+    created: {
+      at: new Date()
+    }
+  }]
 }
 
 // Writes template properties to the destination entity, rewriting only property types that differ
@@ -329,22 +347,28 @@ async function linkToEntityType (db, database, typeName, pluginId, pluginName) {
     deleted: { $exists: false }
   })
 
+  // Entity types must have the database entity as parent
+  const newProperties = await getDatabaseParentProperties(db, entityType._id)
+
   if (hasLink) {
     log(`  Entity type "${typeName}" already links ${pluginName}`)
-    return
+  }
+  else {
+    newProperties.push({
+      entity: entityType._id,
+      type: 'plugin',
+      reference: pluginId,
+      created: {
+        at: new Date()
+      }
+    })
+
+    log(`  Linked ${pluginName} to entity type "${typeName}"`)
   }
 
-  await db.collection('property').insertOne({
-    entity: entityType._id,
-    type: 'plugin',
-    reference: pluginId,
-    created: {
-      at: new Date()
-    }
-  })
+  if (newProperties.length === 0) return
 
-  log(`  Linked ${pluginName} to entity type "${typeName}"`)
-
+  await db.collection('property').insertMany(newProperties)
   await sendAggregateToApi(database, entityType._id)
 }
 
@@ -363,7 +387,9 @@ async function linkToMenu (db, database, menu, pluginId, pluginName) {
     }
   )
 
-  if (!menuEntity) {
+  const isNewMenu = !menuEntity
+
+  if (isNewMenu) {
     const menuType = await db.collection('entity').findOne(
       {
         'private._type.string': 'entity',
@@ -387,10 +413,19 @@ async function linkToMenu (db, database, menu, pluginId, pluginName) {
     menuEntity = { _id: result.insertedId }
 
     await db.collection('property').insertMany([
-      ...await getNewEntityProperties(db, menuEntity._id, menuType._id),
+      ...getNewEntityProperties(menuEntity._id, menuType._id),
       ...await syncProperties(db, menu.properties, menuEntity._id)
     ])
+  }
 
+  // New and existing menus must have the database entity as parent
+  const parentProperties = await getDatabaseParentProperties(db, menuEntity._id)
+
+  if (parentProperties.length > 0) {
+    await db.collection('property').insertMany(parentProperties)
+  }
+
+  if (isNewMenu || parentProperties.length > 0) {
     await sendAggregateToApi(database, menuEntity._id)
   }
 
