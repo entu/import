@@ -4,7 +4,7 @@ export async function sendAggregateToApi (database, entityId) {
 }
 
 export function log (message) {
-  console.log(new Date().toISOString().substring(11).replace('Z', ''), message)
+  console.log(new Date().toISOString().slice(11).replace('Z', ''), message)
 }
 
 export function getTimeLeft (seconds) {

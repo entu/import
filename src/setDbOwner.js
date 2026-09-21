@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import dotenv from 'dotenv/config'
 
 import { MongoClient } from 'mongodb'
@@ -6,9 +5,14 @@ import { getTimeLeft, log, sendAggregateToApi } from './helpers.js'
 
 const mongoClient = new MongoClient(process.env.MONGODB)
 const mongoDbList = await mongoClient.db().admin().listDatabases()
-const dbList = mongoDbList.databases.filter((db) => !['admin', 'analytics', 'config', 'local'].includes(db.name)).map((db) => db.name)
+let dbList = []
 
-// const dbList = [
+dbList = mongoDbList.databases
+  .filter((db) => !['admin', 'analytics', 'config', 'entu', 'local'].includes(db.name))
+  .map((db) => db.name)
+
+// dbList = [
+//   'roots'
 // ]
 
 const dbOwners = process.env.DB_OWNERS?.split(',').map((x) => x.trim()) || []
@@ -46,18 +50,35 @@ async function setDatabaseAsOwner (database) {
     return
   }
 
+  log(`Database entity: ${dbEntity._id}`)
+  const deleteResult = await mongo.db(database).collection('property').updateMany(
+    { entity: dbEntity._id, type: 'entu_user', uid: { $nin: dbOwners } },
+    { $set: { deleted: { at: new Date() } } }
+  )
+
+  log('Removed old owners')
+
+  let insertCount = 0
   for (const owner of dbOwners) {
-    if (!dbEntity.private?.entu_user?.some((x) => x.string === owner)) {
+    if (!dbEntity.private?.entu_user?.some((x) => x.uid === owner)) {
       await mongo.db(database).collection('property').insertOne({
         entity: dbEntity._id,
         type: 'entu_user',
-        string: owner,
+        uid: owner,
+        email: `${owner}@eesti.ee`,
+        provider: 'smart-id',
         created: { at: new Date() }
       })
+
+      insertCount++
     }
   }
 
-  await sendAggregateToApi(database, dbEntity._id)
+  log('Added new owners')
+
+  if (deleteResult.modifiedCount > 0 || insertCount > 0) {
+    await sendAggregateToApi(database, dbEntity._id)
+  }
 
   log(`Add ${dbEntity._id} as owner`)
 
@@ -98,5 +119,5 @@ async function setDatabaseAsOwner (database) {
     }))
   }
 
-  return `${hours}h ${minutes}m`
+  await mongoClient.close()
 }

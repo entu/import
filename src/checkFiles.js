@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import dotenv from 'dotenv/config'
 
 import { MongoClient } from 'mongodb'
@@ -6,15 +5,19 @@ import { S3Client, HeadObjectCommand } from '@aws-sdk/client-s3'
 import { appendFileSync, writeFileSync } from 'fs'
 import { log } from './helpers.js'
 
+const filesPath = './export'
+
 const mongoClient = new MongoClient(process.env.MONGODB)
 const mongoDbList = await mongoClient.db().admin().listDatabases()
-const dbList = mongoDbList.databases.filter((db) => !['admin', 'analytics', 'config', 'local'].includes(db.name)).map((db) => db.name)
+let dbList = []
 
-// const dbList = [
+dbList = mongoDbList.databases
+  .filter((db) => !['admin', 'analytics', 'config', 'entu', 'local'].includes(db.name))
+  .map((db) => db.name)
+
+// dbList = [
+//   'roots'
 // ]
-
-// Initialize CSV file with header
-writeFileSync('files.csv', 'STATUS;DATABASE;KEY;DB_SIZE;DO_SIZE;S3_SIZE;DELETED\n')
 
 const spacesClient = new S3Client({
   endpoint: process.env.DO_SPACES_ENDPOINT,
@@ -36,6 +39,11 @@ const s3Client = new S3Client({
 
 for (let i = 0; i < dbList.length; i++) {
   const dbName = dbList.at(i)
+  const csvFile = `${filesPath}/${dbName}/files.csv`
+
+  // Initialize CSV file with header for this database
+  writeFileSync(csvFile, 'STATUS;DATABASE;KEY;DB_SIZE;DO_SIZE;S3_SIZE;DELETED\n')
+
   const files = await mongoClient
     .db(dbName)
     .collection('property')
@@ -98,13 +106,13 @@ for (let i = 0; i < dbList.length; i++) {
 
     // Analyze results
     if (!doFound && !s3Found) {
-      appendFileSync('files.csv', `MISSING_BOTH;${dbName};${key};${f.filesize || ''};;;${isDeleted}\n`)
+      appendFileSync(csvFile, `MISSING_BOTH;${dbName};${key};${f.filesize || ''};;;${isDeleted}\n`)
     }
     else if (!doFound && s3Found) {
-      appendFileSync('files.csv', `MISSING_DO;${dbName};${key};${f.filesize || ''};${s3FileInfo.ContentLength};${isDeleted}\n`)
+      appendFileSync(csvFile, `MISSING_DO;${dbName};${key};${f.filesize || ''};${s3FileInfo.ContentLength};${isDeleted}\n`)
     }
     else if (doFound && !s3Found) {
-      appendFileSync('files.csv', `MISSING_S3;${dbName};${key};${f.filesize || ''};${doFileInfo.ContentLength};${isDeleted}\n`)
+      appendFileSync(csvFile, `MISSING_S3;${dbName};${key};${f.filesize || ''};${doFileInfo.ContentLength};${isDeleted}\n`)
     }
     else if (doFound && s3Found) {
       // Both files exist, check sizes
@@ -114,28 +122,28 @@ for (let i = 0; i < dbList.length; i++) {
 
       if (doSize === s3Size && doSize === dbSize) {
         // All sizes match - perfect, no logging needed for OK files
-        // appendFileSync('files.csv', `OK;${dbName};${key};${dbSize};${doSize};${s3Size};${isDeleted}\n`)
+        // appendFileSync(csvFile, `OK;${dbName};${key};${dbSize};${doSize};${s3Size};${isDeleted}\n`)
       }
       else if (doSize === s3Size) {
         // DO and S3 match but differ from DB
-        appendFileSync('files.csv', `MISMATCH_DB;${dbName};${key};${dbSize};${doSize};${s3Size};${isDeleted}\n`)
+        appendFileSync(csvFile, `MISMATCH_DB;${dbName};${key};${dbSize};${doSize};${s3Size};${isDeleted}\n`)
       }
       else if (doSize === dbSize) {
         // DO and DB match but S3 differs
-        appendFileSync('files.csv', `MISMATCH_S3;${dbName};${key};${dbSize};${doSize};${s3Size};${isDeleted}\n`)
+        appendFileSync(csvFile, `MISMATCH_S3;${dbName};${key};${dbSize};${doSize};${s3Size};${isDeleted}\n`)
       }
       else if (s3Size === dbSize) {
         // S3 and DB match but DO differs
-        appendFileSync('files.csv', `MISMATCH_DO;${dbName};${key};${dbSize};${doSize};${s3Size};${isDeleted}\n`)
+        appendFileSync(csvFile, `MISMATCH_DO;${dbName};${key};${dbSize};${doSize};${s3Size};${isDeleted}\n`)
       }
       else {
         // All three sizes are different
-        appendFileSync('files.csv', `MISMATCH_ALL;${dbName};${key};${dbSize};${doSize};${s3Size};${isDeleted}\n`)
+        appendFileSync(csvFile, `MISMATCH_ALL;${dbName};${key};${dbSize};${doSize};${s3Size};${isDeleted}\n`)
       }
 
       // Check for empty files
       if (doSize === 0 || s3Size === 0) {
-        appendFileSync('files.csv', `EMPTY_FILE;${dbName};${key};${dbSize};${doSize};${s3Size};${isDeleted}\n`)
+        appendFileSync(csvFile, `EMPTY_FILE;${dbName};${key};${dbSize};${doSize};${s3Size};${isDeleted}\n`)
       }
     }
 

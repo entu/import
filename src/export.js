@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import dotenv from 'dotenv/config'
 
 import fs from 'fs'
@@ -8,14 +7,10 @@ import { AsyncParser } from '@json2csv/node'
 import { S3Client, HeadObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3'
 import { log } from './helpers.js'
 
-const filesPath = '../export'
+const filesPath = './export'
 
-const database = 'vabamu'
-const skipProperties = [
-  'inventeerimuseaal',
-  'inventeerirepr',
-  'inventeerisari'
-]
+const database = 'ehituskool'
+const skipProperties = []
 
 const s3Client = new S3Client({
   endpoint: process.env.DO_SPACES_ENDPOINT,
@@ -30,7 +25,7 @@ log(`Database: ${database}`)
 
 const types = await fetchAllEntities(database, { '_type.string': 'entity', props: 'name.string', sort: 'name.string' })
 // const types = await fetchAllEntities(database, { '_type.string': 'entity', 'name.string.ne': 'eksponaat', props: 'name.string', sort: 'name.string' })
-// const types = await fetchAllEntities(database, { '_type.string': 'entity', 'name.string': 'eksponaat', props: 'name.string', sort: 'name.string' })
+// const types = await fetchAllEntities(database, { '_type.string': 'entity', 'name.string': 'teavik', props: 'name.string', sort: 'name.string' })
 const typeNames = types.map((x) => x.name.at(0).string)
 
 log(`Types: ${typeNames.join(', ')}`)
@@ -40,10 +35,8 @@ for (let i = 0; i < typeNames.length; i++) {
   console.log('')
   log(`Fetching ${t}`)
 
-  const entities = await fetchAllEntities(database, { '_type.string': t })
-
   const outputPath = path.join(filesPath, database, t, `${t}.csv`)
-  await entitiesToFile(entities, outputPath)
+  await streamEntitiesToFile(database, { '_type.string': t }, outputPath)
 }
 
 process.exit()
@@ -84,11 +77,151 @@ async function fetchAllEntities (database, query = {}) {
   return allEntities
 }
 
+async function streamEntitiesToFile (database, query = {}, filename) {
+  let skip = 0
+  const limit = 1000
+  let hasMore = true
+  let totalProcessed = 0
+
+  fs.mkdirSync(path.dirname(filename), { recursive: true })
+
+  const entityType = path.basename(path.dirname(filename))
+  const allFields = new Set(['_id'])
+  const yamlPath = filename.replace('.csv', '.yaml')
+
+  // Create YAML write stream
+  let yamlStream = fs.createWriteStream(yamlPath)
+  let isFirstYamlBatch = true
+
+  // First pass: collect all fields from all entities
+  log('Pass 1: Collecting all fields...')
+  let tempSkip = 0
+  let tempHasMore = true
+
+  while (tempHasMore) {
+    const q = new URLSearchParams({ ...query, limit, skip: tempSkip })
+    const response = await fetch(`${process.env.ENTU_API_URL}/${database}/entity?${q}`, {
+      headers: { Authorization: `Bearer ${process.env.ENTU_API_TOKEN}` }
+    })
+
+    if (!response.ok) {
+      console.error(response.statusText, await response.text())
+      yamlStream.end()
+      return
+    }
+
+    const { entities } = await response.json()
+    tempHasMore = entities.length === limit
+
+    for (const entity of entities) {
+      if (entity._parent) {
+        allFields.add('_parent')
+      }
+      for (const propertyName in entity) {
+        if (propertyName.startsWith('_') || skipProperties.includes(propertyName)) continue
+        allFields.add(propertyName)
+      }
+    }
+
+    tempSkip += limit
+    await new Promise((resolve) => setTimeout(resolve, 100))
+  }
+
+  log(`Found ${allFields.size} unique fields`)
+  log('Pass 2: Processing and writing entities...')
+
+  // Prepare CSV parser with all fields
+  const csvFields = Array.from(allFields).sort(compareFields)
+
+  let csvStream = fs.createWriteStream(filename)
+  let isFirstCsvBatch = true
+
+  // Second pass: process and write entities in batches
+  while (hasMore) {
+    const start = Date.now()
+
+    const q = new URLSearchParams({ ...query, limit, skip })
+    const response = await fetch(`${process.env.ENTU_API_URL}/${database}/entity?${q}`, {
+      headers: { Authorization: `Bearer ${process.env.ENTU_API_TOKEN}` }
+    })
+
+    if (!response.ok) {
+      console.error(response.statusText, await response.text())
+      break
+    }
+
+    const { entities } = await response.json()
+    hasMore = entities.length === limit
+
+    // Write YAML batch
+    if (isFirstYamlBatch) {
+      yamlStream.write('- ')
+      isFirstYamlBatch = false
+    }
+    for (let i = 0; i < entities.length; i++) {
+      const yamlStr = yaml.stringify(entities[i], { lineWidth: -1, sortMapEntries })
+      yamlStream.write(yamlStr)
+      if (i < entities.length - 1 || hasMore) {
+        yamlStream.write('- ')
+      }
+    }
+
+    // Process entities for CSV
+    const processedEntities = []
+    for (const entity of entities) {
+      const newEntity = { _id: entity._id }
+
+      const parent = entity._parent?.map((x) => x.reference).join('')
+      if (parent) {
+        newEntity._parent = parent
+      }
+
+      for (const propertyName in entity) {
+        if (propertyName.startsWith('_') || skipProperties.includes(propertyName)) continue
+        const element = entity[propertyName]
+        newEntity[propertyName] = await getValues(element, entity._id, entityType, propertyName)
+      }
+
+      // Ensure all fields exist
+      for (const field of allFields) {
+        if (!(field in newEntity)) {
+          newEntity[field] = null
+        }
+      }
+
+      processedEntities.push(newEntity)
+    }
+
+    // Write CSV batch
+    if (processedEntities.length > 0) {
+      const parser = new AsyncParser({ fields: csvFields, header: isFirstCsvBatch })
+      const csv = await parser.parse(processedEntities).promise()
+      csvStream.write(csv)
+      if (hasMore) {
+        csvStream.write('\n')
+      }
+      isFirstCsvBatch = false
+    }
+
+    totalProcessed += entities.length
+    const seconds = ((Date.now() - start) / 1000).toFixed(1)
+    log(`Processed ${skip + 1} - ${skip + entities.length} (${totalProcessed} total) in ${seconds}s`)
+
+    skip += limit
+    await new Promise((resolve) => setTimeout(resolve, 1000))
+  }
+
+  yamlStream.end()
+  csvStream.end()
+
+  log(`Completed: ${totalProcessed} entities written to ${filename}`)
+}
+
 async function entitiesToFile (entities, filename) {
   fs.mkdirSync(path.dirname(filename), { recursive: true })
 
   // Save all entities to yaml
-  // fs.writeFileSync(filename.replace('.csv', '.yaml'), yaml.stringify(entities, { lineWidth: -1, sortMapEntries }))
+  fs.writeFileSync(filename.replace('.csv', '.yaml'), yaml.stringify(entities, { lineWidth: -1, sortMapEntries }))
 
   const entityType = path.basename(path.dirname(filename))
 
@@ -98,7 +231,9 @@ async function entitiesToFile (entities, filename) {
   for (let i = 0; i < entities.length; i++) {
     const entity = entities[i]
 
-    if (entity._parent) allFields.add('_parent')
+    if (entity._parent) {
+      allFields.add('_parent')
+    }
 
     for (const propertyName in entity) {
       if (propertyName.startsWith('_') || skipProperties.includes(propertyName)) continue
@@ -112,7 +247,9 @@ async function entitiesToFile (entities, filename) {
     const newEntity = { _id: entity._id }
 
     const parent = entity._parent?.map((x) => x.reference).join('')
-    if (parent) newEntity._parent = parent
+    if (parent) {
+      newEntity._parent = parent
+    }
 
     for (const propertyName in entity) {
       if (propertyName.startsWith('_') || skipProperties.includes(propertyName)) continue
@@ -134,39 +271,59 @@ async function entitiesToFile (entities, filename) {
   if (entities.length === 0) return
 
   // Explicitly specify the fields for the CSV parser
-  const parser = new AsyncParser({
-    fields: Array.from(allFields).sort((a, b) => {
-      if (a === '_id') return -1
-      if (b === '_id') return 1
-      if (a === '_parent') return -1
-      if (b === '_parent') return 1
-      return a.localeCompare(b)
-    })
-  })
+  const parser = new AsyncParser({ fields: Array.from(allFields).sort(compareFields) })
   const csv = await parser.parse(entities).promise()
 
   fs.writeFileSync(filename, csv)
 }
 
+// Orders CSV columns: _id first, then _parent, the rest alphabetically.
+function compareFields (a, b) {
+  const first = ['_id', '_parent']
+
+  for (const field of first) {
+    if (a === field) {
+      return -1
+    }
+    if (b === field) {
+      return 1
+    }
+  }
+
+  return a.localeCompare(b)
+}
+
 function sortMapEntries (a, b) {
   // _id should always come first
-  if (a.key.value === '_id') return -1
-  if (b.key.value === '_id') return 1
+  if (a.key.value === '_id') {
+    return -1
+  }
+  if (b.key.value === '_id') {
+    return 1
+  }
 
   // For all other keys, sort alphabetically
-  if (a.key.value === b.key.value) return 0
-  if (a.key.value < b.key.value) return -1
+  if (a.key.value === b.key.value) {
+    return 0
+  }
+  if (a.key.value < b.key.value) {
+    return -1
+  }
 
   return 1
 }
 
 function safeFilename (filename, maxLength = 64) {
-  if (!filename) return ''
+  if (!filename) {
+    return ''
+  }
 
   const ext = path.extname(filename)
   const base = path.basename(filename, ext)
 
-  if ((base + ext).length <= maxLength) return ` - ${filename}`
+  if ((base + ext).length <= maxLength) {
+    return ` - ${filename}`
+  }
 
   return ` - ${base.slice(0, maxLength - ext.length - 3)}...${ext}`
 }
@@ -177,9 +334,15 @@ async function getValues (element, entityId, entityType, propertyName) {
   for (const x of element) {
     let value = yaml.stringify(x).trim()
 
-    if (x.boolean !== undefined) value = x.boolean ? 1 : 0
-    if (x.date !== undefined) value = x.date.substring(0, 10)
-    if (x.datetime !== undefined) value = x.datetime
+    if (x.boolean !== undefined) {
+      value = x.boolean ? 1 : 0
+    }
+    if (x.date !== undefined) {
+      value = x.date.slice(0, 10)
+    }
+    if (x.datetime !== undefined) {
+      value = x.datetime
+    }
     if (x.filename !== undefined || x.filesize !== undefined) {
       const safeName = safeFilename(x.filename?.trim())
       const fileExists = await getFile(entityType, entityId, x._id, safeName, propertyName)
@@ -188,16 +351,26 @@ async function getValues (element, entityId, entityType, propertyName) {
 
       value = `${entityType}/${propertyName}/${entityId}/${x._id}${safeName}`
     }
-    if (x.number !== undefined) value = x.number
-    if (x.reference !== undefined) value = [x.reference, x.string?.trim()].filter(Boolean).join(' - ')
-    if (x.string !== undefined) value = x.string?.trim()
+    if (x.number !== undefined) {
+      value = x.number
+    }
+    if (x.reference !== undefined) {
+      value = [x.reference, x.string?.trim()].filter(Boolean).join(' - ')
+    }
+    if (x.string !== undefined) {
+      value = x.string?.trim()
+    }
 
-    if (x.language !== undefined) value = `${x.language.toLowerCase()} - ${value}`
+    if (x.language !== undefined) {
+      value = `${x.language.toLowerCase()} - ${value}`
+    }
 
     elements.push(value)
   }
 
-  if (elements.length > 1) return elements.join('')
+  if (elements.length > 1) {
+    return elements.join('')
+  }
 
   return elements.at(0)
 }

@@ -10,8 +10,13 @@
     "lint": "eslint . --fix",
     "aggregate": "node src/aggregate.js",
     "check-files": "node src/checkFiles.js",
+    "copy-from-template": "node src/copyFromTemplate.js",
+    "delete-expired-invites": "node src/deleteExpiredInvites.js",
     "export": "node src/export.js",
-    "set-db-owner": "node src/setDbOwner.js"
+    "import-plugins": "node src/importPlugins.js",
+    "remove-duplicate-props": "node src/removeDuplicateProps.js",
+    "set-db-owner": "node src/setDbOwner.js",
+    "set-indexes": "node src/setIndexes.js"
   },
   "devDependencies": {
     "@aws-sdk/client-s3": "3.958.0",
